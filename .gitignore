@@ -1,4 +1,4 @@
-# Python
+# Archivos de Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -20,26 +20,39 @@ wheels/
 .installed.cfg
 *.egg
 
-# Virtual environments
-venv/
+# Archivos de entorno
+.env
+.venv
 env/
+venv/
 ENV/
+env.bak/
+venv.bak/
 
-# IDE
+# IDEs
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
 
-# OS
+# Sistema operativo
 .DS_Store
 Thumbs.db
 desktop.ini
 
-# Veyon specific
-*.log
-temp/
+# Archivos temporales
 *.tmp
+*.bak
+*.log
+*.cache
+*.rar
+*.zip
+*.7z
 
-# WakeMeOnLAN
-WakeMeOnLAN.cfg
+# Proyectos externos
+optimizacion_windows/
+
+# Configuraciones locales
+*.cfg
+!WakeMeOnLAN.cfg

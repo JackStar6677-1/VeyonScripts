@@ -7,6 +7,10 @@ VEYON MAESTRO - Solo Actualizar
 
 Script maestro que SOLO actualiza Veyon con WakeMeOnLAN
 SIN BORRAR la configuración existente.
+
+Autor: Pablo Elías Avendaño Miranda
+Título: Ingeniero en Informática
+© 2025 - Todos los derechos reservados
 """
 
 import sys

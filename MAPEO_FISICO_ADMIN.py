@@ -7,6 +7,10 @@ MAPEO FÍSICO DE PCs - Veyon (CON ADMIN)
 
 Script que mapea las IPs a los números físicos reales de los PCs
 en la sala de computación para Veyon (con solicitud automática de admin).
+
+Autor: Pablo Elías Avendaño Miranda
+Título: Ingeniero en Informática
+© 2025 - Todos los derechos reservados
 """
 
 import sys
