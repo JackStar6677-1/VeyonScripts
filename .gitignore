@@ -50,9 +50,6 @@ desktop.ini
 *.zip
 *.7z
 
-# Proyectos externos
-optimizacion_windows/
-
 # Configuraciones locales
 *.cfg
 !WakeMeOnLAN.cfg

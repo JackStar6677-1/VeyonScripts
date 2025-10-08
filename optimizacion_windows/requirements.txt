@@ -1,0 +1,8 @@
+# Optimizacion Windows 11 - Dependencias
+
+# Informacion del sistema
+psutil>=5.9.0
+
+# Nota: La mayoria de scripts usan solo modulos de Python estandar
+# psutil solo es necesario para INFO_SISTEMA.py
+
