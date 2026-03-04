@@ -1,0 +1,157 @@
+﻿INFORME UNIFICADO - RED BASICA + VEYON
+Fecha: 2026-03-04
+Alcance: SOLO BASICA (MEDIA queda fuera de este documento)
+Responsable local: DESKTOP-IHLLLEQ
+
+============================================================
+1) RESUMEN EJECUTIVO
+============================================================
+- El problema principal NO es Veyon/llaves; es red/topologia.
+- Desde el PC encargado hay visibilidad estable de 192.168.0.0/24.
+- La red 192.168.100.0/24 no tiene alcance efectivo desde este punto en las pruebas realizadas.
+- Resultado operativo: en Veyon aparecen solo algunos equipos, con comportamiento intermitente cuando hay cambios de enlace/topologia.
+
+============================================================
+2) ESTADO REAL DE RED (MEDIDO)
+============================================================
+- PC encargado: 192.168.0.243/24 (DHCP)
+- Gateway: 192.168.0.1
+- DNS local: 192.168.0.1
+- NIC: 1 Gbps link up
+- Ruta default: 0.0.0.0/0 via 192.168.0.1
+
+Pruebas Veyon TCP 11100:
+- 192.168.0.x: hay hosts abiertos
+- 192.168.100.x: sin alcance efectivo desde este equipo en pruebas
+
+============================================================
+3) HALLAZGOS DE FOTOS / RACK
+============================================================
+Equipos observados:
+- Router TP-Link Archer C6 (etiquetado Admin)
+- Cisco ISR 1100 Series (etiquetado Dedicado)
+- ONT Huawei EchoLife HG8245W5 (fibra GPON)
+- CPE/equipo con coaxial (servicio ISP adicional/legado probable)
+- Switch D-Link DES-1024D (Fast Ethernet 10/100, no administrable)
+
+Interpretacion:
+- Infraestructura mixta (enlace dedicado + otros equipos ISP).
+- Riesgo de rutas/doble NAT/DHCP no documentados.
+- DES-1024D limita diagnostico (sin VLAN/estadisticas/errores por puerto).
+
+============================================================
+4) DATOS CLAVE DEL TP-LINK ADMIN (CAPTURAS)
+============================================================
+WAN (NO tocar salvo necesidad y respaldo):
+- Tipo: IP estatica
+- IP WAN: 186.67.225.26
+- Mascara: 255.255.255.252
+- Gateway WAN: 192.168.238.41
+- DNS WAN actual: 200.72.1.5
+- MTU: 1500
+
+DHCP LAN:
+- Activo
+- Pool: 192.168.0.100 - 192.168.0.249
+- Lease: 120 min (demasiado corto para laboratorio)
+- Gateway entregado: 192.168.0.1
+
+Rutas estaticas TP-Link:
+- Sin rutas personalizadas (tabla vacia)
+- Solo rutas de sistema (WAN/LAN local)
+
+QoS:
+- Recomendado por ahora: DESACTIVADO
+
+============================================================
+5) HALLAZGOS DHCP DEL LISTADO DEL ROUTER
+============================================================
+Confirmaciones:
+- Segmento activo principal: 192.168.0.0/24
+- Muchos clientes activos (PCs, APs/router secundarios, impresora, moviles)
+
+Anomalias detectadas:
+- Hostname duplicado con MAC distintas (ej. DESKTOP-AK7IC73)
+- Varios TP-Link internos (WR840N/WR841N): riesgo si tienen DHCP/NAT activos
+- Dispositivos sin hostname ('*') que conviene identificar
+
+============================================================
+6) VEYON - ESTADO Y CRITERIO OPERATIVO
+============================================================
+- Veyon ya fue ajustado para naming CASTEL-XX por MAC.
+- El mapeo correcto es por MAC, no por IP manual.
+- Si la red esta bien, Veyon se estabiliza aunque cambie la IP dinamica.
+
+Regla base:
+- No configurar IP fija manual PC por PC.
+- Usar DHCP + reservas por MAC en router principal.
+
+============================================================
+7) DECISION DE DISEÑO PARA BASICA (RECOMENDADA)
+============================================================
+Objetivo en BASICA:
+- Mantener una red funcional y estable primero.
+
+Fase 1 (inmediata):
+1. Un solo DHCP activo en BASICA.
+2. Reservas DHCP por MAC para CASTEL-01..39.
+3. Lease DHCP subir a 1440 min.
+4. TP-Link secundarios en modo AP/bridge (sin DHCP, sin NAT, LAN-LAN).
+5. QoS apagado mientras se estabiliza.
+
+Fase 2 (mejora):
+1. Reemplazar switch 10/100 por switch gigabit administrable.
+2. Documentar puertos y rutas del rack.
+3. Si se requiere segmentar docentes/alumnos: VLANs con equipo L3.
+
+============================================================
+8) OPEN DNS (SIN ROMPER CLASES)
+============================================================
+Como red mixta (docentes + alumnos), aplicar filtro moderado al inicio.
+
+DNS OpenDNS:
+- 208.67.222.222
+- 208.67.220.220
+
+Politica inicial sugerida:
+- Bloquear: Pornography, Adware, Proxy/Anonymizer, P2P/File Sharing, Parked Domains, Web Spam.
+- Evitar bloqueo agresivo global de categorias academicas al inicio.
+- Ajustar con whitelist segun necesidades docentes.
+
+Nota:
+- Si despues separas por VLAN/SSID, puedes tener politica distinta para docentes y alumnos.
+
+============================================================
+9) ACLARACION IMPORTANTE SOBRE ISR/CISCO
+============================================================
+- El ISR normalmente se administra por CLI/SSH/Consola.
+- Si no tienes credenciales o acceso habilitado, puede estar bajo control del proveedor/tecnico anterior.
+- No resetear ISR en produccion sin respaldo.
+
+============================================================
+10) LO QUE NO HACER
+============================================================
+- No meter routers domesticos nuevos haciendo NAT entre segmentos internos.
+- No dejar multiples DHCP activos en la misma LAN.
+- No cambiar parametros WAN (IP/mascara/gateway) sin respaldo/documentacion.
+- No usar IP fija manual en cada PC del laboratorio.
+
+============================================================
+11) CHECKLIST DE IMPLEMENTACION (BASICA)
+============================================================
+1. Backup de configuracion TP-Link Admin.
+2. Subir lease DHCP a 1440 min.
+3. Cargar reservas CASTEL-01..39 por MAC.
+4. Revisar WR840N/WR841N: DHCP OFF, NAT OFF, modo AP.
+5. Verificar solo 1 gateway en BASICA (192.168.0.1).
+6. Renovar DHCP en clientes (o reinicio de equipos).
+7. Ejecutar refresco Veyon y validar 11100/TCP.
+8. Registrar cambios en bitacora (fecha, tecnico, que se toco).
+
+============================================================
+12) RESULTADO ESPERADO
+============================================================
+- IP estable por equipo CASTEL (sin baile).
+- Veyon consistente y predecible.
+- Menos incidencias por mezcla de redes/equipos de borde.
+- Base lista para una futura segmentacion limpia (si luego deseas separar mas servicios).

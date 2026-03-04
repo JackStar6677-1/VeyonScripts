@@ -1,4 +1,6 @@
 @echo off
+set "PYTHON_EXE=%LocalAppData%\Programs\Python\Python312\python.exe"
+if not exist "%PYTHON_EXE%" set "PYTHON_EXE=python"
 echo ========================================
 echo VEYON MAESTRO - Solo Actualizar
 echo ========================================
@@ -7,6 +9,6 @@ echo Este script SOLO actualiza Veyon con WakeMeOnLAN
 echo SIN BORRAR la configuracion existente.
 echo.
 pause
-python scripts\principales\VEYON_MAESTRO.py
+"%PYTHON_EXE%" scripts\principales\VEYON_MAESTRO.py
 pause
 

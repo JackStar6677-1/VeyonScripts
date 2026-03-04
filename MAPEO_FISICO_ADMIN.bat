@@ -1,4 +1,6 @@
 @echo off
+set "PYTHON_EXE=%LocalAppData%\Programs\Python\Python312\python.exe"
+if not exist "%PYTHON_EXE%" set "PYTHON_EXE=python"
 echo ========================================
 echo MAPEO FISICO DE PCs - Veyon (CON ADMIN)
 echo ========================================
@@ -9,6 +11,6 @@ echo.
 echo Los nombres en Veyon reflejaran el orden fisico real (PC-00 a PC-15).
 echo.
 pause
-python scripts\principales\MAPEO_FISICO_ADMIN.py
+"%PYTHON_EXE%" scripts\principales\MAPEO_FISICO_ADMIN.py
 pause
 

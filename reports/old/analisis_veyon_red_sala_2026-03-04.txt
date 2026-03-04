@@ -1,0 +1,105 @@
+﻿ANALISIS TECNICO VEYON + RED DE SALA
+Fecha: 2026-03-04
+Equipo encargado: DESKTOP-IHLLLEQ
+
+1) RESUMEN EJECUTIVO
+- Veyon muestra solo una parte de los equipos porque la red actualmente visible desde este PC es principalmente 192.168.0.0/24.
+- La subred 192.168.100.0/24 no tiene alcance efectivo desde este punto (pruebas a puerto 11100 y ping sin exito).
+- Resultado: equipos que antes aparecian con 192.168.100.x hoy no se ven, o aparecen intermitentes.
+
+2) ESTADO DE RED DEL PC ENCARGADO
+- NIC: Realtek PCIe GbE Family Controller
+- Link: 1 Gbps (UP)
+- IPv4: 192.168.0.243/24 (DHCP)
+- Gateway: 192.168.0.1
+- DNS: 192.168.0.1
+- Ruta por defecto: 0.0.0.0/0 via 192.168.0.1
+
+3) HALLAZGO CLAVE DE TOPOLOGIA
+- Este PC esta conectado a un switch local agregado por problema fisico de cableado.
+- Desde el rack de la sala salen derivaciones a otras areas del colegio.
+- En esta topologia, si el uplink del switch local hacia el core/rack no transporta correctamente todas las rutas/VLAN, veras solo una parte de los equipos.
+- El comportamiento observado (cantidad de equipos visible variable entre escaneos) es compatible con:
+  a) inestabilidad de capa fisica (cable, conectores, patch cord, puerto switch)
+  b) problemas de uplink/trunk/VLAN
+  c) DHCP/lease moviendo equipos entre segmentos
+
+4) VEYON EN EL ENTORNO ACTUAL
+- Puerto de servicio esperado: 11100/TCP
+- Escaneo actual:
+  - 192.168.0.x con 11100 abierto: 23 hosts (valor medido en barrido completo)
+  - 192.168.100.x con 11100 abierto: 0 hosts
+- Prueba puntual: 192.168.100.88:11100 = TcpTestSucceeded False
+- Nota importante: si un equipo no esta en la misma red alcanzable, Veyon no puede mostrar vista en vivo aunque el objeto exista.
+
+5) INVENTARIO CASTEL ACTUALMENTE ONLINE (MAC/IP REAL)
+CASTEL-01  192.168.0.170  08-BF-B8-BE-76-66
+CASTEL-02  192.168.0.205  08-BF-B8-36-6C-21
+CASTEL-03  192.168.0.202  08-BF-B8-36-6F-B6
+CASTEL-04  192.168.0.230  08-BF-B8-36-6E-6E
+CASTEL-06  192.168.0.152  08-BF-B8-36-70-4F
+CASTEL-08  192.168.0.176  08-BF-B8-36-6C-04
+CASTEL-09  192.168.0.212  08-BF-B8-36-6C-2A
+CASTEL-10  192.168.0.223  08-BF-B8-36-6B-67
+CASTEL-12  192.168.0.186  08-BF-B8-6E-20-29
+CASTEL-13  192.168.0.194  08-BF-B8-36-6B-4A
+CASTEL-15  192.168.0.242  08-BF-B8-A3-8B-87
+CASTEL-16  192.168.0.116  08-BF-B8-A3-8A-3C
+CASTEL-18  192.168.0.162  08-BF-B8-A3-8B-32
+CASTEL-20  192.168.0.153  08-BF-B8-A2-2B-5F
+CASTEL-21  192.168.0.235  08-BF-B8-A2-2B-19
+CASTEL-24  192.168.0.216  08-BF-B8-6E-20-45
+CASTEL-25  192.168.0.241  08-BF-B8-6E-20-F3
+CASTEL-26  192.168.0.219  08-BF-B8-6E-20-4B
+CASTEL-27  192.168.0.189  08-BF-B8-6E-1F-F5
+CASTEL-34  192.168.0.111  08-BF-B8-A3-8A-CD
+CASTEL-35  192.168.0.171  08-BF-B8-BE-76-FC
+CASTEL-38  192.168.0.144  04-7C-16-BD-C2-AD
+
+Total online mapeados: 22
+
+6) EQUIPOS CASTEL NO VISIBLES EN ESTE MOMENTO
+CASTEL-05, CASTEL-07, CASTEL-11, CASTEL-14, CASTEL-17, CASTEL-19, CASTEL-22, CASTEL-23, CASTEL-28, CASTEL-29, CASTEL-30, CASTEL-31, CASTEL-32, CASTEL-33, CASTEL-36, CASTEL-37, CASTEL-39
+
+Total no visibles: 17
+
+7) INTERPRETACION OPERATIVA
+- No es un problema de "nombre" en Veyon; es de alcance de red + cambios DHCP + estado real del host.
+- Si el mismo PC aparece un rato y luego no, casi siempre es capa fisica/switch o transito entre segmentos.
+- Si muchos quedan en 192.168.100.x y tu maestro queda en 192.168.0.x sin ruta, los perderas visualmente.
+
+8) RECOMENDACIONES TECNICAS (ORDENADAS)
+1. Cableado y puertos:
+   - Cambiar patch cords del puesto encargado y uplink del switch agregado.
+   - Probar otro puerto del switch y del patch panel.
+2. Switch/rack:
+   - Confirmar si el puerto uplink es access o trunk y que VLANs llegan correctamente.
+   - Verificar errores en puerto (CRC, drops, flaps) en el switch administrable.
+3. Direccionamiento:
+   - Definir una sola subred para sala (ideal) o ruta clara entre 192.168.0.0/24 y 192.168.100.0/24.
+   - Reservar DHCP por MAC para equipos CASTEL (evita baile de IP).
+4. Veyon:
+   - Mantener mapeo por MAC->CASTEL-XX (ya implementado en scripts).
+   - Ejecutar refresco periodico desde script para actualizar IP sin tocar claves.
+
+9) COMANDOS RECOMENDADOS PARA AUDITORIA RAPIDA
+- ipconfig /all
+- arp -a
+- route print
+- Test-NetConnection <IP> -Port 11100
+- netstat -ano | findstr 11100
+
+10) HERRAMIENTAS PARA EJECUCION MASIVA DE COMANDOS (NO CONTROL REMOTO)
+- PsExec (Sysinternals): ejecucion remota directa en Windows.
+- PDQ Deploy / PDQ Inventory: despliegue y ejecucion de scripts en masa.
+- Action1: RMM cloud para script remoto y auditoria.
+- Ansible (Windows via WinRM): orquestacion por lotes con playbooks.
+
+Recomendacion practica para tu caso escolar:
+- Si quieres algo rapido y sin mucha curva: PDQ (si tienes entorno Windows puro).
+- Si quieres cero costo inicial y flexible: PsExec + scripts PowerShell.
+- Si quieres gestion central con reportes: Action1 o Ansible.
+
+11) CONCLUSION
+La evidencia apunta a problema mixto de red (alcance entre subredes + posible inestabilidad fisica en el tramo donde agregaste switch), no a un fallo directo de Veyon.
+Veyon esta funcionando para los equipos que son alcanzables por red y que tienen 11100 activo.
