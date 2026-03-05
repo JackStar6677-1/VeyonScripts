@@ -1,0 +1,131 @@
+param(
+    [string]$TargetScript = ".\payload.ps1",
+    [string]$HostsFile = ".\hosts_castel.txt"
+)
+
+$ErrorActionPreference = "Stop"
+
+Write-Host "==============================================="
+Write-Host " EJECUCION MASIVA POR WINRM"
+Write-Host "==============================================="
+Write-Host "Hosts : $HostsFile"
+Write-Host "Script: $TargetScript"
+Write-Host ""
+
+if (!(Test-Path $HostsFile)) {
+    Write-Host "[ERROR] No existe el archivo de hosts: $HostsFile" -ForegroundColor Red
+    exit 1
+}
+
+if (!(Test-Path $TargetScript)) {
+    Write-Host "[ERROR] No existe el script objetivo: $TargetScript" -ForegroundColor Red
+    Write-Host "Crea payload.ps1 o payload.bat en esta misma carpeta." -ForegroundColor Yellow
+    exit 1
+}
+
+$hosts = Get-Content $HostsFile |
+    ForEach-Object { $_.Trim() } |
+    Where-Object { $_ -and -not $_.StartsWith("#") } |
+    Select-Object -Unique
+
+if ($hosts.Count -eq 0) {
+    Write-Host "[ERROR] Hosts vacio: $HostsFile" -ForegroundColor Red
+    exit 1
+}
+
+$cred = Get-Credential -Message "Ingresa usuario admin valido para los PCs destino"
+$ext = [IO.Path]::GetExtension((Resolve-Path $TargetScript).Path).ToLowerInvariant()
+$scriptPath = (Resolve-Path $TargetScript).Path
+$timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
+$report = Join-Path (Get-Location) ("reporte_masivo_" + $timestamp + ".csv")
+$results = @()
+
+function Invoke-BatRemote {
+    param(
+        [string]$ComputerName,
+        [pscredential]$Credential,
+        [string]$BatPath
+    )
+    $content = Get-Content $BatPath -Raw -Encoding UTF8
+    Invoke-Command -ComputerName $ComputerName -Credential $Credential -ErrorAction Stop -ScriptBlock {
+        param($batContent)
+        $tmp = Join-Path $env:TEMP ("payload_" + [guid]::NewGuid().ToString() + ".bat")
+        Set-Content -Path $tmp -Value $batContent -Encoding ASCII -Force
+        cmd.exe /c $tmp
+        $rc = $LASTEXITCODE
+        Remove-Item $tmp -Force -ErrorAction SilentlyContinue
+        return $rc
+    } -ArgumentList $content
+}
+
+foreach ($h in $hosts) {
+    $start = Get-Date
+    $status = "OK"
+    $detail = ""
+    $duration = 0
+
+    Write-Host "[$h] Verificando WinRM (5985)..."
+    $portOpen = Test-NetConnection -ComputerName $h -Port 5985 -InformationLevel Quiet -WarningAction SilentlyContinue
+    if (-not $portOpen) {
+        $status = "NO_WINRM"
+        $detail = "Puerto 5985 cerrado o host no accesible"
+        $duration = [math]::Round(((Get-Date) - $start).TotalSeconds, 2)
+        Write-Host "[$h] $status - $detail" -ForegroundColor Yellow
+        $results += [pscustomobject]@{
+            Host = $h; Status = $status; Detail = $detail; DurationSec = $duration
+        }
+        continue
+    }
+
+    try {
+        if ($ext -eq ".ps1") {
+            Write-Host "[$h] Ejecutando PS1 remoto..."
+            Invoke-Command -ComputerName $h -Credential $cred -FilePath $scriptPath -ErrorAction Stop | Out-Null
+        }
+        elseif ($ext -eq ".bat" -or $ext -eq ".cmd") {
+            Write-Host "[$h] Ejecutando BAT/CMD remoto..."
+            $rc = Invoke-BatRemote -ComputerName $h -Credential $cred -BatPath $scriptPath
+            if ($rc -ne 0) {
+                throw "BAT remoto devolvio codigo $rc"
+            }
+        }
+        else {
+            throw "Extension no soportada: $ext (usa .ps1, .bat o .cmd)"
+        }
+    }
+    catch {
+        $status = "ERROR"
+        $detail = $_.Exception.Message
+    }
+
+    $duration = [math]::Round(((Get-Date) - $start).TotalSeconds, 2)
+    if ($status -eq "OK") {
+        Write-Host "[$h] OK ($duration s)" -ForegroundColor Green
+    } else {
+        Write-Host "[$h] $status - $detail" -ForegroundColor Red
+    }
+
+    $results += [pscustomobject]@{
+        Host = $h
+        Status = $status
+        Detail = $detail
+        DurationSec = $duration
+    }
+}
+
+$results | Export-Csv -Path $report -NoTypeInformation -Encoding UTF8
+
+$ok = ($results | Where-Object { $_.Status -eq "OK" }).Count
+$nowinrm = ($results | Where-Object { $_.Status -eq "NO_WINRM" }).Count
+$err = ($results | Where-Object { $_.Status -eq "ERROR" }).Count
+
+Write-Host ""
+Write-Host "==============================================="
+Write-Host " RESUMEN"
+Write-Host "==============================================="
+Write-Host "Total   : $($results.Count)"
+Write-Host "OK      : $ok"
+Write-Host "NO_WINRM: $nowinrm"
+Write-Host "ERROR   : $err"
+Write-Host "Reporte : $report"
+Write-Host "==============================================="
