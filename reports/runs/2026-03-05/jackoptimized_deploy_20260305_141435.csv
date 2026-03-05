@@ -1,0 +1,304 @@
+﻿"Host","Status","User","Detail","PSComputerName","RunspaceId","PSShowComputerName"
+"192.168.0.101","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","0df84e5d-899e-4f8c-9f20-ca54fd7248c1","False"
+"192.168.0.102","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","cf4a71de-d6e1-46c0-83c8-584bb044866c","False"
+"192.168.0.103","NO_5985","","WinRM cerrado","localhost","15a73226-51a1-451d-9b98-5b8cf140d53a","False"
+"192.168.0.104","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","1f80c10c-b4e7-48c6-9c31-24ee62f1ee5b","False"
+"192.168.0.105","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","7bb3f1b9-96d1-4950-a690-9f223991f09f","False"
+"192.168.0.106","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","3a9ac56a-d819-42d2-9f90-e27a052011b6","False"
+"192.168.0.107","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","9e318470-7548-4ffc-b0f0-358856252aef","False"
+"192.168.0.108","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","89c0c9e6-d42d-4f2d-9c43-2fb08bffe617","False"
+"192.168.0.109","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","8729c6e2-bf4d-4efb-98d6-a1b3e4ed19e6","False"
+"192.168.0.110","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","78796a82-7b3b-4f3c-89fe-1a3414a3a7c0","False"
+"192.168.0.111","NO_5985","","WinRM cerrado","localhost","cd55f6b3-9f80-4fb2-95aa-8687691d1dc6","False"
+"192.168.0.112","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","3d20245b-c6d2-4c0f-8a2c-7696655ae243","False"
+"192.168.0.113","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","f923f81d-7b82-4352-868d-7a5b5886d59d","False"
+"192.168.0.114","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","4b526bf2-91dd-4409-b57e-d9b480799582","False"
+"192.168.0.115","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","7ac0c772-a6f4-4834-939b-7f932300110f","False"
+"192.168.0.116","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","c60c45c1-6341-4ca6-b420-a43f785cf39c","False"
+"192.168.0.117","NO_5985","","WinRM cerrado","localhost","4b151d05-00a8-4277-9d76-d508eaacc395","False"
+"192.168.0.118","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","2f202986-86c9-418b-8120-5c090237a44f","False"
+"192.168.0.119","NO_5985","","WinRM cerrado","localhost","eb75cda0-f1be-4df0-8d14-cf192bdddf70","False"
+"192.168.0.120","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","0473083e-c5a7-4b0b-9c96-bfb856f2a14f","False"
+"192.168.0.121","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","da30db92-3df2-4eae-b4fb-632deb2f9fb1","False"
+"192.168.0.122","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","4ab20839-72a6-4b68-9e93-637dae93a536","False"
+"192.168.0.123","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","ff526f7d-5ed9-4fe2-9ff7-5993d71fd7a9","False"
+"192.168.0.124","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","92b55078-2501-440d-aad8-7e5fd6c42c1e","False"
+"192.168.0.125","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","74c89942-481f-4005-a6d7-2a8ef6bd60eb","False"
+"192.168.0.126","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","81f61170-90dc-4a73-abdf-485946f2cb12","False"
+"192.168.0.127","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","de34af05-7dfa-4636-9862-88ea3748dcd6","False"
+"192.168.0.128","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","2dea63f5-1365-4e57-9288-29249b396e49","False"
+"192.168.0.129","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","d9eef5b2-8ec8-4104-a42b-8f644128c744","False"
+"192.168.0.130","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","1065cd4d-7921-4384-8a17-5863d3eda620","False"
+"192.168.0.131","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","a6dec687-e2de-4bb8-8b8f-67718510aec8","False"
+"192.168.0.132","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","3a5171d5-c52c-4c88-8d99-606bb2150e66","False"
+"192.168.0.133","NO_5985","","WinRM cerrado","localhost","b557ee74-740f-41e0-b8c3-6cefb9fd3a37","False"
+"192.168.0.134","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","75ff0cc8-81dd-4b21-b834-02a7f77a60b7","False"
+"192.168.0.135","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","a697702b-6fac-40ab-a023-4a0f7aad7177","False"
+"192.168.0.136","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","5114377b-6ec7-4e1a-8f10-bf8850f29921","False"
+"192.168.0.137","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","9fb5fc8e-e3e8-41f4-b4a1-938e96e0e8e2","False"
+"192.168.0.138","NO_5985","","WinRM cerrado","localhost","49178c69-d0b3-4aa2-bf55-5adb26ad88a4","False"
+"192.168.0.139","FAIL","","En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 45 Carácter: 32
++         Log ""Reg failed $Path\\$Name: $($_.Exception.Message)""
++                                ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.
+
+En C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\kit_pendrive\JACKOPTIMIZED.ps1: 58 Carácter: 27
++         Log ""Clean failed $Path: $($_.Exception.Message)""
++                           ~~~~~~
+La referencia de variable no es válida. El carácter ':' no va seguido de un carácter de nombre de variable válido. Considere la posibilidad de usar ${} para delimitar el nombre.","localhost","a647078b-6dcb-43e0-b5ba-82be8538b0b4","False"
