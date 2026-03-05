@@ -13,7 +13,14 @@ Contenido:
 3) EJECUTAR_MASIVO_WINRM.ps1
    - Motor interno del punto 2.
 
-4) hosts_castel.txt
+4) EJECUTAR_MASIVO_AUTO_CRED.bat
+   - Variante automatica para entornos donde el usuario local cambia
+     (por ejemplo: Admin, Profesor, Usuario) pero la clave es la misma.
+
+5) EJECUTAR_MASIVO_AUTO_CRED.ps1
+   - Motor del modo auto-credencial.
+
+6) hosts_castel.txt
    - Lista de equipos destino (IP por linea).
    - Edita aqui para incluir/quitar equipos.
 
@@ -31,6 +38,11 @@ Paso C) Ejecutar en masa:
 - Desde el PC del encargado:
   - Ejecuta EJECUTAR_MASIVO_WINRM.bat
   - Ingresa credencial admin valida para los PCs.
+
+Modo alternativo (usuario variable, clave comun):
+- Ejecuta EJECUTAR_MASIVO_AUTO_CRED.bat
+- Ingresa la clave comun (ej: administrativa)
+- El script prueba automaticamente: Admin, Profesor, Usuario por host.
 
 Salida:
 - Genera reporte CSV: reporte_masivo_YYYYMMDD_HHMMSS.csv

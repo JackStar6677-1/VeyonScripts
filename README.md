@@ -1,4 +1,4 @@
-# Suite de Automatizacion - VeyonScripts y Optimizacion Windows 11
+﻿# Suite de Automatizacion - VeyonScripts y Optimizacion Windows 11
 
 **Desarrollado por: Pablo Elias Avendano Miranda**  
 *Ingeniero en Informatica*
@@ -14,6 +14,16 @@ Este repositorio contiene **dos proyectos principales** de automatizacion desarr
 1. **VeyonScripts**: Suite de automatizacion para gestion de laboratorios con Veyon
 2. **Optimizacion Windows 11**: Scripts de optimizacion para PCs con recursos limitados (4GB RAM + HDD)
 
+### Estructura Actualizada (2026-03-05)
+
+- `scripts/principales`, `scripts/diagnosticos`, `scripts/soluciones`, `scripts/legacy`
+- `launchers/` (launchers reales)
+- `tools/wakemeonlan/` y `tools/optimizacion_windows/`
+- `apps/veyongui/`
+- `deploy/kit_pendrive/`
+- `data/`, `reports/`, `backups/`
+- Wrappers `.bat` en raiz para compatibilidad (`VEYON_MAESTRO.bat`, etc.)
+
 ---
 
 ## Proyecto 1: VeyonScripts - Automatizacion para Laboratorios
@@ -24,27 +34,27 @@ Suite completa de automatizacion para **Veyon** (Virtual Eye On Networks), permi
 
 ```
 VeyonScripts/
-├── scripts/                        # Scripts organizados
-│   ├── principales/               # Scripts principales de uso diario
-│   │   ├── VEYON_MAESTRO.py      # Script maestro con WakeMeOnLAN
-│   │   └── MAPEO_FISICO_ADMIN.py  # Script de mapeo fisico por MAC
-│   ├── diagnosticos/              # Scripts de diagnostico
-│   │   ├── diagnostico_veyon.py         # Diagnostico general
-│   │   ├── diagnostico_profundo_pc01.py # Diagnostico profundo PC-01
-│   │   ├── comparar_pc01_funcionando.py # Comparador PC-01 vs PC funcionando
-│   │   ├── verificar_claves_veyon.py    # Verificador de claves
-│   │   └── verificar_pc01_remoto.py     # Verificador remoto PC-01
-│   └── soluciones/                # Scripts de solucion de problemas
-│       ├── solucion_pc01.py            # Solucionador PC-01
-│       └── solucionar_clon_pc01.py     # Solucionador para clones
-├── VeyonGUI/                      # Interfaz grafica visual
-│   ├── physical_mapping_gui.py   # GUI principal funcional
-│   ├── launch_gui.bat             # Launcher de la GUI
-│   └── README_GUI.md              # Documentacion de la GUI
-├── VEYON_MAESTRO.bat              # Launcher script maestro (ADMIN)
-├── MAPEO_FISICO_ADMIN.bat         # Launcher mapeo fisico (ADMIN)
-├── SOLUCIONAR_PC01_ADMIN.bat      # Launcher solucionador PC-01 (ADMIN)
-└── WakeMeOnLAN.exe                # Herramienta de escaneo de red
+â”œâ”€â”€ scripts/                        # Scripts organizados
+â”‚   â”œâ”€â”€ principales/               # Scripts principales de uso diario
+â”‚   â”‚   â”œâ”€â”€ VEYON_MAESTRO.py      # Script maestro con WakeMeOnLAN
+â”‚   â”‚   â””â”€â”€ MAPEO_FISICO_ADMIN.py  # Script de mapeo fisico por MAC
+â”‚   â”œâ”€â”€ diagnosticos/              # Scripts de diagnostico
+â”‚   â”‚   â”œâ”€â”€ diagnostico_veyon.py         # Diagnostico general
+â”‚   â”‚   â”œâ”€â”€ diagnostico_profundo_pc01.py # Diagnostico profundo PC-01
+â”‚   â”‚   â”œâ”€â”€ comparar_pc01_funcionando.py # Comparador PC-01 vs PC funcionando
+â”‚   â”‚   â”œâ”€â”€ verificar_claves_veyon.py    # Verificador de claves
+â”‚   â”‚   â””â”€â”€ verificar_pc01_remoto.py     # Verificador remoto PC-01
+â”‚   â””â”€â”€ soluciones/                # Scripts de solucion de problemas
+â”‚       â”œâ”€â”€ solucion_pc01.py            # Solucionador PC-01
+â”‚       â””â”€â”€ solucionar_clon_pc01.py     # Solucionador para clones
+â”œâ”€â”€ VeyonGUI/                      # Interfaz grafica visual
+â”‚   â”œâ”€â”€ physical_mapping_gui.py   # GUI principal funcional
+â”‚   â”œâ”€â”€ launch_gui.bat             # Launcher de la GUI
+â”‚   â””â”€â”€ README_GUI.md              # Documentacion de la GUI
+â”œâ”€â”€ VEYON_MAESTRO.bat              # Launcher script maestro (ADMIN)
+â”œâ”€â”€ MAPEO_FISICO_ADMIN.bat         # Launcher mapeo fisico (ADMIN)
+â”œâ”€â”€ SOLUCIONAR_PC01_ADMIN.bat      # Launcher solucionador PC-01 (ADMIN)
+â””â”€â”€ WakeMeOnLAN.exe                # Herramienta de escaneo de red
 ```
 
 ### Caracteristicas Principales de VeyonScripts:
@@ -61,7 +71,7 @@ VeyonScripts/
 MAPEO_FISICO_ADMIN.bat
 
 # Interfaz grafica
-VeyonGUI/launch_gui.bat
+apps/veyongui/launch_gui.bat
 
 # Script maestro
 VEYON_MAESTRO.bat
@@ -77,15 +87,15 @@ Suite de scripts especializados para optimizar Windows 11 en equipos con recurso
 
 ```
 optimizacion_windows/
-├── 00_CREAR_PUNTO_RESTAURACION.py    # Crear backup antes de optimizar
-├── 01_deshabilitar_servicios.py      # Deshabilitar servicios innecesarios
-├── 02_optimizar_rendimiento_visual.py # Optimizar efectos visuales
-├── 03_limpiar_archivos_temp.py       # Limpieza profunda de archivos
-├── 04_optimizar_hdd.py                # Optimizacion especifica para HDD
-├── 05_optimizar_inicio.py             # Gestion de programas de inicio
-├── OPTIMIZAR_TODO.py                  # Script maestro (ejecuta todos)
-├── INFO_SISTEMA.py                    # Analisis del sistema
-└── *.bat                              # Launchers con permisos admin
+â”œâ”€â”€ 00_CREAR_PUNTO_RESTAURACION.py    # Crear backup antes de optimizar
+â”œâ”€â”€ 01_deshabilitar_servicios.py      # Deshabilitar servicios innecesarios
+â”œâ”€â”€ 02_optimizar_rendimiento_visual.py # Optimizar efectos visuales
+â”œâ”€â”€ 03_limpiar_archivos_temp.py       # Limpieza profunda de archivos
+â”œâ”€â”€ 04_optimizar_hdd.py                # Optimizacion especifica para HDD
+â”œâ”€â”€ 05_optimizar_inicio.py             # Gestion de programas de inicio
+â”œâ”€â”€ OPTIMIZAR_TODO.py                  # Script maestro (ejecuta todos)
+â”œâ”€â”€ INFO_SISTEMA.py                    # Analisis del sistema
+â””â”€â”€ *.bat                              # Launchers con permisos admin
 ```
 
 ### Caracteristicas Principales de Optimizacion Windows:
@@ -105,7 +115,7 @@ optimizacion_windows/
 ### Uso Rapido - Optimizacion Windows:
 ```bash
 # Analizar sistema
-cd optimizacion_windows
+cd tools/optimizacion_windows
 INFO_SISTEMA.bat
 
 # Crear punto de restauracion
@@ -244,7 +254,7 @@ pip install -r requirements.txt
 python MAPEO_FISICO_ADMIN.py
 
 # Usar Optimizacion Windows
-cd optimizacion_windows
+cd tools/optimizacion_windows
 python OPTIMIZAR_TODO.py
 ```
 
@@ -255,7 +265,7 @@ python OPTIMIZAR_TODO.py
 Cada proyecto incluye su propia documentacion detallada:
 
 - **VeyonScripts**: Documentacion completa en este README
-- **Optimizacion Windows**: Ver `optimizacion_windows/README.md`
+- **Optimizacion Windows**: Ver `tools/optimizacion_windows/README.md`
 
 ---
 
@@ -316,7 +326,7 @@ Estos proyectos fueron desarrollados con dedicacion y atencion al detalle para r
 
 ---
 
-**© 2025 Pablo Elias Avendano Miranda - Todos los derechos reservados**
+**Â© 2025 Pablo Elias Avendano Miranda - Todos los derechos reservados**
 
 ---
 
@@ -324,5 +334,6 @@ Estos proyectos fueron desarrollados con dedicacion y atencion al detalle para r
 
 - **GitHub**: https://github.com/JackStar6677-1/VeyonScripts
 - **Documentacion VeyonScripts**: Este README
-- **Documentacion Optimizacion Windows**: `optimizacion_windows/README.md`
+- **Documentacion Optimizacion Windows**: `tools/optimizacion_windows/README.md`
 - **Informacion del Autor**: `AUTHOR.md`
+

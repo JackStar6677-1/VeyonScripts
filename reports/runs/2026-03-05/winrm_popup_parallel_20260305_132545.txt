@@ -1,0 +1,14 @@
+﻿TOTAL=4
+OK=0
+NO_5985=
+FAIL_AUTH=3
+ERROR=0
+CSV=C:\Users\Profesor\Documents\GitHub\VeyonScripts\reports\winrm_popup_parallel_20260305_132545.csv
+
+NO_5985 LIST:
+- 192.168.0.103
+
+FAIL_AUTH LIST:
+- 192.168.0.101
+- 192.168.0.102
+- 192.168.0.104

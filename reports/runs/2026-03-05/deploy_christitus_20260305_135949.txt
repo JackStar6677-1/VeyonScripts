@@ -1,0 +1,37 @@
+﻿TOTAL=39
+OK=33
+NO_5985=6
+FAIL_AUTH_OR_EXEC=0
+CSV=C:\Users\Profesor\Documents\GitHub\VeyonScripts\reports\runs\2026-03-05\deploy_christitus_20260305_135949.csv
+
+NO_5985:
+- 192.168.0.103
+- 192.168.0.111
+- 192.168.0.117
+- 192.168.0.119
+- 192.168.0.133
+- 192.168.0.138
+
+FAIL:
+
+OK sample:
+- 192.168.0.101 via Colegio
+- 192.168.0.102 via Colegio
+- 192.168.0.104 via Colegio
+- 192.168.0.105 via Colegio
+- 192.168.0.106 via Colegio
+- 192.168.0.107 via Colegio
+- 192.168.0.108 via Colegio
+- 192.168.0.109 via Colegio
+- 192.168.0.110 via Colegio
+- 192.168.0.112 via Colegio
+- 192.168.0.113 via Usuario
+- 192.168.0.114 via Admin
+- 192.168.0.115 via Admin
+- 192.168.0.116 via Admin
+- 192.168.0.118 via Admin
+- 192.168.0.120 via Admin
+- 192.168.0.121 via Admin
+- 192.168.0.122 via Usuario
+- 192.168.0.123 via Profesor
+- 192.168.0.124 via Admin

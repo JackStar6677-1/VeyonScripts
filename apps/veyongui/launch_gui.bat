@@ -1,4 +1,6 @@
 @echo off
+setlocal EnableExtensions
+set "APP_DIR=%~dp0"
 echo ========================================
 echo    Veyon - Mapeo Fisico GUI (Simple)
 echo ========================================
@@ -23,10 +25,13 @@ if not exist "C:\Program Files\Veyon\veyon-cli.exe" (
     exit /b 1
 )
 
-REM Ejecutar la GUI simplificada
-python physical_mapping_gui_simple.py
+REM Ejecutar la GUI
+pushd "%APP_DIR%" >nul
+python physical_mapping_gui.py
+set "RC=%errorlevel%"
+popd >nul
 
-if errorlevel 1 (
+if not "%RC%"=="0" (
     echo.
     echo ERROR: Error ejecutando la GUI
     echo Verifica que todos los archivos esten presentes

@@ -88,6 +88,8 @@ MAPEO_FISICO_MAC = {
     "08-BF-B8-A3-8B-95": 37,
     "04-7C-16-BD-C2-AD": 38,
     "08-BF-B8-BE-76-3A": 39,
+    "30-9C-23-09-06-4C": 40,
+    "30-9C-23-AA-BF-D8": 41,
 }
 
 def is_admin():
@@ -115,10 +117,14 @@ def request_admin():
 
 def find_wakemeonlan():
     """Encuentra WakeMeOnLAN.exe"""
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    repo_root = os.path.abspath(os.path.join(script_dir, "..", ".."))
     possible_paths = [
-        os.path.join(os.path.dirname(__file__), "WakeMeOnLAN.exe"),
+        os.path.join(repo_root, "tools", "wakemeonlan", "WakeMeOnLAN.exe"),
+        os.path.join(repo_root, "WakeMeOnLAN.exe"),
+        os.path.join(script_dir, "WakeMeOnLAN.exe"),
         r"C:\Users\pablo\Documentos\WakeMeOnLan\WakeMeOnLAN.exe",
-        "WakeMeOnLAN.exe"
+        "WakeMeOnLAN.exe",
     ]
     
     for path in possible_paths:

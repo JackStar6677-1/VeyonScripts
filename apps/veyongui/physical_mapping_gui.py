@@ -202,7 +202,8 @@ class PhysicalMappingGUISimple:
     def find_wakemeonlan(self):
         """Busca WakeMeOnLAN en ubicaciones comunes"""
         possible_paths = [
-            os.path.join(os.path.dirname(__file__), "..", "WakeMeOnLAN.exe"),
+            os.path.join(os.path.dirname(__file__), "..", "..", "tools", "wakemeonlan", "WakeMeOnLAN.exe"),
+            os.path.join(os.path.dirname(__file__), "..", "..", "WakeMeOnLAN.exe"),
             "WakeMeOnLAN.exe",
             r"C:\Users\pablo\Documentos\WakeMeOnLan\WakeMeOnLAN.exe",
         ]
