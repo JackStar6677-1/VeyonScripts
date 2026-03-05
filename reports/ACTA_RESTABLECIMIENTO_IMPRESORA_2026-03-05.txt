@@ -1,0 +1,34 @@
+ACTA DE RESTABLECIMIENTO DE CONECTIVIDAD DE IMPRESORA EN RED
+
+Fecha: 05 de marzo de 2026
+Ubicación: Sala de Computación / Red interna 192.168.0.0/24
+Responsable técnico: Pablo Elías Avendaño
+
+1. OBJETIVO
+Se realiza revisión técnica para restablecer la conectividad de una impresora de red que presentaba alerta de configuración IPv4 y falta de acceso estable desde equipos cliente.
+
+2. ANTECEDENTE DEL INCIDENTE
+Durante la jornada se detectó inconsistencia de direccionamiento (referencia previa a IPv4 terminada en .102), lo que generó intermitencia en acceso y administración de la impresora.
+
+3. VALIDACIONES REALIZADAS
+- Verificación de direccionamiento y reservas DHCP por MAC en router.
+- Revisión de estado de red de la impresora desde interfaz Web Image Monitor.
+- Confirmación de parámetros IPv4:
+  IP: 192.168.0.150
+  Máscara: 255.255.255.0
+  Gateway: 192.168.0.1
+- Prueba de conectividad desde estación de administración.
+- Confirmación de acceso web al dispositivo en 192.168.0.150.
+
+4. ESTADO ACTUAL
+La impresora responde nuevamente por red local en la IP 192.168.0.150, con acceso operativo a su interfaz de administración y conectividad restablecida para gestión e impresión.
+
+5. OBSERVACIÓN OPERATIVA
+Se recomienda mantener la IP 192.168.0.150 fija/reservada por MAC para evitar nuevos conflictos de direccionamiento y mantener continuidad del servicio.
+
+6. CIERRE
+Conforme a las pruebas realizadas, se considera resuelto el incidente de conectividad de la impresora en red.
+
+Firma:
+Pablo Elías Avendaño
+Soporte Informático

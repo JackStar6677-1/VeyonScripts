@@ -1,0 +1,12 @@
+CONFIGURACION GUARDADA - GESTION REMOTA ROUTER
+Fecha de registro: 2026-03-05
+
+Gestion Remota: Habilitar (activado)
+Direccion web gestion remota: https://186.67.225.26:443
+Puerto HTTPS: 443
+Puerto HTTP: 80
+Administradores remotos: Todos los dispositivos
+
+Nota operativa:
+- Esta configuracion expone administracion remota por Internet.
+- Recomendado restringir "Administradores remotos" a IPs de confianza cuando sea posible.
