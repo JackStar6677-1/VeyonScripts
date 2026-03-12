@@ -77,6 +77,120 @@ apps/veyongui/launch_gui.bat
 VEYON_MAESTRO.bat
 ```
 
+### Operacion Remota Real del Laboratorio
+
+Ademas del mapeo y la gestion de Veyon, este repositorio evoluciono para cubrir la operacion diaria del laboratorio por red local:
+
+- **Wake-on-LAN masivo**: encendido remoto por broadcast usando MACs e IPs reservadas.
+- **WinRM masivo**: ejecucion de scripts en lote sobre los equipos del laboratorio.
+- **Gestion de energia**: despliegue y retiro de tareas programadas de apagado.
+- **GUI remota asistida**: apertura de aplicaciones visibles en la sesion del alumno y envio de teclas.
+- **Bridge de elevacion**: ejecucion de comandos elevados sin depender del prompt UAC.
+
+Esto permite administrar la sala incluso cuando los equipos tienen usuarios locales distintos, estan parcialmente dormidos o requieren automatizacion por lotes.
+
+### Kit Operativo `deploy/kit_pendrive/`
+
+La carpeta `deploy/kit_pendrive/` paso a ser el nucleo operativo para despliegue masivo:
+
+- `PREPARAR_REMOTO_WIN10.bat`: prepara cada PC para administracion remota.
+- `EJECUTAR_MASIVO_WINRM.ps1`: motor base para ejecutar payloads por WinRM.
+- `EJECUTAR_MASIVO_AUTO_CRED.ps1`: variante que prueba usuarios locales comunes con una clave compartida.
+- `PROGRAMAR_ENERGIA_LAB_WINRM.ps1`: crea tarea diaria de apagado cuando se necesita.
+- `ENVIAR_WOL_CASTEL.ps1`: envio de magic packets para despertar equipos.
+- `GUI_AGENTE_INTERACTIVO.ps1`: agente local que corre dentro de la sesion del usuario.
+- `INSTALAR_GUI_AGENTE_WINRM.ps1`: instala el agente GUI por WinRM.
+- `ENVIAR_GUI_COMANDO_WINRM.ps1`: encola apertura de GUI y teclas como `~`, `1`, `{TAB}`, `%{F4}`.
+- `ADMIN_ELEVATION_BRIDGE.ps1`: bridge elevado que procesa comandos admin desde cola local.
+- `INSTALAR_ELEVACION_WINRM.ps1`: instala el bridge y crea la tarea `Castel-AdminBridge` como `SYSTEM`.
+- `ENVIAR_ADMIN_COMANDO_WINRM.ps1`: encola comandos elevados y dispara la tarea remota.
+
+### Arquitectura Operativa
+
+#### 1. Encendido remoto
+
+El encendido se basa en el archivo `data/reservas_dhcp_castel.csv`, que mantiene:
+
+- Nombre logico del equipo
+- Direccion MAC
+- IP reservada
+
+Con eso se puede enviar Wake-on-LAN por broadcast a toda la sala sin depender del estado de Veyon.
+
+#### 2. Ejecucion remota por WinRM
+
+La administracion remota usa dos capas:
+
+- **Capa no interactiva**: WinRM ejecuta scripts, consulta estado, modifica tareas programadas, aplica politicas o reinicia servicios.
+- **Capa interactiva**: un agente local en la sesion del usuario recibe comandos en cola y permite abrir GUIs visibles o mandar teclas.
+
+Esto evita el error tipico de intentar controlar ventanas graficas desde Session 0, donde WinRM no tiene escritorio interactivo.
+
+#### 3. Elevacion sin UAC manual
+
+Cuando una accion requiere permisos altos, no se intenta automatizar el cuadro UAC. En su lugar:
+
+- Se instala `ADMIN_ELEVATION_BRIDGE.ps1` en cada cliente.
+- Se registra una tarea programada `Castel-AdminBridge` como `SYSTEM`.
+- WinRM deja un comando en `C:\ProgramData\CastelRemote\admin-queue\`.
+- La tarea procesa la cola con privilegios altos.
+
+Con esto se pueden lanzar:
+
+- Scripts `.ps1` ya presentes en el cliente
+- PowerShell inline
+- Comandos `cmd`
+
+sin pedir la clave `administrativa` en ventanas emergentes.
+
+### Flujos Recomendados
+
+#### Preparar laboratorio nuevo
+
+1. Ejecutar `PREPARAR_REMOTO_WIN10.bat` una vez por equipo.
+2. Validar conectividad WinRM.
+3. Instalar agente GUI con `INSTALAR_GUI_AGENTE_WINRM.ps1`.
+4. Instalar bridge admin con `INSTALAR_ELEVACION_WINRM.ps1`.
+5. Probar un comando simple por WinRM y uno elevado.
+
+#### Despertar y operar una sala
+
+1. Enviar Wake-on-LAN a todos los hosts del laboratorio.
+2. Verificar equipos accesibles por WinRM.
+3. Ejecutar acciones remotas no interactivas.
+4. Si una aplicacion requiere interfaz visible, usar `ENVIAR_GUI_COMANDO_WINRM.ps1`.
+5. Si requiere privilegios altos, usar `ENVIAR_ADMIN_COMANDO_WINRM.ps1`.
+
+#### Retirar apagado automatico
+
+Cuando exista una tarea de apagado como `JackOptimized-AutoShutdown-1730`, debe retirarse por WinRM buscando:
+
+- Tareas conocidas por nombre
+- Tareas no-Microsoft que usen `shutdown.exe`
+- Tareas no-Microsoft que usen `logoff.exe`
+
+Esto ya se uso con exito en la red del laboratorio para evitar apagados fuera de horario.
+
+### Ejemplos Operativos
+
+```powershell
+# Instalar agente GUI
+cd deploy\kit_pendrive
+.\INSTALAR_GUI_AGENTE_WINRM.ps1
+
+# Abrir Bloc de notas visible en los clientes
+.\ENVIAR_GUI_COMANDO_WINRM.ps1 -Action launch -Path "C:\Windows\System32\notepad.exe"
+
+# Enviar Enter a una ventana por titulo
+.\ENVIAR_GUI_COMANDO_WINRM.ps1 -Action keys -WindowTitle "Sin titulo: Bloc de notas" -Keys "~"
+
+# Instalar bridge elevado
+.\INSTALAR_ELEVACION_WINRM.ps1
+
+# Ejecutar comando admin sin UAC visible
+.\ENVIAR_ADMIN_COMANDO_WINRM.ps1 -Action cmd -Command "gpupdate /force"
+```
+
 ---
 
 ## Proyecto 2: Optimizacion Windows 11
@@ -240,6 +354,8 @@ class PhysicalMappingGUI:
 ### Requisitos Especificos VeyonScripts:
 - Veyon 4.x+
 - WakeMeOnLAN (incluido)
+- WinRM habilitado en los clientes para despliegue masivo
+- Credencial comun o usuarios locales conocidos para acceso remoto
 
 ### Instalacion:
 ```bash
@@ -257,6 +373,14 @@ python MAPEO_FISICO_ADMIN.py
 cd tools/optimizacion_windows
 python OPTIMIZAR_TODO.py
 ```
+
+### Consideraciones Operativas
+
+- WinRM sirve para automatizacion administrativa, no para manipular directamente ventanas visibles.
+- Las GUIs visibles requieren un agente corriendo dentro de la sesion del usuario conectado.
+- La elevacion remota debe hacerse por tarea programada o servicio controlado, no intentando escribir la contrasena en UAC.
+- Los reportes de ejecucion deben guardarse en `reports/runs/` para mantener trazabilidad de cambios masivos.
+- Antes de cambios agresivos en toda la sala, conviene probar en 1 o 2 equipos representativos.
 
 ---
 
