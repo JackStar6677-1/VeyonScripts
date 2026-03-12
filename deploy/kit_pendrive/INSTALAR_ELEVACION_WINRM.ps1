@@ -2,7 +2,12 @@ param(
     [string]$HostsFile = ".\hosts_castel.txt",
     [string[]]$UserCandidates = @("Colegio", "colegio", "Admin", "Administrador", "Usuario", "Alumno", "Estudiante", "Profesor"),
     [string]$PasswordPlain = "administrativa",
-    [string]$LocalBridgePath = ".\ADMIN_ELEVATION_BRIDGE.ps1"
+    [string]$LocalBridgePath = ".\ADMIN_ELEVATION_BRIDGE.ps1",
+    [string[]]$LocalPayloadPaths = @(
+        ".\RESET_CHROME_COMPARTIDO.ps1",
+        ".\PROTEGER_MATERIALES_SALA.ps1",
+        ".\CREAR_CARPETA_ENTREGA_SALA.ps1"
+    )
 )
 
 $ErrorActionPreference = "Stop"
@@ -23,6 +28,15 @@ $hosts = Get-Content $HostsFile |
     Select-Object -Unique
 
 $bridgeContent = Get-Content -Path $LocalBridgePath -Raw -Encoding UTF8
+$payloads = @()
+foreach ($payloadPath in $LocalPayloadPaths) {
+    if (Test-Path $payloadPath) {
+        $payloads += [pscustomobject]@{
+            Name = [IO.Path]::GetFileName($payloadPath)
+            Content = Get-Content -Path $payloadPath -Raw -Encoding UTF8
+        }
+    }
+}
 $pass = ConvertTo-SecureString $PasswordPlain -AsPlainText -Force
 
 function Get-WorkingCredential {
@@ -54,7 +68,10 @@ function Get-WorkingCredential {
 }
 
 $remoteInstall = {
-    param([string]$IncomingBridgeContent)
+    param(
+        [string]$IncomingBridgeContent,
+        [object[]]$IncomingPayloads
+    )
 
     $baseDir = "C:\ProgramData\CastelRemote"
     $queueDir = Join-Path $baseDir "admin-queue"
@@ -71,6 +88,13 @@ $remoteInstall = {
 
     Set-Content -Path $bridgePath -Value $IncomingBridgeContent -Encoding UTF8 -Force
 
+    foreach ($payload in $IncomingPayloads) {
+        if ($payload.Name -and $payload.Content) {
+            $payloadPath = Join-Path $baseDir $payload.Name
+            Set-Content -Path $payloadPath -Value $payload.Content -Encoding UTF8 -Force
+        }
+    }
+
     $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$bridgePath`""
     $principal = New-ScheduledTaskPrincipal -UserId "SYSTEM" -LogonType ServiceAccount -RunLevel Highest
     $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
@@ -81,6 +105,7 @@ $remoteInstall = {
         Computer = $env:COMPUTERNAME
         BridgePath = $bridgePath
         TaskName = $taskName
+        Payloads = ($IncomingPayloads | ForEach-Object { $_.Name }) -join "; "
     }
 }
 
@@ -104,9 +129,9 @@ foreach ($h in $hosts) {
 
     $userUsed = $cred.UserName
     try {
-        $r = Invoke-Command -ComputerName $h -Credential $cred -ScriptBlock $remoteInstall -ArgumentList $bridgeContent -ErrorAction Stop
+        $r = Invoke-Command -ComputerName $h -Credential $cred -ScriptBlock $remoteInstall -ArgumentList $bridgeContent, $payloads -ErrorAction Stop
         $status = "OK"
-        $detail = $r.TaskName
+        $detail = ($r.TaskName + " | Payloads: " + $r.Payloads)
     } catch {
         $status = "FAIL"
         $detail = $_.Exception.Message

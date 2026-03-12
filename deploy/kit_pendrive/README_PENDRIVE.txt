@@ -50,6 +50,26 @@ Contenido:
    - Encola un comando admin y dispara la tarea remota.
    - Evita depender del prompt UAC y de escribir la clave.
 
+13) RESET_CHROME_COMPARTIDO.ps1
+   - Cierra Chrome y elimina `User Data` de los perfiles locales.
+   - Pensado para PCs compartidos por alumnos y docentes.
+   - Opcion `-DisableChromeSignin` para bloquear inicio de sesion en Chrome.
+
+14) PROTEGER_MATERIALES_SALA.ps1
+   - Protege carpetas de materiales institucionales contra borrado por usuarios.
+   - Mantiene lectura/ejecucion para `Users` y niega eliminacion.
+   - Pensado para carpetas compartidas del colegio, no para bloquear todo `Documents`.
+
+15) CREAR_CARPETA_ENTREGA_SALA.ps1
+   - Crea una carpeta fija en el escritorio publico.
+   - Permite a `Users` leer y escribir.
+   - Niega eliminacion de archivos, subcarpetas y de la carpeta misma.
+
+16) CASTEL_REMOTO.ps1
+   - Orquestador central del kit.
+   - Unifica estado, WOL, bridge admin, agente GUI y payloads comunes.
+   - Incluye `-WhatIfMode` para revisar comandos sin ejecutarlos.
+
 USO RAPIDO
 ----------
 Paso A) Preparar PCs destino:
@@ -93,3 +113,33 @@ Ejemplos bridge admin:
   - `.\ENVIAR_ADMIN_COMANDO_WINRM.ps1 -Action powershell_inline -Code "Set-ExecutionPolicy Bypass -Scope LocalMachine -Force"`
 - Ejecutar CMD elevado:
   - `.\ENVIAR_ADMIN_COMANDO_WINRM.ps1 -Action cmd -Command "gpupdate /force"`
+
+Ejemplo reset Chrome:
+- Ejecutar reset total de Chrome en clientes:
+  - `.\ENVIAR_ADMIN_COMANDO_WINRM.ps1 -Action powershell_file -Path "C:\ProgramData\CastelRemote\RESET_CHROME_COMPARTIDO.ps1"`
+- Si primero copias el script al cliente y quieres endurecer modo compartido:
+  - `.\ENVIAR_ADMIN_COMANDO_WINRM.ps1 -Action powershell_file -Path "C:\ProgramData\CastelRemote\RESET_CHROME_COMPARTIDO.ps1" -Arguments "-DisableChromeSignin"`
+
+Ejemplo proteccion de materiales:
+- Aplicar proteccion a carpetas de materiales:
+  - `.\ENVIAR_ADMIN_COMANDO_WINRM.ps1 -Action powershell_file -Path "C:\ProgramData\CastelRemote\PROTEGER_MATERIALES_SALA.ps1"`
+- Solo sobre carpetas ya existentes:
+  - `.\ENVIAR_ADMIN_COMANDO_WINRM.ps1 -Action powershell_file -Path "C:\ProgramData\CastelRemote\PROTEGER_MATERIALES_SALA.ps1" -Arguments "-ProtectOnlyExisting"`
+
+Ejemplo carpeta de entrega en escritorio:
+- Crear carpeta fija `Entrega Sala` en el escritorio publico:
+  - `.\ENVIAR_ADMIN_COMANDO_WINRM.ps1 -Action powershell_file -Path "C:\ProgramData\CastelRemote\CREAR_CARPETA_ENTREGA_SALA.ps1"`
+
+Ejemplos orquestador:
+- Ver estado general:
+  - `.\CASTEL_REMOTO.ps1 -Action status`
+- Despertar sala:
+  - `.\CASTEL_REMOTO.ps1 -Action wol`
+- Instalar bridge admin:
+  - `.\CASTEL_REMOTO.ps1 -Action install-admin-bridge`
+- Reset Chrome endurecido:
+  - `.\CASTEL_REMOTO.ps1 -Action reset-chrome -DisableChromeSignin -IncludeEdge`
+- Crear carpeta de entrega:
+  - `.\CASTEL_REMOTO.ps1 -Action create-entrega`
+- Simular sin ejecutar:
+  - `.\CASTEL_REMOTO.ps1 -Action reset-chrome -WhatIfMode`

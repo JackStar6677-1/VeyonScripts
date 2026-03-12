@@ -104,6 +104,10 @@ La carpeta `deploy/kit_pendrive/` paso a ser el nucleo operativo para despliegue
 - `ADMIN_ELEVATION_BRIDGE.ps1`: bridge elevado que procesa comandos admin desde cola local.
 - `INSTALAR_ELEVACION_WINRM.ps1`: instala el bridge y crea la tarea `Castel-AdminBridge` como `SYSTEM`.
 - `ENVIAR_ADMIN_COMANDO_WINRM.ps1`: encola comandos elevados y dispara la tarea remota.
+- `RESET_CHROME_COMPARTIDO.ps1`: cierra Chrome y elimina perfiles locales de navegador para dejarlo "como nuevo".
+- `PROTEGER_MATERIALES_SALA.ps1`: protege carpetas institucionales para que usuarios puedan abrir archivos pero no borrarlos.
+- `CREAR_CARPETA_ENTREGA_SALA.ps1`: crea una carpeta fija en el escritorio publico con escritura permitida pero borrado denegado.
+- `CASTEL_REMOTO.ps1`: orquestador central para operaciones tipicas del laboratorio.
 
 ### Arquitectura Operativa
 
@@ -142,6 +146,51 @@ Con esto se pueden lanzar:
 - Comandos `cmd`
 
 sin pedir la clave `administrativa` en ventanas emergentes.
+
+#### 4. Reset de navegadores compartidos
+
+Para laboratorios donde alumnos o docentes dejan cuentas abiertas en Chrome, se puede usar un reset masivo:
+
+- Se cierran procesos `chrome.exe`.
+- Se elimina `AppData\Local\Google\Chrome\User Data` en cada perfil local de usuario.
+- Opcionalmente se puede aplicar politica para bloquear inicio de sesion y sincronizacion.
+
+Esto deja Chrome como recien instalado para el siguiente uso del equipo, sin tener que ir PC por PC borrando perfiles manualmente.
+
+#### 5. Proteccion de materiales institucionales
+
+Para evitar que usuarios eliminen documentos compartidos del colegio, el enfoque correcto no es bloquear todo el perfil del usuario, sino proteger carpetas concretas de materiales:
+
+- Se definen carpetas institucionales como `C:\MaterialesSala` o equivalentes bajo `Public`.
+- Se ajustan ACLs NTFS para `Users`.
+- Los usuarios pueden abrir y leer archivos.
+- Se niega eliminacion de archivos y subcarpetas.
+
+Esto sirve para PDFs, Word, Excel, PowerPoint, plantillas o recursos docentes que deban estar siempre disponibles en todos los equipos.
+
+#### 6. Carpeta de entrega controlada en escritorio
+
+Tambien se puede crear una carpeta unica en el escritorio compartido, pensada para dejar archivos temporales de trabajo o entrega:
+
+- Ruta sugerida: `C:\Users\Public\Desktop\Entrega Sala`
+- Visible para todos los usuarios del equipo
+- `Users` puede leer y escribir
+- `Users` no puede borrar ni la carpeta ni su contenido
+
+Esto sirve cuando se quiere un punto comun de trabajo sin riesgo de que alumnos eliminen materiales o rompan la estructura de la carpeta.
+
+#### 7. Orquestacion central
+
+Para simplificar la operacion diaria, el kit incluye un orquestador que centraliza las tareas mas comunes:
+
+- consulta de estado de la sala
+- Wake-on-LAN
+- instalacion de componentes base
+- ejecucion de payloads admin
+- lanzamiento de GUI y teclas
+- acciones operativas tipicas como reset de Chrome o creacion de carpeta de entrega
+
+Esto reduce la cantidad de comandos distintos que hay que memorizar y baja el riesgo operativo cuando se trabaja rapido en terreno.
 
 ### Flujos Recomendados
 
@@ -189,6 +238,19 @@ cd deploy\kit_pendrive
 
 # Ejecutar comando admin sin UAC visible
 .\ENVIAR_ADMIN_COMANDO_WINRM.ps1 -Action cmd -Command "gpupdate /force"
+
+# Reset total de Chrome en un cliente o grupo
+.\ENVIAR_ADMIN_COMANDO_WINRM.ps1 -Action powershell_file -Path "C:\ProgramData\CastelRemote\RESET_CHROME_COMPARTIDO.ps1"
+
+# Proteger carpetas de materiales institucionales
+.\ENVIAR_ADMIN_COMANDO_WINRM.ps1 -Action powershell_file -Path "C:\ProgramData\CastelRemote\PROTEGER_MATERIALES_SALA.ps1"
+
+# Crear carpeta fija en el escritorio publico con escritura pero sin borrado
+.\ENVIAR_ADMIN_COMANDO_WINRM.ps1 -Action powershell_file -Path "C:\ProgramData\CastelRemote\CREAR_CARPETA_ENTREGA_SALA.ps1"
+
+# Usar el orquestador central
+.\CASTEL_REMOTO.ps1 -Action status
+.\CASTEL_REMOTO.ps1 -Action reset-chrome -DisableChromeSignin
 ```
 
 ---
@@ -381,6 +443,8 @@ python OPTIMIZAR_TODO.py
 - La elevacion remota debe hacerse por tarea programada o servicio controlado, no intentando escribir la contrasena en UAC.
 - Los reportes de ejecucion deben guardarse en `reports/runs/` para mantener trazabilidad de cambios masivos.
 - Antes de cambios agresivos en toda la sala, conviene probar en 1 o 2 equipos representativos.
+- El reset de Chrome elimina sesiones, historial, extensiones, cache y perfiles locales del navegador en ese equipo.
+- La proteccion de materiales debe aplicarse solo a carpetas institucionales, no al espacio normal de trabajo del usuario.
 
 ---
 
