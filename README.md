@@ -34,27 +34,27 @@ Suite completa de automatizacion para **Veyon** (Virtual Eye On Networks), permi
 
 ```
 VeyonScripts/
-â”œâ”€â”€ scripts/                        # Scripts organizados
-â”‚   â”œâ”€â”€ principales/               # Scripts principales de uso diario
-â”‚   â”‚   â”œâ”€â”€ VEYON_MAESTRO.py      # Script maestro con WakeMeOnLAN
-â”‚   â”‚   â””â”€â”€ MAPEO_FISICO_ADMIN.py  # Script de mapeo fisico por MAC
-â”‚   â”œâ”€â”€ diagnosticos/              # Scripts de diagnostico
-â”‚   â”‚   â”œâ”€â”€ diagnostico_veyon.py         # Diagnostico general
-â”‚   â”‚   â”œâ”€â”€ diagnostico_profundo_pc01.py # Diagnostico profundo PC-01
-â”‚   â”‚   â”œâ”€â”€ comparar_pc01_funcionando.py # Comparador PC-01 vs PC funcionando
-â”‚   â”‚   â”œâ”€â”€ verificar_claves_veyon.py    # Verificador de claves
-â”‚   â”‚   â””â”€â”€ verificar_pc01_remoto.py     # Verificador remoto PC-01
-â”‚   â””â”€â”€ soluciones/                # Scripts de solucion de problemas
-â”‚       â”œâ”€â”€ solucion_pc01.py            # Solucionador PC-01
-â”‚       â””â”€â”€ solucionar_clon_pc01.py     # Solucionador para clones
-â”œâ”€â”€ VeyonGUI/                      # Interfaz grafica visual
-â”‚   â”œâ”€â”€ physical_mapping_gui.py   # GUI principal funcional
-â”‚   â”œâ”€â”€ launch_gui.bat             # Launcher de la GUI
-â”‚   â””â”€â”€ README_GUI.md              # Documentacion de la GUI
-â”œâ”€â”€ VEYON_MAESTRO.bat              # Launcher script maestro (ADMIN)
-â”œâ”€â”€ MAPEO_FISICO_ADMIN.bat         # Launcher mapeo fisico (ADMIN)
-â”œâ”€â”€ SOLUCIONAR_PC01_ADMIN.bat      # Launcher solucionador PC-01 (ADMIN)
-â””â”€â”€ WakeMeOnLAN.exe                # Herramienta de escaneo de red
+|-- scripts/                         # Scripts organizados
+|   |-- principales/                # Scripts principales de uso diario
+|   |   |-- VEYON_MAESTRO.py        # Script maestro con WakeMeOnLAN
+|   |   `-- MAPEO_FISICO_ADMIN.py   # Script de mapeo fisico por MAC
+|   |-- diagnosticos/               # Scripts de diagnostico
+|   |   |-- diagnostico_veyon.py          # Diagnostico general
+|   |   |-- diagnostico_profundo_pc01.py  # Diagnostico profundo PC-01
+|   |   |-- comparar_pc01_funcionando.py  # Comparador PC-01 vs PC funcionando
+|   |   |-- verificar_claves_veyon.py     # Verificador de claves
+|   |   `-- verificar_pc01_remoto.py      # Verificador remoto PC-01
+|   `-- soluciones/                 # Scripts de solucion de problemas
+|       |-- solucion_pc01.py              # Solucionador PC-01
+|       `-- solucionar_clon_pc01.py       # Solucionador para clones
+|-- apps/veyongui/                  # Interfaz grafica visual
+|   |-- physical_mapping_gui.py     # GUI principal funcional
+|   |-- launch_gui.bat              # Launcher de la GUI
+|   `-- README_GUI.md               # Documentacion de la GUI
+|-- VEYON_MAESTRO.bat               # Launcher script maestro (ADMIN)
+|-- MAPEO_FISICO_ADMIN.bat          # Launcher mapeo fisico (ADMIN)
+|-- SOLUCIONAR_PC01_ADMIN.bat       # Launcher solucionador PC-01 (ADMIN)
+`-- WakeMeOnLAN.exe                 # Herramienta de escaneo de red
 ```
 
 ### Caracteristicas Principales de VeyonScripts:
@@ -201,15 +201,15 @@ Suite de scripts especializados para optimizar Windows 11 en equipos con recurso
 
 ```
 optimizacion_windows/
-â”œâ”€â”€ 00_CREAR_PUNTO_RESTAURACION.py    # Crear backup antes de optimizar
-â”œâ”€â”€ 01_deshabilitar_servicios.py      # Deshabilitar servicios innecesarios
-â”œâ”€â”€ 02_optimizar_rendimiento_visual.py # Optimizar efectos visuales
-â”œâ”€â”€ 03_limpiar_archivos_temp.py       # Limpieza profunda de archivos
-â”œâ”€â”€ 04_optimizar_hdd.py                # Optimizacion especifica para HDD
-â”œâ”€â”€ 05_optimizar_inicio.py             # Gestion de programas de inicio
-â”œâ”€â”€ OPTIMIZAR_TODO.py                  # Script maestro (ejecuta todos)
-â”œâ”€â”€ INFO_SISTEMA.py                    # Analisis del sistema
-â””â”€â”€ *.bat                              # Launchers con permisos admin
+|-- 00_CREAR_PUNTO_RESTAURACION.py     # Crear backup antes de optimizar
+|-- 01_deshabilitar_servicios.py       # Deshabilitar servicios innecesarios
+|-- 02_optimizar_rendimiento_visual.py # Optimizar efectos visuales
+|-- 03_limpiar_archivos_temp.py        # Limpieza profunda de archivos
+|-- 04_optimizar_hdd.py                # Optimizacion especifica para HDD
+|-- 05_optimizar_inicio.py             # Gestion de programas de inicio
+|-- OPTIMIZAR_TODO.py                  # Script maestro (ejecuta todos)
+|-- INFO_SISTEMA.py                    # Analisis del sistema
+`-- *.bat                              # Launchers con permisos admin
 ```
 
 ### Caracteristicas Principales de Optimizacion Windows:
@@ -411,7 +411,9 @@ Cada proyecto incluye su propia documentacion detallada:
 
 ## Contribuciones
 
-Ambos proyectos estan abiertos a contribuciones. Las areas de mejora incluyen:
+Este repositorio esta en GitHub principalmente como base personal de trabajo, documentacion y mejora continua. Si ademas le sirve a otra persona para administrar laboratorios, aprender o adaptar ideas a su entorno, mejor todavia.
+
+Las areas de mejora incluyen:
 
 **VeyonScripts:**
 - Interfaz grafica mas intuitiva
@@ -428,6 +430,14 @@ Ambos proyectos estan abiertos a contribuciones. Las areas de mejora incluyen:
 ## Licencia
 
 Ambos proyectos estan bajo la licencia MIT. Ver `LICENSE` para mas detalles.
+
+### Creditos de Terceros
+
+- `WakeMeOnLAN.exe` no fue desarrollado en este repositorio.
+- Todos los derechos, creditos y propiedad intelectual de `WakeMeOnLAN.exe` corresponden a sus creadores y mantenedores originales.
+- Sitio oficial consultado: `https://www.wakemeonlan.org/es/`
+- Este repositorio lo usa como herramienta externa de apoyo para escaneo y Wake-on-LAN dentro de flujos de administracion de laboratorio.
+- Si se requiere distribucion, licencia o validacion adicional del ejecutable, debe revisarse directamente con su fuente oficial.
 
 ---
 
@@ -450,7 +460,7 @@ Estos proyectos fueron desarrollados con dedicacion y atencion al detalle para r
 
 ---
 
-**Â© 2025 Pablo Elias Avendano Miranda - Todos los derechos reservados**
+**© 2025 Pablo Elias Avendano Miranda - Todos los derechos reservados**
 
 ---
 
