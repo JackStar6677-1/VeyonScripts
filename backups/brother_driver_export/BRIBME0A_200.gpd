@@ -1,0 +1,820 @@
+*%
+*% Brother PJ-622/662 Windows Printer Driver
+*% Copyright (C) 2013 Brother Industries, Ltd. 
+*%
+*% All Rights Reserved.
+
+*GPDFileVersion: "1.0"
+*GPDSpecVersion: "1.0"
+*GPDFileName: "BRIBME0A_200.gpd"
+*Include: "msxpsinc.gpd"
+*Include: "StdNames.gpd"
+*Include: "BRIBRE01.gpd"
+*Include: "locale.gpd"
+*ModelName: "Brother MobilePrinter TypeA1 Class Driver"
+*MasterUnits: PAIR(200, 200)
+*ResourceDLL: "BRIBRE01.dll"
+*PrinterType: SERIAL
+*MaxCopies: 9999
+*PrintSchemaPrivateNamespaceURI: "http://schemas.brother.info/mfc/printing/2006/11/printschemakeywords"
+
+
+*%******************************************************************************
+*%                            Print Quality
+*%******************************************************************************
+*Feature: PrintQuality
+{
+    *%rcNameID: =BRRES_PRINTQUALITY
+    *Name: "Print Quality"
+    *DefaultOption: Normal
+    *PrintSchemaKeywordMap: "PageOutputQuality"
+
+    *Option: Normal
+    {
+        *Name: "Normal"
+        *PrintSchemaKeywordMap: "Normal"
+    }
+}
+
+*%******************************************************************************
+*%                            Orientation
+*%******************************************************************************
+*Feature: Orientation
+{
+    *rcNameID: =ORIENTATION_DISPLAY
+    *DefaultOption: PORTRAIT
+    *Option: PORTRAIT
+    {
+        *rcNameID: =PORTRAIT_DISPLAY
+    }
+    *Option: LANDSCAPE_CC270
+    {
+        *rcNameID: =LANDSCAPE_DISPLAY
+    }
+}
+
+*%******************************************************************************
+*%                            InputBin
+*%******************************************************************************
+*Feature: InputBin
+{
+    *rcNameID: =PAPER_SOURCE_DISPLAY
+	*DefaultOption: MANUAL
+	*Option: MANUAL
+	{
+		*rcNameID: =MANUAL_FEED_DISPLAY
+	}
+}
+
+*%******************************************************************************
+*%                            Resolution
+*%******************************************************************************
+*Feature: Resolution
+{
+    *rcNameID: =RESOLUTION_DISPLAY
+    *DefaultOption: Option1
+    *Option: Option1
+    {
+        *Name: "200 x 200 " =DOTS_PER_INCH
+        *DPI: PAIR(200, 200)
+        *TextDPI: PAIR(200, 200)
+        *MinStripBlankPixels: 16
+        *RequireUniDir?: TRUE
+        EXTERN_GLOBAL: *StripBlanks: LIST(LEADING,ENCLOSED,TRAILING)
+        *SpotDiameter: 100
+        *Command: CmdSendBlockData { *Cmd : "<1B>~*" %l[0,204]{NumOfDataBytes } }
+    }
+}
+
+*%******************************************************************************
+*%                            JobNUpAllDocumentsContiguously
+*%******************************************************************************
+*Feature: NUpAllDocumentsContiguously
+{
+    *rcNameID: =IDS_GPD_JOBNUP
+    *PrintSchemaKeywordMap: "JobNUpAllDocumentsContiguously"
+    *DefaultOption: 1
+
+    *Option: 1
+    {
+        *rcNameID: =IDS_GPD_1PPS
+    }
+
+    *Option: 2
+    {
+        *rcNameID: =IDS_GPD_2PPS
+    }
+
+    *Option: 4
+    {
+        *rcNameID: =IDS_GPD_4PPS
+    }
+
+    *Option: 9
+    {
+        *rcNameID: =IDS_GPD_9PPS
+    }
+
+    *Option: 16
+    {
+        *rcNameID: =IDS_GPD_16PPS
+    }
+}
+
+*%******************************************************************************
+*%                       JobPresentationDirection
+*%******************************************************************************
+*Feature: PresentationDirection
+{
+    *rcNameID: =IDS_GPD_JOBNUPPRESENTORDER
+    *DefaultOption: RightBottom
+
+    *Option: RightBottom
+    {
+        *rcNameID: =IDS_GPD_RIGHTDOWN
+    }
+
+    *Option: BottomRight
+    {
+        *rcNameID: =IDS_GPD_DOWNRIGHT
+    }
+
+    *Option: LeftBottom
+    {
+        *rcNameID: =IDS_GPD_LEFTDOWN
+    }
+
+    *Option: BottomLeft
+    {
+        *rcNameID: =IDS_GPD_DOWNLEFT
+    }
+}
+
+*%******************************************************************************
+*%                            MonochromeHalftone
+*%******************************************************************************
+*Feature: MonochromeHalftone
+{
+    *rcNameID: =IDS_GPD_HALFTONE
+    *FeatureType: DOC_PROPERTY
+
+    *DefaultOption: Dither
+
+    *Option: Binary
+    {
+        *rcNameID: =IDS_GPD_BINARY
+        *Command: CmdSelect
+         {
+             *Order: DOC_SETUP.8
+         }
+    }
+    *Option: Dither
+    {
+        *rcNameID: =IDS_GPD_DITHER
+        *Command: CmdSelect
+         {
+             *Order: DOC_SETUP.8
+         }
+    }
+}
+
+*%******************************************************************************
+*%                            PaperType
+*%******************************************************************************
+*Feature: PaperType
+{
+    *rcNameID: =IDS_GPD_PAPERTYPE
+    *PrintSchemaKeywordMap: "PageMediaType"
+    *FeatureType: DOC_PROPERTY
+    *DefaultOption: CutSheet
+    *Option: CutSheet
+    {
+        *rcNameID: =IDS_GPD_CUTSHEET
+    }
+
+    *Option: Roll
+    {
+        *rcNameID: =IDS_GPD_ROLL
+        *Constraints: FormFeedMode.EndofPage
+    }
+
+    *Option: PerforatedRoll
+    {
+        *rcNameID: =IDS_GPD_PERFORATEDROLL
+        *Constraints: FormFeedMode.FixedPage
+        *Constraints: FormFeedMode.NoFeed
+    }
+    *Option: PerforatedRollRetract
+    {
+	*rcNameID: =IDS_GPD_PERFORATEDROLLRETRACT
+	*Constraints: FormFeedMode.FixedPage
+	*Constraints: FormFeedMode.NoFeed
+	*Constraints: FormFeedMode.EndofPage
+    }
+}
+
+*%******************************************************************************
+*%                            PrintDensity
+*%******************************************************************************
+*Feature: PrintDensity
+{
+    *rcNameID: =IDS_GPD_DENSITY
+    *FeatureType: DOC_PROPERTY
+    *DefaultOption: Density_Default
+
+    *Option: Density_00
+    {
+        *rcNameID: =IDS_GPD_DENSITY0
+        *Command: CmdSelect
+         {
+             *Order: DOC_SETUP.4
+             *Cmd: "<1B>~d<0000>"
+         }
+    }
+    *Option: Density_01
+    {
+        *rcNameID: =IDS_GPD_DENSITY1
+        *Command: CmdSelect
+         {
+             *Order: DOC_SETUP.4
+             *Cmd: "<1B>~d<1900>"
+         }
+    }
+    *Option: Density_02
+    {
+        *rcNameID: =IDS_GPD_DENSITY2
+        *Command: CmdSelect
+         {
+             *Order: DOC_SETUP.4
+             *Cmd: "<1B>~d<3200>"
+         }
+    }
+    *Option: Density_03
+    {
+        *rcNameID: =IDS_GPD_DENSITY3
+        *Command: CmdSelect
+         {
+             *Order: DOC_SETUP.4
+             *Cmd: "<1B>~d<4B00>"
+         }
+    }
+    *Option: Density_04
+    {
+        *rcNameID: =IDS_GPD_DENSITY4
+        *Command: CmdSelect
+         {
+             *Order: DOC_SETUP.4
+             *Cmd: "<1B>~d<6400>"
+         }
+    }
+    *Option: Density_05
+    {
+        *rcNameID: =IDS_GPD_DENSITY5
+        *Command: CmdSelect
+         {
+             *Order: DOC_SETUP.4
+             *Cmd: "<1B>~d<7D00>"
+         }
+    }
+    *Option: Density_06
+    {
+        *rcNameID: =IDS_GPD_DENSITY6
+        *Command: CmdSelect
+         {
+             *Order: DOC_SETUP.4
+             *Cmd: "<1B>~d<9600>"
+         }
+    }
+    *Option: Density_07
+    {
+        *rcNameID: =IDS_GPD_DENSITY7
+        *Command: CmdSelect
+         {
+             *Order: DOC_SETUP.4
+             *Cmd: "<1B>~d<AF00>"
+         }
+    }
+    *Option: Density_08
+    {
+        *rcNameID: =IDS_GPD_DENSITY8
+        *Command: CmdSelect
+         {
+             *Order: DOC_SETUP.4
+             *Cmd: "<1B>~d<C800>"
+         }
+    }
+    *Option: Density_09
+    {
+        *rcNameID: =IDS_GPD_DENSITY9
+        *Command: CmdSelect
+         {
+             *Order: DOC_SETUP.4
+             *Cmd: "<1B>~d<E100>"
+         }
+    }
+    *Option: Density_10
+    {
+        *rcNameID: =IDS_GPD_DENSITY10
+        *Command: CmdSelect
+         {
+             *Order: DOC_SETUP.4
+             *Cmd: "<1B>~d<FA00>"
+         }
+    }
+    *Option: Density_Default
+    {
+        *rcNameID: =IDS_GPD_DENSITY_DEF
+        *Command: CmdSelect
+         {
+             *Order: DOC_SETUP.4
+             *Cmd: ""
+         }
+    }
+}
+
+*%******************************************************************************
+*%                            2plyMode
+*%******************************************************************************
+*Feature: 2plyMode
+{
+    *rcNameID: =IDS_GPD_2PLYMODE
+    *FeatureType: DOC_PROPERTY
+    *DefaultOption: Disable
+    *Option: Disable
+    {
+        *rcNameID: =IDS_GPD_2PLY_DISABLE
+        *Command: CmdSelect
+         {
+             *Order: DOC_SETUP.3
+             *Cmd: "<1B>~p<0000>"
+         }
+    }
+    *Option: Enable
+    {
+        *rcNameID: =IDS_GPD_2PLY_ENABLE
+        *Command: CmdSelect
+         {
+             *Order: DOC_SETUP.3
+             *Cmd: "<1B>~p<0100>"
+         }
+    }
+}
+
+*%******************************************************************************
+*%                            FormFeedMode
+*%******************************************************************************
+*Feature: FormFeedMode
+{
+    *rcNameID: =IDS_GPD_FORMFEED
+    *FeatureType: DOC_PROPERTY
+    *DefaultOption: FixedPage
+    *Option: NoFeed
+    {
+        *rcNameID: =IDS_GPD_NOFEED
+        *Command: CmdSelect
+         {
+             *Order: DOC_SETUP.5
+             *Cmd: "<1B>~f<00>"
+        }
+
+    }
+    *Option: FixedPage
+    {
+        *rcNameID: =IDS_GPD_FIXEDPAGE
+        *Command: CmdSelect
+         {
+             *Order: DOC_SETUP.5
+             *Cmd: "<1B>~f<01>"
+         }
+        *Constraints: PaperSize.Infinite
+        *DisabledFeatures: LIST(ExtraFeed)
+
+  }
+
+    *Option: EndofPage
+    {
+        *rcNameID: =IDS_GPD_ENDOFPAGE
+        *Command: CmdSelect
+         {
+             *Order: DOC_SETUP.5
+             *Cmd: "<1B>~f<02>"
+         }
+        *Constraints: PaperSize.Infinite
+        *DisabledFeatures: LIST(ExtraFeed)
+   }
+
+	*Option: EndofPageRetract
+	{
+		*% NOTE: Not using rcNameID because we are not supporting other languages.
+		*rcNameID: =IDS_GPD_ENDOFPAGERETRACT
+		*Command: CmdSelect
+		{
+			*Order: DOC_SETUP.5
+			*Cmd: "<1B>~f<03>"
+		}
+		*% Infinite PaperSize requires No Feed Mode
+		*Constraints: PaperSize.Infinite
+
+		*% EndofPageRetract requires PerforatedRollRetract paper size
+		*Constraints: PaperType.CutSheet
+		*Constraints: PaperType.Roll
+		*Constraints: PaperType.PerforatedRoll
+
+		*% This doesn't seem to work, but want to disable ExtraFeed control if not set to No Feed mode.
+		*DisabledFeatures: LIST(ExtraFeed)
+	}
+}
+
+*%******************************************************************************
+*%                            ExtraFeed
+*%******************************************************************************
+*Feature: ExtraFeed
+{
+    *rcNameID: =IDS_GPD_EXTRAFEED
+    *FeatureType: DOC_PROPERTY
+    *DefaultOption: ExtraFeed_02
+
+    *Option: ExtraFeed_00
+    {
+	*rcNameID: =IDS_GPD_NONE
+	 *switch: FormFeedMode {
+ 		*case: NoFeed {
+			*% do nothing
+
+		 }
+		*default: {
+			*% do nothing
+		}
+	}
+   }
+ *Option: ExtraFeed_01
+    {
+	*rcNameID: =IDS_GPD_HALFINCH
+
+	 *switch: FormFeedMode {
+ 		*case: NoFeed {
+			*Command: CmdSelect
+			{
+ 				*Order: DOC_FINISH.1
+ 				*Cmd: "<1B>~J<64><1B>~<0c>"
+ 			}
+		 }
+		*default: {
+			*% do nothing
+		}
+	}
+   }
+
+*Option: ExtraFeed_02
+    {
+ 	*rcNameID: =IDS_GPD_1INCH
+
+	*switch: FormFeedMode {
+ 		*case: NoFeed {
+			*Command: CmdSelect
+			{
+ 				*Order: DOC_FINISH.1
+ 				*Cmd: "<1B>~J<C8><1B>~<0c>"
+ 			}
+		 }
+		*default: {
+			*% do nothing
+		}
+	}
+   }
+
+ *Option: ExtraFeed_03
+    {
+	*rcNameID: =IDS_GPD_1HALFINCH
+
+	 *switch: FormFeedMode {
+ 		*case: NoFeed {
+			*Command: CmdSelect
+			{
+ 				*Order: DOC_FINISH.1
+ 				*Cmd: "<1B>~J<FF><1B>~J<2D><1B>~<0c>"
+ 			}
+		 }
+		*default: {
+			*% do nothing
+		}
+	}
+   }
+ *Option: ExtraFeed_04
+    {
+	*rcNameID: =IDS_GPD_2INCH
+
+	 *switch: FormFeedMode {
+ 		*case: NoFeed {
+			*Command: CmdSelect
+			{
+ 				*Order: DOC_FINISH.1
+ 				*Cmd: "<1B>~J<FF><1B>~J<91><1B>~<0c>"
+ 			}
+		 }
+		*default: {
+			*% do nothing
+		}
+	}
+   }
+
+}
+
+*%******************************************************************************
+*%                            DashLinePrint
+*%******************************************************************************
+*Feature: DashLinePrint
+{
+	*rcNameID: =IDS_GPD_DASHLINEPRINT
+ 	*FeatureType: DOC_PROPERTY
+ 	*DefaultOption: Disable
+	*Option: Disable
+	{
+        *rcNameID: =IDS_GPD_DISABLE
+        	*Command: CmdSelect
+       		{
+			*Order: DOC_SETUP.6
+             		*Cmd: "<1B>~-<00>"
+         	}
+	}
+	*Option: Enable
+	{
+		*rcNameID: =IDS_GPD_ENABLE
+		*Command: CmdSelect
+       	{
+            		*Order: DOC_SETUP.6
+             		*Cmd: "<1B>~-<01>"
+       	}
+		*Constraints: PaperType.CutSheet
+		*Constraints: PaperType.PerforatedRoll
+        *Constraints: PaperType.PerforatedRollRetract
+		*Constraints: FormFeedMode.EndofPage
+		*Constraints: FormFeedMode.NoFeed
+        *Constraints: FormFeedMode.EndofPageRetract
+	}
+}
+
+
+*%******************************************************************************
+*%                            Collate
+*%******************************************************************************
+*Feature: Collate
+{
+    *rcNameID: =IDS_GPD_COLLATE
+    *DefaultOption: OFF
+    *Option: ON
+    {
+        *rcNameID: =ON_DISPLAY
+    }
+    *Option: OFF
+    {
+        *rcNameID: =OFF_DISPLAY
+    }
+}
+
+*%******************************************************************************
+*%                            PageOrder
+*%******************************************************************************
+*Feature: PageOrder
+{
+    *rcNameID: =IDS_GPD_REVERSEORDER
+    *FeatureType: JOB_PROPERTY
+    *PrintSchemaKeywordMap: "JobPageOrder"
+
+    *Option: Standard
+    {
+        *rcNameID: =ON_DISPLAY
+        *PrintSchemaKeywordMap: "Standard"
+    }
+    *Option: Reverse
+    {
+        *rcNameID: =OFF_DISPLAY
+         *PrintSchemaKeywordMap: "Reverse"
+    }
+}
+
+*%******************************************************************************
+*%                            AutoSwitchCommandMode
+*%******************************************************************************
+*Feature: AutoSwitchCommandMode
+{
+	*rcNameID: =IDS_GPD_AUTOSWITCH
+	*FeatureType: JOB_PROPERTY
+	*DefaultOption: Enable
+	*Option: Disable
+	{
+		*rcNameID: =IDS_GPD_DISABLE
+	}
+	*Option: Enable
+	{
+		*rcNameID: =IDS_GPD_ENABLE
+	}
+}
+
+*%******************************************************************************
+*%                            CustomPaperOffset
+*%******************************************************************************
+*Feature: CustomPaperOffset
+{
+	*rcNameID: =IDS_GPD_CUSTOMPAPER_OFFSET
+        *FeatureType: DOC_PROPERTY
+	*DefaultOption: CENTER
+	*Option: CENTER
+	{
+		*rcNameID: =IDS_GPD_CENTER
+        *Command: CmdSelect
+         {
+             *Order: DOC_SETUP.9
+         }		
+	}
+	*Option: LEFT
+	{
+		*rcNameID: =IDS_GPD_LEFT
+        *Command: CmdSelect
+         {
+             *Order: DOC_SETUP.9
+         }				
+	}
+}
+
+*%******************************************************************************
+*%                            PaperSize
+*%******************************************************************************
+*Feature: PaperSize
+{
+	*rcNameID: =PAPER_SIZE_DISPLAY
+	*switch: Locale
+	{
+		*case: English_United_States
+		{
+			*DefaultOption: LETTER
+		}
+		*default:
+		{
+			*DefaultOption: A4
+		}
+	}
+	*Option: LETTER
+	{
+		*rcNameID: =RCID_DMPAPER_SYSTEM_NAME
+		*switch: PaperType{
+			*case: PerforatedRoll {
+				*PrintableArea: PAIR(1632, 1980)
+				*PrintableOrigin: PAIR(34, 86)
+			}
+			*case: Roll {
+				*PrintableArea: PAIR(1632, 2067)
+				*PrintableOrigin: PAIR(34, 86)
+			}
+			*case: PerforatedRollRetract {
+				*PrintableArea: PAIR(1632, 2133)
+				*PrintableOrigin: PAIR(34, 20)
+			}
+			*case: CutSheet {
+				*PrintableArea: PAIR(1632, 2133)
+				*PrintableOrigin: PAIR(34, 20)
+			}
+		}
+		*Command: CmdSelect
+		{
+			*Order: DOC_SETUP.7
+			*Cmd: "<1B>~w<CC00><1B>~h<5508>"
+		}
+	}
+	*Option: LEGAL
+	{
+		*rcNameID: =RCID_DMPAPER_SYSTEM_NAME
+		*switch: PaperType{
+			*case: PerforatedRoll {
+				*PrintableArea: PAIR(1632, 2580)
+				*PrintableOrigin: PAIR(34, 86)
+			}
+			*case: Roll {
+				*PrintableArea: PAIR(1632, 2667)
+				*PrintableOrigin: PAIR(34, 86)
+			}
+			*case: PerforatedRollRetract {
+				*PrintableArea: PAIR(1632, 2733)
+				*PrintableOrigin: PAIR(34, 20)
+			}
+			*case: CutSheet {
+				*PrintableArea: PAIR(1632, 2733)
+				*PrintableOrigin: PAIR(34, 20)
+			}
+		}
+		*Command: CmdSelect
+		{
+			*Order: DOC_SETUP.7
+			*Cmd: "<1B>~w<CC00><1B>~h<AD0A>"
+		}
+	}
+	*Option: A4
+	{
+		*rcNameID: =RCID_DMPAPER_SYSTEM_NAME
+		*switch: PaperType{
+			*case: PerforatedRoll {
+				*PrintableArea: PAIR(1600, 2118)
+				*PrintableOrigin: PAIR(27, 86)
+			}
+			*case: Roll {
+				*PrintableArea: PAIR(1600, 2198)
+				*PrintableOrigin: PAIR(27, 93)
+			}
+			*case: PerforatedRollRetract {
+				*PrintableArea: PAIR(1600, 2200)
+				*PrintableOrigin: PAIR(27, 20)
+			}
+			*case: CutSheet {
+				*PrintableArea: PAIR(1600, 2200)
+				*PrintableOrigin: PAIR(27, 20)
+			}
+		}
+		*Command: CmdSelect
+		{
+			*Order: DOC_SETUP.7
+			*Cmd: "<1B>~w<C800><1B>~h<9808>"
+		}
+	}
+	*Option: CUSTOMSIZE
+	{
+		*rcNameID: =USER_DEFINED_SIZE_DISPLAY
+		*MinSize: PAIR(800, 400)
+		*MaxSize: PAIR(1700, 20000)
+		*MaxPrintableWidth: 1632
+		*MinLeftMargin: 27
+		*CenterPrintable?: FALSE
+		*switch: PaperType{
+			*case: PerforatedRoll {
+				*TopMargin: 86
+				*BottomMargin: 134
+				*CursorOrigin: PAIR(27, 86)
+			}
+			*case: Roll {
+				*TopMargin: 86
+				*BottomMargin: 47
+				*CursorOrigin: PAIR(27, 86)
+			}
+			*case: PerforatedRollRetract {
+				*TopMargin: 20
+				*BottomMargin: 47
+				*CursorOrigin: PAIR(27, 20)
+			}
+			*case: CutSheet {
+				*TopMargin: 20
+				*BottomMargin: 47
+				*CursorOrigin: PAIR(27, 20)
+			}
+		}
+		*Command: CmdSelect
+		{
+			*Order: DOC_SETUP.7
+			*Cmd: "<1B>~w<cc00><1B>~l" %l{PhysPaperLength - 67}
+		}
+	}
+	*Option: Infinite
+	{
+		*Name: "Infinite"
+		*PageDimensions: PAIR(1700, 2800)
+		*PrintableArea: PAIR(1632, 2800)
+		*PrintableOrigin: PAIR(34, 0)
+		*% Only allowed with No Feed Mode and Roll Paper.
+		*Constraints: FormFeedMode.FixedPage
+		*Constraints: FormFeedMode.EndofPage
+		*Constraints: FormFeedMode.EndofPageRetract
+		*Constraints: PaperType.CutSheet
+		*Constraints: PaperType.PerforatedRoll
+		*Constraints: PaperType.PerforatedRollRetract
+		*Command: CmdSelect
+		{
+			*Order: DOC_SETUP.7
+			*Cmd: "<1B>~w<CC00><1B>~l<FFFF>"
+		}
+	}
+} *% end of *FEATURE PAPERSIZE
+
+*Command: CmdStartDoc
+{
+	*Order: DOC_SETUP.1
+	*Cmd: "<0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000><0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000><0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000><0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000><0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000><0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000><0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000><0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000><0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000><0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000><0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000><0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000><0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000><0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000>"
+}
+
+*RotateCoordinate?: FALSE
+*RotateRaster?: FALSE
+*RotateFont?: FALSE
+*XMoveThreshold: 0
+*YMoveThreshold: 0
+*XMoveUnit: 200
+*YMoveUnit: 200
+*Command: CmdXMoveAbsolute { *Cmd : "<1B>~$" %l{DestX} }
+*Command: CmdYMoveRelDown { *Cmd : "<1B>~J" %c[1,255]{max_repeat(DestYRel )} }
+*Command: CmdFF { *Cmd : "<1B>~<0C>" }
+*Command: CmdCR { *Cmd : "<1B>~$<0000>" }
+*Command: CmdLF { *Cmd : "<1B>~J<01>" }
+*EjectPageWithFF?: TRUE
+*OutputDataFormat: H_BYTE
+*OptimizeLeftBound?: FALSE
+*UseSpaceForXMove?: FALSE
+*CursorXAfterCR: AT_PRINTABLE_X_ORIGIN
+*CursorXAfterSendBlockData: AT_GRXDATA_ORIGIN
+*CursorYAfterSendBlockData: NO_MOVE
+*DefaultCTT: -1

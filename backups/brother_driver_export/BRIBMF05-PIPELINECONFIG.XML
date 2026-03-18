@@ -1,0 +1,53 @@
+<!--
+
+Copyright (c) 2011 Brother Industries Ltd.
+
+All rights reserved.
+
+THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
+ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+PARTICULAR PURPOSE.
+
+File Name:
+
+    BRIBMF05-PIPELINECONFIG.XML
+
+Abstract:
+
+    Brother Inkjet Printer Driver filter configuration file. This identifies the
+    filters that comprise the filter pipeline and their order.
+
+-->
+
+<Filters>
+  <Filter dll = "BRIBFPM00.DLL"
+          clsid = "{F8ED260A-B86D-4006-9E8B-0141034851CE}"
+          name = "Preparation filter">
+    <Input guid = "{b8cf8530-5562-47c4-ab67-b1f69ecf961e}" comment="IID_IXpsDocumentProvider"/>
+    <Output guid = "{4368d8a2-4181-4a9f-b295-3d9a38bb9ba0}" comment="IID_IXpsDocumentConsumer"/>
+  </Filter>
+  <Filter dll = "BRIBFLM00.DLL"
+          clsid = "{FEBFDCCF-FFE9-4d15-840C-2911412C6C23}"
+          name = "Layout filter">
+    <Input guid = "{b8cf8530-5562-47c4-ab67-b1f69ecf961e}" comment="IID_IXpsDocumentProvider"/>
+    <Output guid = "{4368d8a2-4181-4a9f-b295-3d9a38bb9ba0}" comment="IID_IXpsDocumentConsumer"/>
+  </Filter>
+  <Filter dll = "BRIBFFM00.DLL"
+          clsid = "{852E9F46-D68C-44b8-875D-82A71D0B6875}"
+          name = "Finisher filter">
+    <Input guid = "{b8cf8530-5562-47c4-ab67-b1f69ecf961e}" comment="IID_IXpsDocumentProvider"/>
+    <Output guid = "{4368d8a2-4181-4a9f-b295-3d9a38bb9ba0}" comment="IID_IXpsDocumentConsumer"/>
+  </Filter>
+  <Filter dll = "BRIBFRM00.dll"
+          clsid = "{1A1732B1-9166-4165-99A0-1FC42DB85DC5}"
+          name = "XPSRas Filter">
+    <Input guid = "{b8cf8530-5562-47c4-ab67-b1f69ecf961e}" comment="IID_IXpsDocumentProvider"/>
+    <Output guid = "{65bb7f1b-371e-4571-8ac7-912f510c1a38}" comment="IID_IPrintWriteStream"/>
+  </Filter>
+  <FilterServiceProvider dll="XpsRasterService.dll"/>
+  <FilterServiceProvider dll="BRIBEN05.dll"/>
+  <FilterServiceProvider dll="PrintConfig.dll" />
+</Filters>
+
+

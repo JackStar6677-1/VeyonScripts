@@ -1,5 +1,0 @@
-﻿"Host","Status","Detail","User","PSComputerName","RunspaceId","PSShowComputerName"
-"192.168.0.101","FAIL","Error de conexión al servidor remoto 192.168.0.101. Mensaje de error: Acceso denegado. Para obtener más información, consulte el tema de la Ayuda about_Remote_Troubleshooting.","","localhost","f73d7985-050f-45e3-833d-118c1133018d","False"
-"192.168.0.102","FAIL","Error de conexión al servidor remoto 192.168.0.102. Mensaje de error: Acceso denegado. Para obtener más información, consulte el tema de la Ayuda about_Remote_Troubleshooting.","","localhost","c4441cd6-5a53-4fd6-acde-08941e5fd8ba","False"
-"192.168.0.103","NO_5985","Puerto 5985 cerrado","","localhost","ca493f0a-e689-43ed-a312-3541fe500bad","False"
-"192.168.0.104","FAIL","Error de conexión al servidor remoto 192.168.0.104. Mensaje de error: Acceso denegado. Para obtener más información, consulte el tema de la Ayuda about_Remote_Troubleshooting.","","localhost","d1947bc8-656e-4d57-9e0e-217979c222bd","False"

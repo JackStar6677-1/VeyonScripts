@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Reglas de Uso Impresora Sala de Computacion</title>
+  <style>
+    @page {
+      size: letter landscape;
+      margin: 0.45in;
+    }
+
+    :root {
+      --ink: #1b2430;
+      --accent: #0f6b6f;
+      --warn: #90411d;
+      --soft: #f3f7f7;
+      --line: #d6dfe2;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    .sheet {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 18px;
+    }
+
+    .hero {
+      border: 3px solid var(--accent);
+      border-radius: 14px;
+      padding: 18px 22px;
+      background: linear-gradient(135deg, #eef9f8, #ffffff 60%);
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: 30px;
+      line-height: 1.05;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .hero p {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.4;
+    }
+
+    .box {
+      margin-top: 14px;
+      border: 2px solid var(--line);
+      border-radius: 12px;
+      padding: 14px 16px;
+      background: white;
+    }
+
+    .box h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .rules, .notes {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 16px;
+      line-height: 1.45;
+    }
+
+    .rules li, .notes li {
+      margin: 7px 0;
+    }
+
+    .panel {
+      border: 3px solid var(--ink);
+      border-radius: 14px;
+      padding: 18px 20px;
+      background: var(--soft);
+    }
+
+    .panel h2 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      text-transform: uppercase;
+    }
+
+    .ok, .no {
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-top: 12px;
+    }
+
+    .ok {
+      border: 2px solid #2d7d46;
+      background: #eef9f0;
+    }
+
+    .no {
+      border: 2px solid var(--warn);
+      background: #fff4ed;
+    }
+
+    .ok h3, .no h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      text-transform: uppercase;
+    }
+
+    .ok h3 {
+      color: #2d7d46;
+    }
+
+    .no h3 {
+      color: var(--warn);
+    }
+
+    .big-warning {
+      margin-top: 14px;
+      border: 3px solid var(--warn);
+      border-radius: 12px;
+      padding: 16px 18px;
+      background: #fff1e8;
+      font-size: 22px;
+      line-height: 1.3;
+      font-weight: 800;
+      color: var(--warn);
+    }
+
+    .footer {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #56656f;
+    }
+  </style>
+</head>
+<body>
+  <div class="sheet">
+    <section>
+      <div class="hero">
+        <h1>Reglas de Uso de la Impresora</h1>
+        <p>La impresora de la Sala de Computacion es un recurso de apoyo para trabajo academico. Su uso debe ser responsable para evitar desperdicio de papel, toner y tiempo.</p>
+      </div>
+
+      <div class="box">
+        <h2>Uso permitido</h2>
+        <ul class="rules">
+          <li>Impresion de <strong>actividades, guias y trabajos de estudiantes</strong>.</li>
+          <li>Impresion de material necesario para el desarrollo de clases en la sala.</li>
+          <li>Los <strong>profesores que esten usando la Sala de Computacion</strong> tambien pueden utilizarla para necesidades especificas de la actividad pedagogica.</li>
+        </ul>
+      </div>
+
+      <div class="box">
+        <h2>Antes de imprimir</h2>
+        <ul class="notes">
+          <li>Revisa siempre la vista previa.</li>
+          <li>Confirma cantidad de paginas y numero de copias.</li>
+          <li>Verifica que el tamaño de papel sea <strong>Carta</strong>.</li>
+          <li>Si tienes dudas, consulta antes de imprimir varias hojas.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Uso no permitido</h2>
+
+      <div class="no">
+        <h3>No corresponde usarla para:</h3>
+        <ul class="rules">
+          <li>Impresiones personales sin relacion con actividades de la sala.</li>
+          <li>Documentos innecesarios, repetidos o “de prueba” en exceso.</li>
+          <li>Archivos mal configurados que salgan cortados o en tamaño equivocado.</li>
+          <li>Impresiones masivas sin autorizacion.</li>
+        </ul>
+      </div>
+
+      <div class="ok">
+        <h3>Uso responsable</h3>
+        <ul class="rules">
+          <li>Imprime solo lo necesario.</li>
+          <li>Cuida el papel y el toner.</li>
+          <li>Mantén orden en la zona de la impresora.</li>
+          <li>Retira tus hojas apenas termine la impresion.</li>
+        </ul>
+      </div>
+
+      <div class="big-warning">
+        Atencion: esta impresora trabaja SOLO con papel tamaño CARTA. Revisa tus documentos antes de imprimir.
+      </div>
+
+      <div class="footer">
+        Sala de Computacion • Uso academico • Cuidemos los recursos de todos
+      </div>
+    </section>
+  </div>
+</body>
+</html>

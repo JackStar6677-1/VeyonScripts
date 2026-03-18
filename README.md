@@ -20,7 +20,7 @@ Este repositorio contiene **dos proyectos principales** de automatizacion desarr
 - `launchers/` (launchers reales)
 - `tools/wakemeonlan/` y `tools/optimizacion_windows/`
 - `apps/veyongui/`
-- `deploy/kit_pendrive/`
+- `deploy/kit_pendrive/`, `deploy/admin_winrm/`, `deploy/componentes_cliente/`
 - `data/`, `reports/`, `backups/`
 - Wrappers `.bat` en raiz para compatibilidad (`VEYON_MAESTRO.bat`, etc.)
 
@@ -89,25 +89,37 @@ Ademas del mapeo y la gestion de Veyon, este repositorio evoluciono para cubrir 
 
 Esto permite administrar la sala incluso cuando los equipos tienen usuarios locales distintos, estan parcialmente dormidos o requieren automatizacion por lotes.
 
-### Kit Operativo `deploy/kit_pendrive/`
+### Estructura Operativa `deploy/`
 
-La carpeta `deploy/kit_pendrive/` paso a ser el nucleo operativo para despliegue masivo:
+La operacion remota ahora esta separada en tres carpetas:
+
+- `deploy/kit_pendrive/`: solo material portable/manual para preparar cada PC.
+- `deploy/admin_winrm/`: scripts que se ejecutan desde el PC administrador sobre toda la sala.
+- `deploy/componentes_cliente/`: payloads y componentes que luego se copian a los clientes.
+
+### `deploy/kit_pendrive/`
 
 - `PREPARAR_REMOTO_WIN10.bat`: prepara cada PC para administracion remota.
+
+### `deploy/admin_winrm/`
+
 - `EJECUTAR_MASIVO_WINRM.ps1`: motor base para ejecutar payloads por WinRM.
 - `EJECUTAR_MASIVO_AUTO_CRED.ps1`: variante que prueba usuarios locales comunes con una clave compartida.
 - `PROGRAMAR_ENERGIA_LAB_WINRM.ps1`: crea tarea diaria de apagado cuando se necesita.
 - `ENVIAR_WOL_CASTEL.ps1`: envio de magic packets para despertar equipos.
-- `GUI_AGENTE_INTERACTIVO.ps1`: agente local que corre dentro de la sesion del usuario.
 - `INSTALAR_GUI_AGENTE_WINRM.ps1`: instala el agente GUI por WinRM.
 - `ENVIAR_GUI_COMANDO_WINRM.ps1`: encola apertura de GUI y teclas como `~`, `1`, `{TAB}`, `%{F4}`.
-- `ADMIN_ELEVATION_BRIDGE.ps1`: bridge elevado que procesa comandos admin desde cola local.
 - `INSTALAR_ELEVACION_WINRM.ps1`: instala el bridge y crea la tarea `Castel-AdminBridge` como `SYSTEM`.
 - `ENVIAR_ADMIN_COMANDO_WINRM.ps1`: encola comandos elevados y dispara la tarea remota.
+- `CASTEL_REMOTO.ps1`: orquestador central para operaciones tipicas del laboratorio.
+
+### `deploy/componentes_cliente/`
+
+- `GUI_AGENTE_INTERACTIVO.ps1`: agente local que corre dentro de la sesion del usuario.
+- `ADMIN_ELEVATION_BRIDGE.ps1`: bridge elevado que procesa comandos admin desde cola local.
 - `RESET_CHROME_COMPARTIDO.ps1`: cierra Chrome y elimina perfiles locales de navegador para dejarlo "como nuevo".
 - `PROTEGER_MATERIALES_SALA.ps1`: protege carpetas institucionales para que usuarios puedan abrir archivos pero no borrarlos.
 - `CREAR_CARPETA_ENTREGA_SALA.ps1`: crea una carpeta fija en el escritorio publico con escritura permitida pero borrado denegado.
-- `CASTEL_REMOTO.ps1`: orquestador central para operaciones tipicas del laboratorio.
 
 ### Arquitectura Operativa
 
@@ -224,7 +236,7 @@ Esto ya se uso con exito en la red del laboratorio para evitar apagados fuera de
 
 ```powershell
 # Instalar agente GUI
-cd deploy\kit_pendrive
+cd deploy\admin_winrm
 .\INSTALAR_GUI_AGENTE_WINRM.ps1
 
 # Abrir Bloc de notas visible en los clientes

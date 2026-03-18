@@ -52,4 +52,18 @@ desktop.ini
 
 # Configuraciones locales
 *.cfg
-!WakeMeOnLAN.cfg
+
+# Artefactos operativos y reportes locales
+reports/runs/
+reports/old/
+data/scans/
+deploy/kit_pendrive/*.csv
+deploy/kit_pendrive/*_status_*.csv
+deploy/kit_pendrive/queue_admin_command_*.csv
+
+# Inventario y topologia local del laboratorio
+deploy/kit_pendrive/hosts_castel.txt
+data/reservas_dhcp_castel.csv
+
+# Herramientas con configuracion local sensible
+tools/wakemeonlan/*.cfg

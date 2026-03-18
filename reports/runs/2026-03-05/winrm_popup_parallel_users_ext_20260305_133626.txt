@@ -1,1 +1,0 @@
-﻿USERS=Colegio, colegio, Admin, Usuario, Alumno, Estudiante, Profesor TOTAL=39 OK=32 NO_5985=7 FAIL_AUTH=0 CSV=C:\Users\Profesor\Documents\GitHub\VeyonScripts\reports\winrm_popup_parallel_users_ext_20260305_133626.csv  OK SAMPLE: System.Object[]  NO_5985 LIST: System.Object[]  FAIL_AUTH LIST: 

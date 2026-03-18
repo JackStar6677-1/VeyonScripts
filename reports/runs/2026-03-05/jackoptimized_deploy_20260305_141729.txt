@@ -1,6 +1,0 @@
-﻿TOTAL=39
-OK=33
-PARTIAL=0
-NO_5985=6
-FAIL=0
-CSV=C:\Users\Profesor\Documents\GitHub\VeyonScripts\reports\runs\2026-03-05\jackoptimized_deploy_20260305_141729.csv

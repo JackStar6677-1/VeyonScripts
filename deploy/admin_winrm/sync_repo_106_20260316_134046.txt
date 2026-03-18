@@ -1,0 +1,4 @@
+﻿[2026-03-16 13:40:46] Inicio de sincronizacion hacia 192.168.0.106
+[2026-03-16 13:40:47] ZIP preparado: C:\Users\Profesor\AppData\Local\Temp\VeyonScripts_sync_106.zip
+[2026-03-16 13:40:51] RepoReadme=True; AlumnoConfig=True; ColegioConfig=True
+[2026-03-16 13:40:51] Sincronizacion OK

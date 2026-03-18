@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Impresora Sala de Computacion</title>
+  <style>
+    @page {
+      size: letter landscape;
+      margin: 0.45in;
+    }
+
+    :root {
+      --ink: #16202a;
+      --accent: #0d5c63;
+      --warn: #8a3b12;
+      --line: #d5dde3;
+      --soft: #f4f7f8;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      color: var(--ink);
+      background: white;
+    }
+
+    .sheet {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 18px;
+    }
+
+    .hero {
+      border: 3px solid var(--accent);
+      border-radius: 14px;
+      padding: 18px 22px;
+      background: linear-gradient(135deg, #eef8f8, #ffffff 58%);
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.1;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .hero p {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .card {
+      border: 2px solid var(--line);
+      border-radius: 12px;
+      padding: 14px 16px;
+      background: white;
+    }
+
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 15px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .big {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .mono {
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .steps, .tips {
+      margin: 0;
+      padding-left: 18px;
+      line-height: 1.45;
+      font-size: 15px;
+    }
+
+    .steps li, .tips li {
+      margin: 5px 0;
+    }
+
+    .panel {
+      border: 3px solid var(--ink);
+      border-radius: 14px;
+      padding: 18px 20px;
+      background: var(--soft);
+    }
+
+    .panel h2 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      text-transform: uppercase;
+    }
+
+    .panel h3 {
+      margin: 16px 0 8px;
+      font-size: 16px;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .warning {
+      margin-top: 14px;
+      border: 3px solid var(--warn);
+      border-radius: 12px;
+      padding: 14px 16px;
+      background: #fff5ef;
+    }
+
+    .warning h3 {
+      margin: 0 0 6px;
+      color: var(--warn);
+      font-size: 18px;
+    }
+
+    .warning p {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.35;
+      font-weight: 700;
+    }
+
+    .footer {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #50606b;
+    }
+  </style>
+</head>
+<body>
+  <div class="sheet">
+    <section>
+      <div class="hero">
+        <h1>Impresora Sala de Computacion</h1>
+        <p>Si necesitas imprimir en esta sala, usa esta impresora de red y revisa primero la configuracion del papel para evitar errores y gasto innecesario de hojas.</p>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h2>Modelo</h2>
+          <div class="big">Brother DCP-L2540DW series</div>
+        </div>
+
+        <div class="card">
+          <h2>Nombre en Windows</h2>
+          <div class="big">Brother Sala Computacion</div>
+        </div>
+
+        <div class="card">
+          <h2>Direccion IP</h2>
+          <div class="mono">192.168.0.208</div>
+        </div>
+
+        <div class="card">
+          <h2>Tipo de conexion</h2>
+          <div class="big">Impresora de red por IP</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:12px;">
+        <h2>Como imprimir</h2>
+        <ol class="steps">
+          <li>Abre tu documento y presiona <strong>Ctrl + P</strong>.</li>
+          <li>Selecciona la impresora <strong>Brother Sala Computacion</strong>.</li>
+          <li>Revisa que el tamaño de papel sea <strong>Carta</strong>.</li>
+          <li>Confirma orientación, cantidad de copias y páginas antes de imprimir.</li>
+          <li>Si tu archivo viene en oficio, A4 u otro tamaño, ajústalo primero a <strong>Carta</strong>.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Agregar en Windows</h2>
+
+      <h3>Opcion rapida</h3>
+      <ol class="steps">
+        <li>Ve a <strong>Configuracion &gt; Bluetooth y dispositivos &gt; Impresoras y escaneres</strong>.</li>
+        <li>Haz clic en <strong>Agregar dispositivo</strong>.</li>
+        <li>Si no aparece, elige <strong>Agregar manualmente</strong>.</li>
+      </ol>
+
+      <h3>Opcion manual por IP</h3>
+      <ol class="steps">
+        <li>Elige <strong>Agregar una impresora mediante una direccion TCP/IP</strong>.</li>
+        <li>Direccion o nombre de host: <strong>192.168.0.208</strong>.</li>
+        <li>Nombre sugerido: <strong>Brother Sala Computacion</strong>.</li>
+        <li>Si Windows pide controlador, selecciona <strong>Brother DCP-L2540DW series</strong>.</li>
+      </ol>
+
+      <h3>Antes de imprimir</h3>
+      <ul class="tips">
+        <li>Verifica vista previa.</li>
+        <li>Revisa si es una o doble cara.</li>
+        <li>Imprime solo lo necesario.</li>
+        <li>Si tienes dudas, consulta antes de lanzar muchas páginas.</li>
+      </ul>
+
+      <div class="warning">
+        <h3>Atencion</h3>
+        <p>Esta impresora usa SOLO papel tamaño CARTA. Revisa tus documentos antes de imprimir para no desperdiciar hojas.</p>
+      </div>
+
+      <div class="footer">
+        Sala de Computacion • Red local • Impresora compartida por IP
+      </div>
+    </section>
+  </div>
+</body>
+</html>

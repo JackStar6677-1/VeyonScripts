@@ -1,0 +1,50 @@
+<!--
+
+Copyright (c) 2013 Brother Industries Ltd.
+
+All rights reserved.
+
+THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
+ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+PARTICULAR PURPOSE.
+
+File Name:
+
+    BRIBMM0D-PIPELINECONFIG.XML
+
+Abstract:
+
+    Brother  Generic XPS Type1 Printer Driver filter configuration file. This identifies the
+    filters that comprise the filter pipeline and their order.
+
+-->
+
+<Filters>
+  <Filter dll = "BRIBFPR01.DLL"
+          clsid = "{2809B292-63EF-4de4-AD53-9EE9BCD66EA7}"
+          name = "Preparation filter">
+    <Input guid = "{b8cf8530-5562-47c4-ab67-b1f69ecf961e}" comment="IID_IXpsDocumentProvider"/>
+    <Output guid = "{4368d8a2-4181-4a9f-b295-3d9a38bb9ba0}" comment="IID_IXpsDocumentConsumer"/>
+  </Filter>
+  <Filter dll = "BRIBFLM00.DLL"
+          clsid = "{FEBFDCCF-FFE9-4d15-840C-2911412C6C23}"
+          name = "Layout filter">
+    <Input guid = "{b8cf8530-5562-47c4-ab67-b1f69ecf961e}" comment="IID_IXpsDocumentProvider"/>
+    <Output guid = "{4368d8a2-4181-4a9f-b295-3d9a38bb9ba0}" comment="IID_IXpsDocumentConsumer"/>
+  </Filter>
+<!--
+  <Filter dll = "BRIBFCM00.DLL"
+          clsid = "{E4069DCF-A622-4a78-AD42-7EF71D73AC9B}"
+          name = "Copy/Collate filter">
+    <Input guid = "{b8cf8530-5562-47c4-ab67-b1f69ecf961e}" comment="IID_IXpsDocumentProvider"/>
+    <Output guid = "{4368d8a2-4181-4a9f-b295-3d9a38bb9ba0}" comment="IID_IXpsDocumentConsumer"/>
+  </Filter>
+-->
+  <Filter dll = "BRIBFPJ01.DLL"
+          clsid = "{B4E9A281-68EA-48d6-9331-96E8F91DA262}"
+          name = "PJL filter">
+    <Input guid		= "{4d47a67c-66cc-4430-850e-daf466fe5bc4}" comment="IID_IPrintReadStream"/>
+    <Output guid 	= "{65bb7f1b-371e-4571-8ac7-912f510c1a38}" comment="IID_IPrintWriteStream"/>
+  </Filter>
+</Filters>

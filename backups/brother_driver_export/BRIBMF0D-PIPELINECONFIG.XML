@@ -1,0 +1,52 @@
+<!--
+
+Copyright (c) 2011 Brother Industries Ltd.
+
+All rights reserved.
+
+THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
+ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+PARTICULAR PURPOSE.
+
+File Name:
+
+    BRIBMF0D-PIPELINECONFIG.XML
+
+Abstract:
+
+    Brother PCL6 Printer Driver filter configuration file. This identifies the
+    filters that comprise the filter pipeline and their order.
+
+-->
+
+<Filters>
+  <Filter dll = "BRIBFPM00.DLL"
+          clsid = "{F8ED260A-B86D-4006-9E8B-0141034851CE}"
+          name = "Preparation filter">
+    <Input guid = "{b8cf8530-5562-47c4-ab67-b1f69ecf961e}" comment="IID_IXpsDocumentProvider"/>
+    <Output guid = "{4368d8a2-4181-4a9f-b295-3d9a38bb9ba0}" comment="IID_IXpsDocumentConsumer"/>
+  </Filter>
+  <Filter dll = "BRIBFFM00.DLL"
+          clsid = "{852E9F46-D68C-44b8-875D-82A71D0B6875}"
+          name = "Finisher filter">
+    <Input guid = "{b8cf8530-5562-47c4-ab67-b1f69ecf961e}" comment="IID_IXpsDocumentProvider"/>
+    <Output guid = "{4368d8a2-4181-4a9f-b295-3d9a38bb9ba0}" comment="IID_IXpsDocumentConsumer"/>
+  </Filter> 
+  <Filter dll = "BRIBFTM00.DLL"
+          clsid = "{B84BA394-C759-49b1-A17F-9B22918A3991}"
+          name = "Transverse filter">
+    <Input guid = "{b8cf8530-5562-47c4-ab67-b1f69ecf961e}" comment="IID_IXpsDocumentProvider"/>
+    <Output guid = "{4368d8a2-4181-4a9f-b295-3d9a38bb9ba0}" comment="IID_IXpsDocumentConsumer"/>
+  </Filter>
+  <Filter dll = "BRIBFCM00.DLL"
+          clsid = "{E4069DCF-A622-4a78-AD42-7EF71D73AC9B}"
+          name = "Copy/Collate filter">
+    <Input guid = "{b8cf8530-5562-47c4-ab67-b1f69ecf961e}" comment="IID_IXpsDocumentProvider"/>
+    <Output guid = "{4368d8a2-4181-4a9f-b295-3d9a38bb9ba0}" comment="IID_IXpsDocumentConsumer"/>
+  </Filter>
+  <Filter dll="MSxpsPCL6.dll" clsid="{3821E518-33AF-4d17-92B3-28EB410D46B6}" name="Microsoft XPS to PCL6">
+    <Input guid="{4d47a67c-66cc-4430-850e-daf466fe5bc4}" comment="IID_IPrintReadStream" />
+    <Output guid="{65bb7f1b-371e-4571-8ac7-912f510c1a38}" comment="IID_IPrintWriteStream" />
+  </Filter>
+</Filters>

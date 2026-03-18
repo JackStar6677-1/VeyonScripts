@@ -1,9 +1,0 @@
-WINRM MAESTRO - REPORTE
-Fecha: 2026-03-05 14:10:29
-
-Dispositivos detectados (WakeMeOnLAN): 87
-Equipos CASTEL detectados por MAC: 39
-WinRM 5985 abierto (total): 41
-CASTEL con WinRM pendiente: 0
-
-CASTEL con WinRM pendiente:

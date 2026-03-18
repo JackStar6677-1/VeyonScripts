@@ -1,0 +1,3 @@
+﻿[2026-03-16 15:55:02] Inicio de sincronizacion hacia 192.168.0.106
+[2026-03-16 15:55:04] ZIP preparado: C:\Users\Profesor\AppData\Local\Temp\VeyonScripts_sync_106.zip
+[2026-03-16 15:55:07] ERROR: qt.qpa.window: SetProcessDpiAwarenessContext() failed: La operación se completó correctamente.

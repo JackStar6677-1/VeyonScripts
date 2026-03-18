@@ -1,0 +1,779 @@
+*%
+*% Copyright (c) 2013 Brother Industries Ltd.
+*%
+*% All rights reserved.
+*%
+*% THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
+*% ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+*% THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+*% PARTICULAR PURPOSE.
+*%
+*% File Name:
+*%
+*%    BRIBMM0A.GPD
+*%
+*% Abstract:
+*%
+*%    Brother Color Type4 Printer Driver
+*%
+
+*GPDFileVersion: "1.0"
+*GPDSpecVersion: "1.0"
+*GPDFileName:    "BRIBMM0A.GPD"
+*Include:        "msxpsinc.gpd"
+*Include:        "StdNames.gpd"
+*Include:		  "BRIBREM00.GPD"
+*ModelName:      "Brother Color Type4"
+*MasterUnits:    PAIR(600, 600)
+*PrinterType:    PAGE
+*MaxCopies:      999
+*PrintSchemaPrivateNamespaceURI: "http://schemas.brother.info/mfc/printing/2006/11/printschemakeywords"
+*rcInstalledOptionNameID:=BRRES_INSTALLED
+*rcNotInstalledOptionNameID:=BRRES_NOTINSTALLED
+
+*%******************************************************************************
+*%                            PageMediaType
+*%******************************************************************************
+*Feature: MediaType
+{
+	*rcNameID: =MEDIA_TYPE_DISPLAY
+	*DefaultOption: Plain
+
+	*Option: Plain
+	{
+		*rcNameID:=BRRES_MEDIATYPE_PLAIN
+		*%Name: "Plain Paper"
+		*PrintSchemaKeywordMap: "Plain"
+	}
+	*Option: Thin
+	{
+		*rcNameID:=BRRES_MEDIATYPE_THIN
+		*%Name: "Thin Paper"
+	}
+	*Option: Thick
+	{
+		*rcNameID:=BRRES_MEDIATYPE_THICK
+		*%Name: "Thick Paper"
+	}
+	*Option: Thicker
+	{
+		*rcNameID:=BRRES_MEDIATYPE_THICKER
+		*%Name: "Thicker Paper"
+	}
+	*Option: Bond
+	{
+		*rcNameID:=BRRES_MEDIATYPE_BOND
+		*%Name: "Bond Paper"
+		*PrintSchemaKeywordMap: "Bond"
+	}
+	*Option: EnvelopePlain
+	{
+		*rcNameID:=BRRES_MEDIATYPE_ENVELOPE
+		*%Name: "Envelopes"
+		*PrintSchemaKeywordMap: "EnvelopePlain"
+	}
+	*Option: EnvelopeThick
+	{
+		*rcNameID:=BRRES_MEDIATYPE_ENVTHICK
+		*%Name: "Env. Thick"
+	}
+	*Option: EnvelopeThin
+	{
+		*rcNameID:=BRRES_MEDIATYPE_ENVTHIN
+		*%Name: "Env. Thin"
+	}	    
+	*Option: RecyclePaper
+	{
+		*rcNameID:=BRRES_MEDIATYPE_RECYCLED
+		*%Name: "Recycled Paper"
+	}
+	*Option: CardStock
+	{
+		*rcNameID:=BRRES_MEDIATYPE_HAGAKI
+		*%Name: "Japanese Postcard"
+		*PrintSchemaKeywordMap: "CardStock"
+	}
+	*Option: Label
+	{
+		*rcNameID:=BRRES_MEDIATYPE_LABEL
+		*%Name: "Label"
+		*PrintSchemaKeywordMap: "Label"
+	}
+	*Option: PhotographicGlossy
+	{
+		*rcNameID:=BRRES_MEDIATYPE_GLOSSY
+		*%Name: "Glossy Paper"
+		*PrintSchemaKeywordMap: "PhotographicGlossy"
+	}
+}
+
+*%******************************************************************************
+*%                            PageMediaSize - Paper Size
+*%******************************************************************************
+*Feature: PaperSize
+{
+    *rcNameID: =PAPER_SIZE_DISPLAY
+    *DefaultOption: LETTER
+
+    *Option: A4
+    {
+        *rcNameID: =RCID_DMPAPER_SYSTEM_NAME
+        *PrintableArea: PAIR(4760, 6814)
+        *PrintableOrigin: PAIR(100, 100)
+        *CursorOrigin: PAIR(100, 100)
+    }
+    *Option: LETTER
+    {
+        *rcNameID: =RCID_DMPAPER_SYSTEM_NAME
+        *PrintableArea: PAIR(4900, 6400)
+        *PrintableOrigin: PAIR(100, 100)
+        *CursorOrigin: PAIR(100, 100)
+    }
+    *Option: LEGAL
+    {
+        *rcNameID: =RCID_DMPAPER_SYSTEM_NAME
+        *PrintableArea: PAIR(4900, 8200)
+        *PrintableOrigin: PAIR(100, 100)
+        *CursorOrigin: PAIR(100, 100)
+    }
+    *Option: EXECUTIVE
+    {
+        *rcNameID: =RCID_DMPAPER_SYSTEM_NAME
+        *PrintableArea: PAIR(4150, 6100)
+        *PrintableOrigin: PAIR(100, 100)
+        *CursorOrigin: PAIR(100, 100)
+    }
+    *Option: A5
+    {
+        *rcNameID: =RCID_DMPAPER_SYSTEM_NAME
+        *PrintableArea: PAIR(3296, 4760)
+        *PrintableOrigin: PAIR(100, 100)
+        *CursorOrigin: PAIR(100, 100)
+    }
+    *Option: A6
+    {
+        *rcNameID: =RCID_DMPAPER_SYSTEM_NAME
+        *PrintableArea: PAIR(2280, 3296)
+        *PrintableOrigin: PAIR(100, 100)
+        *CursorOrigin: PAIR(100, 100)
+    }
+    *Option: ENV_B5
+    {
+        *rcNameID: =RCID_DMPAPER_SYSTEM_NAME
+        *PrintableArea: PAIR(3956, 5704)
+        *PrintableOrigin: PAIR(100, 100)
+        *CursorOrigin: PAIR(100, 100)
+    }
+	*Option: Br16K_195x270mm
+	{
+		*rcNameID: =BRRES_PAPERSIZE_16K_195X270
+		*%Name: "16K(195x270mm)"
+		*PageDimensions: PAIR(4606, 6378)
+		*PrintableArea: PAIR(4406, 6178)
+		*PrintableOrigin: PAIR(100, 100)
+		*CursorOrigin: PAIR(100, 100)
+	}
+	*Option: Br16K_184x260mm
+	{
+      *rcNameID: =BRRES_PAPERSIZE_16K_184X260	
+		*%Name: "16K(184x260mm)"
+		*PageDimensions: PAIR(4346, 6140)
+		*PrintableArea: PAIR(4146, 5940)
+		*PrintableOrigin: PAIR(100, 100)
+		*CursorOrigin: PAIR(100, 100)
+	}
+	*Option: Br16K_197x273mm
+	{
+		*rcNameID: =BRRES_PAPERSIZE_16K_197X273
+		*%Name: "16K(197x273mm)"
+		*PageDimensions: PAIR(4650, 6450)
+		*PrintableArea: PAIR(4450, 6250)
+		*PrintableOrigin: PAIR(100, 100)
+		*CursorOrigin: PAIR(100, 100)
+	}
+    *Option: B5
+    {
+        *rcNameID: =RCID_DMPAPER_SYSTEM_NAME
+        *PrintableArea: PAIR(4098, 5870)
+        *PrintableOrigin: PAIR(100, 100)
+        *CursorOrigin: PAIR(100, 100)
+    }
+    *Option: B6_JIS
+    {
+		*rcNameID: =RCID_DMPAPER_SYSTEM_NAME
+		*PrintableArea: PAIR(2822, 4098)
+		*PrintableOrigin: PAIR(100, 100)
+		*CursorOrigin: PAIR(100, 100)
+    }
+    *Option: ENV_10
+    {
+        *rcNameID: =RCID_DMPAPER_SYSTEM_NAME
+        *PrintableArea: PAIR(2274, 5500)
+        *PrintableOrigin: PAIR(100, 100)
+        *CursorOrigin: PAIR(100, 100)
+    }
+    *Option: ENV_DL
+    {
+        *rcNameID: =RCID_DMPAPER_SYSTEM_NAME
+        *PrintableArea: PAIR(2398, 4996)
+        *PrintableOrigin: PAIR(100, 100)
+        *CursorOrigin: PAIR(100, 100)
+    }
+    *Option: ENV_C5
+    {
+        *rcNameID: =RCID_DMPAPER_SYSTEM_NAME
+        *PrintableArea: PAIR(3626, 5208)
+        *PrintableOrigin: PAIR(100, 100)
+        *CursorOrigin: PAIR(100, 100)
+    }
+    *Option: ENV_MONARCH
+    {
+        *rcNameID: =RCID_DMPAPER_SYSTEM_NAME
+        *PrintableArea: PAIR(2124, 4300)
+        *PrintableOrigin: PAIR(100, 100)
+        *CursorOrigin: PAIR(100, 100)
+    }
+    *Option: Br3x5
+    {
+		*rcNameID: =BRRES_PAPERSIZE_3X5	 
+		*%Name: "3 x 5"
+		*PageDimensions: PAIR(1800, 3000)
+		*PrintableArea: PAIR(1600, 2800)
+		*PrintableOrigin: PAIR(100, 100)
+		*CursorOrigin: PAIR(100, 100)
+    }
+    *Option: FOLIO
+    {
+        *rcNameID: =RCID_DMPAPER_SYSTEM_NAME
+        *PrintableArea: PAIR(4900, 7600)
+        *PrintableOrigin: PAIR(100, 100)
+        *CursorOrigin: PAIR(100, 100)
+    }
+    *Option: JAPANESE_POSTCARD
+    {
+        *rcNameID: =RCID_DMPAPER_SYSTEM_NAME
+        *PrintableArea: PAIR(2162, 3296)
+        *PrintableOrigin: PAIR(100, 100)
+        *CursorOrigin: PAIR(100, 100)
+    }
+    *Option: JENV_YOU4
+    {
+        *rcNameID: =RCID_DMPAPER_SYSTEM_NAME
+        *PrintableArea: PAIR(2280, 5350)
+        *PrintableOrigin: PAIR(100, 100)
+        *CursorOrigin: PAIR(100, 100)
+    }
+    *Option: JENV_CHOU3
+    {
+        *rcNameID: =RCID_DMPAPER_SYSTEM_NAME
+        *PrintableArea: PAIR(2634, 5350)
+        *PrintableOrigin: PAIR(100, 100)
+        *CursorOrigin: PAIR(100, 100)
+    }
+    *Option: CUSTOMSIZE
+    {
+        *rcNameID: =RCID_DMPAPER_SYSTEM_NAME
+        *MinSize: PAIR(1800,2742)
+        *MaxSize: PAIR(5100,8400)
+        *TopMargin: 100
+        *BottomMargin: 100
+        *MaxPrintableWidth: 4900
+        *MinLeftMargin: 100
+        *CenterPrintable?: TRUE
+    }
+}
+
+*%******************************************************************************
+*%                             PageOrientation
+*%******************************************************************************
+*Feature: Orientation
+{
+    *rcNameID: =ORIENTATION_DISPLAY
+    *DefaultOption: PORTRAIT
+
+    *Option: PORTRAIT
+    {
+        *rcNameID: =PORTRAIT_DISPLAY
+    }
+
+    *Option: LANDSCAPE_CC90
+    {
+        *rcNameID: =LANDSCAPE_DISPLAY
+    }
+}
+
+*%******************************************************************************
+*%                            Duplex Unit
+*%******************************************************************************
+*Feature: DuplexUnit
+{
+	*rcNameID:=BRRES_DUPLEXUNIT
+	*%Name: "Auto Duplex"
+	*FeatureType: PRINTER_PROPERTY
+	*DefaultOption: FALSE
+    *Option: FALSE
+    {
+		  *rcNameID:=BRRES_NOTINSTALLED 
+        *%Name: "Not Installed"
+        *DisabledFeatures: LIST(Duplex.VERTICAL, Duplex.HORIZONTAL)
+    }
+    *Option: TRUE
+    {
+		  *rcNameID:=BRRES_INSTALLED
+        *%Name: "Installed"
+    }
+}
+
+*%******************************************************************************
+*%                            Duplex
+*%******************************************************************************
+*Feature: Duplex
+{
+    *rcNameID: =TWO_SIDED_PRINTING_DISPLAY
+    *DefaultOption: NONE
+    *Option: NONE
+    {
+        *rcNameID: =NONE_DISPLAY
+    }
+    *Option: VERTICAL
+    {
+        *rcNameID: =FLIP_ON_LONG_EDGE_DISPLAY
+        *Constraints: LIST(PaperSize.EXECUTIVE,PaperSize.A5,PaperSize.A6,PaperSize.ENV_B5,PaperSize.Br16K_195x270mm,PaperSize.Br16K_184x260mm,PaperSize.Br16K_197x273mm,PaperSize.B5,PaperSize.B6_JIS)
+        *Constraints: LIST(PaperSize.ENV_10,PaperSize.ENV_DL,PaperSize.ENV_C5,PaperSize.ENV_MONARCH,PaperSize.Br3x5,PaperSize.JAPANESE_POSTCARD,PaperSize.JENV_YOU4,PaperSize.JENV_CHOU3,PaperSize.CUSTOMSIZE)
+		*Constraints: LIST(PageBrPoster.Poster2x2, PageBrPoster.Poster3x3, PageBrPoster.Poster4x4, PageBrPoster.Poster5x5)
+    }
+    *Option: HORIZONTAL
+    {
+        *rcNameID: =FLIP_ON_SHORT_EDGE_DISPLAY
+        *Constraints: LIST(PaperSize.EXECUTIVE,PaperSize.A5,PaperSize.A6,PaperSize.ENV_B5,PaperSize.Br16K_195x270mm,PaperSize.Br16K_184x260mm,PaperSize.Br16K_197x273mm,PaperSize.B5,PaperSize.B6_JIS)
+        *Constraints: LIST(PaperSize.ENV_10,PaperSize.ENV_DL,PaperSize.ENV_C5,PaperSize.ENV_MONARCH,PaperSize.Br3x5,PaperSize.JAPANESE_POSTCARD,PaperSize.JENV_YOU4,PaperSize.JENV_CHOU3,PaperSize.CUSTOMSIZE)
+		*Constraints: LIST(PageBrPoster.Poster2x2, PageBrPoster.Poster3x3, PageBrPoster.Poster4x4, PageBrPoster.Poster5x5)
+    }
+}
+
+*%******************************************************************************
+*%                            PageOutputColor
+*%******************************************************************************
+*Feature: ColorMode
+{
+    *rcNameID: =COLOR_PRINTING_MODE_DISPLAY
+    *DefaultOption: Color
+    *Option: Color
+    {
+	   *rcNameID:=BRRES_COLORMONO_COLOR
+		*%Name: "Color"
+		*DevBPP: 24
+		*DrvBPP: 24
+		*Color?: TRUE
+    }
+    *Option: Mono
+    {
+		  *rcNameID:=BRRES_COLORMONO_GRAYSCALE
+        *%Name: "Grayscale"
+        *DevBPP: 1
+        *DrvBPP: 24
+        *Color?: FALSE
+    }
+}
+
+*%******************************************************************************
+*%                            PageColorMode
+*%******************************************************************************
+*Feature: PageColorMode
+{
+	*rcNameID: =BRRES_COLORMODE
+	*%Name: "Color Mode"
+	*DefaultOption: Normal
+	*Option: Normal
+	{
+		*rcNameID: =BRRES_COLORMODE_NORMAL
+		*%Name: "Normal"
+	}
+	*Option: VividText
+	{
+		*rcNameID: =BRRES_COLORMODE_VIVID
+		*%Name: "Vivid"
+	}
+	*Option: None
+	{
+		*rcNameID: =BRRES_COLORMODE_NONE
+		*%Name: "None"
+	}
+}
+
+*%******************************************************************************
+*%                             Input Bin
+*%******************************************************************************
+*Feature: InputBin
+{
+    *rcNameID: =PAPER_SOURCE_DISPLAY
+    *DefaultOption: AutoSelect
+
+	*Option: AutoSelect
+	{
+		*rcNameID:=BRRES_INPUTBIN_AUTO
+		*%Name: "Auto Select"
+	}
+    *Option: Tray1
+    {
+      *rcNameID:=BRRES_INPUTBIN_TRAY1
+		*%Name: "Tray1"
+    }
+    *Option: Manual
+    {
+        *rcNameID:=BRRES_INPUTBIN_MANUAL
+        *%Name: "Manual"
+    }
+		
+}
+
+*%******************************************************************************
+*%                            Print Quality
+*%******************************************************************************
+*Feature: PrintQuality
+{
+    *rcNameID: =BRRES_PRINTQUALITY
+	 *%Name: "Print Quality"
+    *DefaultOption: Normal
+    *PrintSchemaKeywordMap: "PageOutputQuality"
+
+    *Option: Normal
+    {
+        *rcNameID: =BRRES_PRINTQULIATY_NORMAL
+		  *%Name: "Normal"
+        *PrintSchemaKeywordMap: "Normal"
+    }
+    *Option: High
+    {
+        *rcNameID: =BRRES_PRINTQULIATY_FINE
+		  *%Name: "Fine"
+        *PrintSchemaKeywordMap: "High"
+    }
+}
+
+*%******************************************************************************
+*%                            Resolution
+*%******************************************************************************
+*Feature: Resolution
+{
+    *rcNameID: =RESOLUTION_DISPLAY
+    *DefaultOption: Option1
+
+    *Option: Option1
+    {
+        *rcNameID:=BRRES_RESOLUTION_600
+		  *%Name: "600 dpi"
+        *DPI: PAIR(600, 600)
+        *TextDPI: PAIR(600, 600)
+        *SpotDiameter: 100
+    }
+}
+
+*%******************************************************************************
+*%                            DocumentCollate
+*%******************************************************************************
+*Feature: Collate
+{
+    *rcNameID:=BRRES_COLLATE
+    *DefaultOption: OFF
+    *Option: OFF
+    {
+        *rcNameID: =OFF_DISPLAY
+    }
+    *Option: ON
+    {
+        *rcNameID: =ON_DISPLAY
+    }
+}
+
+*%******************************************************************************
+*%                            JobNUpAllDocumentsContiguously
+*%******************************************************************************
+*Feature: JobNUpAllDocumentsContiguously
+{
+    *rcNameID:=BRRES_MULTIPLEPAGE
+	 *%Name: "Multiple Page"
+    *PrintSchemaKeywordMap: "JobNUpAllDocumentsContiguously"
+    *DefaultOption: 1
+    *Option: 1
+    {
+        *rcNameID:=BRRES_MULTIPLEPAGE_NORMAL
+		  *%Name: "Normal"
+    }
+    *Option: 2
+    {
+        *rcNameID:=BRRES_MULTIPLEPAGE_2IN1
+		  *%Name: "2in1"
+        *Constraints: LIST(PageBrPoster.Poster2x2, PageBrPoster.Poster3x3, PageBrPoster.Poster4x4, PageBrPoster.Poster5x5)
+    }
+    *Option: 4
+    {
+        *rcNameID:=BRRES_MULTIPLEPAGE_4IN1
+		  *%Name: "4in1"
+        *Constraints: LIST(PageBrPoster.Poster2x2, PageBrPoster.Poster3x3, PageBrPoster.Poster4x4, PageBrPoster.Poster5x5)
+    }
+    *Option: 9
+    {
+        *rcNameID:=BRRES_MULTIPLEPAGE_9IN1
+		  *%Name: "9in1"
+        *Constraints: LIST(PageBrPoster.Poster2x2, PageBrPoster.Poster3x3, PageBrPoster.Poster4x4, PageBrPoster.Poster5x5)
+    }
+    *Option: 16
+    {
+        *rcNameID:=BRRES_MULTIPLEPAGE_16IN1
+		  *%Name: "16in1"
+        *Constraints: LIST(PageBrPoster.Poster2x2, PageBrPoster.Poster3x3, PageBrPoster.Poster4x4, PageBrPoster.Poster5x5)
+    }
+    *Option: 25
+    {
+        *rcNameID:=BRRES_MULTIPLEPAGE_25IN1
+		  *%Name: "25in1"
+        *Constraints: LIST(PageBrPoster.Poster2x2, PageBrPoster.Poster3x3, PageBrPoster.Poster4x4, PageBrPoster.Poster5x5)
+    }
+}
+
+*%******************************************************************************
+*%                            JobPresentationDirection
+*%******************************************************************************
+*Feature: JobPresentationDirection
+{
+    *rcNameID:=BRRES_PAGEORDER
+	 *%Name: "Page Order"
+    *DefaultOption: RightBottom
+    *Option: RightBottom
+    {
+        *rcNameID:=BRRES_PAGEORDER_R2D
+		  *%Name: "RightBottom"
+    }
+    *Option: BottomRight
+    {
+        *rcNameID:=BRRES_PAGEORDER_D2R
+		  *%Name: "BottomRight"
+    }
+    *Option: LeftBottom
+    {
+        *rcNameID:=BRRES_PAGEORDER_L2D
+		  *%Name: "LeftBottom"
+    }
+    *Option: BottomLeft
+    {
+        *rcNameID:=BRRES_PAGEORDER_D2L
+		  *%Name: "BottomLeft"
+    }
+}
+
+*%******************************************************************************
+*%                            PageBrPoster
+*%******************************************************************************
+*Feature: PageBrPoster
+{
+    *rcNameID:=BRRES_POSTERPRINT
+	 *%Name: "Poster Print"
+    *DefaultOption: Normal
+    *Option: Normal
+    {
+        *rcNameID:=BRRES_MULTIPLEPAGE_NORMAL
+	     *%Name: "Normal"
+    }
+    *Option: Poster2x2
+    {
+        *rcNameID:=BRRES_POSTERPRINT_1IN2X2
+	     *%Name: "1in2x2"
+    }
+    *Option: Poster3x3
+    {
+        *rcNameID:=BRRES_POSTERPRINT_1IN3X3
+	     *%Name: "1in3x3"
+    }
+    *Option: Poster4x4
+    {
+        *rcNameID:=BRRES_POSTERPRINT_1IN4X4
+	     *%Name: "1in4x4"
+    }
+    *Option: Poster5x5
+    {
+        *rcNameID:=BRRES_POSTERPRINT_1IN5X5
+	     *%Name: "1in5x5"
+    }
+}
+
+*%******************************************************************************
+*%                            PageReverseImage
+*%******************************************************************************
+*Feature: PageReverseImage
+{
+    *rcNameID:=BRRES_REVERSEPRINT
+	 *%Name: "Reverse Print"
+    *DefaultOption: Off
+    *Option: Off
+    {
+        *rcNameID:=BRRES_OFF
+		  *%Name: "Off"
+    }
+    *Option: On
+    {
+        *rcNameID:=BRRES_ON
+		  *%Name: "On"
+    }
+}
+
+*%******************************************************************************
+*%                            PageBrWatermark
+*%******************************************************************************
+*Feature: PageBrWatermark
+{
+    *rcNameID:=BRRES_WATERMARK
+	 *%Name: "Watermark"
+    *DefaultOption: None
+    *Option: None
+    {
+        *rcNameID:=BRRES_NONE
+	     *%Name: "None"
+    }
+    *Option: CONFIDENTIAL
+    {
+        *Name: "CONFIDENTIAL"
+    }
+    *Option: COPY
+    {
+        *Name: "COPY"
+    }
+    *Option: DRAFT
+    {
+        *Name: "DRAFT"
+    }
+}
+
+*%******************************************************************************
+*%                            JobTonerSaveMode
+*%******************************************************************************
+*Feature: JobTonerSaveMode
+{
+	*rcNameID:=BRRES_TONERSAVE
+	*%Name: "Toner Save Mode"
+	*DefaultOption: Off
+	*Option: Off
+	{
+		*rcNameID:=BRRES_OFF
+	   *%Name: "Off"
+	}
+	*Option: On
+	{
+		*rcNameID:=BRRES_ON
+	   *%Name: "On"
+	}
+}
+
+*%******************************************************************************
+*%                            Reprint
+*%******************************************************************************
+*Feature: Reprint
+{
+	*rcNameID:=BRRES_REPRINT
+	*%Name: "Reprint"
+	*FeatureType: PRINTER_PROPERTY
+	*DefaultOption:	FALSE
+    *Option: FALSE
+    {
+        *rcNameID:=BRRES_NOTAVAILABLE
+	     *%Name: "Not Available"
+        *Constraints: LIST(JobReprint.On)
+    }
+    *Option: TRUE
+    {
+        *rcNameID:=BRRES_AVAILABLE
+	     *%Name: "Available"
+    }
+}
+
+*%******************************************************************************
+*%                            JobReprint
+*%******************************************************************************
+*Feature: JobReprint
+{
+	 *rcNameID:=BRRES_REPRINT_USEREPRINT
+	 *%Name: "Use Reprint"
+    *DefaultOption: Off
+    *Option: Off
+    {
+        *rcNameID:=BRRES_OFF
+	     *%Name: "Off"
+    }
+    *Option: On
+    {
+        *rcNameID:=BRRES_ON
+	     *%Name: "On"
+    }
+}
+
+*%******************************************************************************
+*%                            Sleep Time
+*%******************************************************************************
+*Feature: SleepTime
+{
+	*rcNameID:=BRRES_SLEEP
+	*%Name: "Sleep Time"
+	*FeatureType: PRINTER_PROPERTY
+	*DefaultOption:	FALSE
+   *Option: FALSE
+   {
+        *rcNameID:=BRRES_NOTAVAILABLE
+	     *%Name: "Not Available"
+        *Constraints: LIST(JobBrSleepTime.Manual_0, JobBrSleepTime.Manual_3, JobBrSleepTime.Manual_5, JobBrSleepTime.Manual_10, JobBrSleepTime.Manual_30, JobBrSleepTime.Manual_50)
+   }
+   *Option: TRUE
+   {
+        *rcNameID:=BRRES_AVAILABLE
+	     *%Name: "Available"
+   }
+}
+
+*%******************************************************************************
+*%                            JobBrSleepTime
+*%******************************************************************************
+*Feature: JobBrSleepTime
+{
+	 *rcNameID:=BRRES_SLEEP_TIME
+	 *%Name: "Sleep Time"
+    *DefaultOption: PrinterDefault
+    *Option: PrinterDefault
+    {
+        *rcNameID:=BRRES_PRINTERDEFAULT
+	     *%Name: "Printer Default"
+    }
+    *Option: Manual_0
+    {
+        *Name: "0"
+    }
+    *Option: Manual_3
+    {
+		*Name: "3"
+    }
+    *Option: Manual_5
+    {
+		*Name: "5"
+    }    
+    *Option: Manual_10
+    {
+		*Name: "10"
+    }
+    *Option: Manual_30
+    {
+		*Name: "30"
+    }
+    *Option: Manual_50
+    {
+		*Name: "50"
+    }
+}
+
+*%******************************************************************************
+*%                         Cursor Commands
+*%******************************************************************************
+*OutputDataFormat: H_BYTE
+*Command: CmdSendBlockData { *Cmd : "" }
+*Command: CmdCR { *Cmd : "<0D>" }
+*Command: CmdLF { *Cmd : "<0A>" }
+*Command: CmdFF { *Cmd : "<0C>" }
+
+
