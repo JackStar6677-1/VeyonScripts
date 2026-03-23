@@ -19,7 +19,12 @@ Contenido principal:
 - `APLICAR_FONDO_CASTEL_WINRM.ps1`: distribuye wallpaper.
 - `INSTALAR_IMPRESORA_BROTHER_WINRM.ps1`: instala impresora de sala.
 
+Subcarpetas:
+- `host_106\`: utilidades especificas del PC profesor `192.168.0.106`.
+- `_reports\`: reportes historicos que antes quedaron mezclados en esta carpeta.
+
 Notas:
 - Esta carpeta NO es el kit pendrive.
 - Los componentes que estos scripts copian a los clientes viven en `..\componentes_cliente\`.
 - El script `PREPARAR_REMOTO_WIN10.bat` vive en `..\kit_pendrive\`.
+- Los reportes nuevos se guardan en `..\..\reports\runs\YYYY-MM-DD\admin_winrm\`.

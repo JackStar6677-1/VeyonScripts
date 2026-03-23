@@ -117,8 +117,11 @@ foreach ($h in $hosts) {
     $results += [pscustomobject]@{ Host = $h; Status = $status; User = $userUsed; Detail = $detail }
 }
 
+$reportsDir = Join-Path (Split-Path $PSScriptRoot -Parent | Split-Path -Parent) ("reports\runs\" + (Get-Date -Format "yyyy-MM-dd") + "\admin_winrm")
+if (-not (Test-Path $reportsDir)) { New-Item -ItemType Directory -Path $reportsDir -Force | Out-Null }
+$reportsDir = (Resolve-Path $reportsDir).Path
 $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
-$report = Join-Path $PSScriptRoot ("install_gui_agent_" + $timestamp + ".csv")
+$report = Join-Path $reportsDir ("install_gui_agent_" + $timestamp + ".csv")
 $results | Export-Csv -Path $report -NoTypeInformation -Encoding UTF8
 
 $ok = ($results | Where-Object Status -eq "OK").Count

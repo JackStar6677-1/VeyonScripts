@@ -1,6 +1,6 @@
 param(
     [string]$TaskName = "CastelSyncRepo106",
-    [string]$SyncScriptPath = "C:\Users\Profesor\Documents\GitHub\VeyonScripts\deploy\admin_winrm\SYNC_REPO_TO_106.ps1",
+    [string]$SyncScriptPath = "C:\Users\Jack\Documents\GitHub\VeyonScripts\deploy\admin_winrm\host_106\SYNC_REPO_TO_106.ps1",
     [int]$IntervalMinutes = 15
 )
 

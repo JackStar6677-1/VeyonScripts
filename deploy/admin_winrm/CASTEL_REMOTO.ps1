@@ -203,8 +203,11 @@ function Get-StatusReport {
         }
     }
 
+    $reportsDir = Join-Path (Split-Path $kitRoot -Parent | Split-Path -Parent) ("reports\runs\" + (Get-Date -Format "yyyy-MM-dd") + "\admin_winrm")
+    if (-not (Test-Path $reportsDir)) { New-Item -ItemType Directory -Path $reportsDir -Force | Out-Null }
+    $reportsDir = (Resolve-Path $reportsDir).Path
     $stamp = Get-Date -Format "yyyyMMdd_HHmmss"
-    $report = Join-Path $kitRoot ("castel_status_" + $stamp + ".csv")
+    $report = Join-Path $reportsDir ("castel_status_" + $stamp + ".csv")
     $results | Export-Csv -Path $report -NoTypeInformation -Encoding UTF8
 
     Write-Host "REPORTE: $report" -ForegroundColor Cyan

@@ -99,8 +99,11 @@ foreach ($h in $hosts) {
     }
 }
 
+$reportsDir = Join-Path (Split-Path $PSScriptRoot -Parent | Split-Path -Parent) ("reports\runs\" + (Get-Date -Format "yyyy-MM-dd") + "\admin_winrm")
+if (-not (Test-Path $reportsDir)) { New-Item -ItemType Directory -Path $reportsDir -Force | Out-Null }
+$reportsDir = (Resolve-Path $reportsDir).Path
 $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
-$report = Join-Path $PSScriptRoot ("deploy_ip_mac_helper_" + $timestamp + ".csv")
+$report = Join-Path $reportsDir ("deploy_ip_mac_helper_" + $timestamp + ".csv")
 $results | Export-Csv -Path $report -NoTypeInformation -Encoding UTF8
 
 $ok = ($results | Where-Object Status -eq "OK").Count

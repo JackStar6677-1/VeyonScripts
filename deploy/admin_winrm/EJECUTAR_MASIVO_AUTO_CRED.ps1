@@ -40,8 +40,11 @@ $passSecure = Read-Host "Contrasena comun (ej: administrativa)" -AsSecureString
 
 $ext = [IO.Path]::GetExtension((Resolve-Path $TargetScript).Path).ToLowerInvariant()
 $scriptPath = (Resolve-Path $TargetScript).Path
+$reportsDir = Join-Path (Split-Path $PSScriptRoot -Parent | Split-Path -Parent) ("reports\runs\" + (Get-Date -Format "yyyy-MM-dd") + "\admin_winrm")
+if (-not (Test-Path $reportsDir)) { New-Item -ItemType Directory -Path $reportsDir -Force | Out-Null }
+$reportsDir = (Resolve-Path $reportsDir).Path
 $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
-$report = Join-Path (Get-Location) ("reporte_auto_cred_" + $timestamp + ".csv")
+$report = Join-Path $reportsDir ("reporte_auto_cred_" + $timestamp + ".csv")
 $results = @()
 
 function Invoke-BatRemote {

@@ -14,8 +14,11 @@ if (-not (Test-Path $LocalRepoPath)) { throw "No existe repo local: $LocalRepoPa
 if (-not (Test-Path $LocalMasterConfig)) { throw "No existe config local: $LocalMasterConfig" }
 if (-not (Test-Path $LocalVeyonCli)) { throw "No existe veyon-cli.exe local: $LocalVeyonCli" }
 
+$reportsDir = Join-Path (Split-Path $PSScriptRoot -Parent | Split-Path -Parent | Split-Path -Parent) ("reports\runs\" + (Get-Date -Format "yyyy-MM-dd") + "\admin_winrm")
+if (-not (Test-Path $reportsDir)) { New-Item -ItemType Directory -Path $reportsDir -Force | Out-Null }
+$reportsDir = (Resolve-Path $reportsDir).Path
 $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
-$report = Join-Path $PSScriptRoot ("sync_repo_106_" + $timestamp + ".txt")
+$report = Join-Path $reportsDir ("sync_repo_106_" + $timestamp + ".txt")
 
 function Write-Report {
     param([string]$Message)

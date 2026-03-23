@@ -142,8 +142,11 @@ foreach ($h in $hosts) {
     $results += [pscustomobject]@{ Host = $h; Status = $status; ActiveUser = $activeUser; Detail = $detail }
 }
 
+$reportsDir = Join-Path (Split-Path $PSScriptRoot -Parent | Split-Path -Parent) ("reports\runs\" + (Get-Date -Format "yyyy-MM-dd") + "\admin_winrm")
+if (-not (Test-Path $reportsDir)) { New-Item -ItemType Directory -Path $reportsDir -Force | Out-Null }
+$reportsDir = (Resolve-Path $reportsDir).Path
 $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
-$report = Join-Path $PSScriptRoot ("queue_gui_command_" + $timestamp + ".csv")
+$report = Join-Path $reportsDir ("queue_gui_command_" + $timestamp + ".csv")
 $results | Export-Csv -Path $report -NoTypeInformation -Encoding UTF8
 
 $queued = ($results | Where-Object Status -eq "QUEUED").Count
