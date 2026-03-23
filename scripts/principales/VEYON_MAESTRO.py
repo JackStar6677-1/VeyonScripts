@@ -354,7 +354,11 @@ def main():
     # Actualizar Veyon (SIN borrar configuraciÃ³n)
     update_veyon_safely(veyon_clients)
     
-    input("\nPresiona Enter para continuar...")
+    try:
+        input("\nPresiona Enter para continuar...")
+    except EOFError:
+        # Permite ejecucion remota/no interactiva por WinRM sin marcar error.
+        pass
 
 if __name__ == "__main__":
     main()

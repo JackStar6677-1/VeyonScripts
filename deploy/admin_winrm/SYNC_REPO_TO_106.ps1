@@ -47,6 +47,7 @@ try {
 
     Compress-Archive -Path @(
         (Join-Path $LocalRepoPath "README.md"),
+        (Join-Path $LocalRepoPath "requirements.txt"),
         (Join-Path $LocalRepoPath "apps"),
         (Join-Path $LocalRepoPath "data"),
         (Join-Path $LocalRepoPath "deploy"),
@@ -98,7 +99,17 @@ try {
         }
 
         Expand-Archive -Path $zip -DestinationPath $RemoteRepoPath -Force
-        & "C:\Program Files\Veyon\veyon-cli.exe" config import $veyonCfg | Out-Null
+
+        # Algunas builds viejas de Veyon/Qt escriben warnings DPI a stderr
+        # aunque el import termine bien. Los capturamos para no romper el sync.
+        $importOutput = & "C:\Program Files\Veyon\veyon-cli.exe" config import $veyonCfg 2>&1
+        $importExit = $LASTEXITCODE
+        $importText = ($importOutput | ForEach-Object { "$_" }) -join "`n"
+        $benignQtWarning = $importText -match "qt\.qpa\.window: SetProcessDpiAwarenessContext\(\) failed"
+
+        if ($importExit -ne 0 -and -not $benignQtWarning) {
+            throw "Import Veyon fallo (exit=$importExit): $importText"
+        }
 
         $readmePath = Join-Path $RemoteRepoPath "README.md"
 
@@ -106,10 +117,12 @@ try {
             RepoReadme = Test-Path $readmePath
             AlumnoConfig = Test-Path "C:\Users\Alumno\AppData\Roaming\Veyon\Config\VeyonMaster.json"
             ColegioConfig = Test-Path "C:\Users\Colegio\AppData\Roaming\Veyon\Config\VeyonMaster.json"
+            ImportExit = $importExit
+            ImportQtWarning = $benignQtWarning
         }
     } -ArgumentList $RemoteRepoPath
 
-    Write-Report ("RepoReadme={0}; AlumnoConfig={1}; ColegioConfig={2}" -f $result.RepoReadme, $result.AlumnoConfig, $result.ColegioConfig)
+    Write-Report ("RepoReadme={0}; AlumnoConfig={1}; ColegioConfig={2}; ImportExit={3}; ImportQtWarning={4}" -f $result.RepoReadme, $result.AlumnoConfig, $result.ColegioConfig, $result.ImportExit, $result.ImportQtWarning)
     Write-Report "Sincronizacion OK"
 }
 catch {

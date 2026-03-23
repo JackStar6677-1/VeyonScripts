@@ -1,2 +1,0 @@
-﻿[2026-03-18 14:55:02] Inicio de sincronizacion hacia 192.168.0.106
-[2026-03-18 14:55:24] Host no disponible por WinRM. Se omite esta pasada.
