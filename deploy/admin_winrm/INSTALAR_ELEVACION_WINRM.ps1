@@ -11,6 +11,25 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+$scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+
+function Resolve-LocalPath {
+    param([string]$InputPath)
+
+    if ([string]::IsNullOrWhiteSpace($InputPath)) {
+        return $InputPath
+    }
+
+    if ([System.IO.Path]::IsPathRooted($InputPath)) {
+        return $InputPath
+    }
+
+    return Join-Path $scriptRoot $InputPath
+}
+
+$HostsFile = Resolve-LocalPath -InputPath $HostsFile
+$LocalBridgePath = Resolve-LocalPath -InputPath $LocalBridgePath
+$LocalPayloadPaths = @($LocalPayloadPaths | ForEach-Object { Resolve-LocalPath -InputPath $_ })
 
 if (-not (Test-Path $HostsFile)) {
     Write-Host "[ERROR] No existe hosts file: $HostsFile" -ForegroundColor Red
