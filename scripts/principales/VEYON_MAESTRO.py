@@ -264,10 +264,47 @@ def read_console_line_fallback(prompt: str) -> str:
         sys.stdout.write(ch)
         sys.stdout.flush()
 
+def prompt_yes_no_windows(prompt: str, default: bool = False) -> bool:
+    """Lee una sola tecla S/N directamente desde la consola de Windows."""
+    if msvcrt is None:
+        return default
+
+    while msvcrt.kbhit():
+        msvcrt.getwch()
+
+    suffix = " [S/N, Enter=N]: " if not default else " [S/N, Enter=S]: "
+    sys.stdout.write(f"{prompt}{suffix}")
+    sys.stdout.flush()
+
+    while True:
+        ch = msvcrt.getwch()
+
+        if ch in ("\x00", "\xe0"):
+            msvcrt.getwch()
+            continue
+
+        if ch == "\003":
+            raise KeyboardInterrupt
+
+        if ch in ("\r", "\n"):
+            sys.stdout.write("\n")
+            sys.stdout.flush()
+            return default
+
+        value = ch.strip().lower()
+        if value == "s":
+            sys.stdout.write("s\n")
+            sys.stdout.flush()
+            return True
+        if value == "n":
+            sys.stdout.write("n\n")
+            sys.stdout.flush()
+            return False
+
 def prompt_yes_no(prompt: str, default: bool = False) -> bool:
     """Pregunta si/no de forma robusta incluso con stdin roto en consolas elevadas."""
     if os.name == "nt" and msvcrt is not None:
-        response = read_console_line_fallback(prompt)
+        return prompt_yes_no_windows(prompt, default)
     else:
         try:
             response = input(prompt)
