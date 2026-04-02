@@ -25,6 +25,8 @@ except ImportError:
 
 COMPUTER_PREFIX = "CASTEL"
 LOCATION_NAME = "SalaComputacion"
+IGNORED_IPS = {"192.168.0.234"}
+IGNORED_NAMES = {"CASTEL-30"}
 
 MAPEO_FISICO_MAC = {
     "08-BF-B8-BE-76-66": 1,
@@ -505,10 +507,16 @@ def filter_veyon_clients(devices: List[Dict]) -> List[Dict]:
     for device in devices:
         ip = device['ip']
         mac = device['mac'].upper()
+        raw_name = (device.get('name') or '').strip().upper()
+        original_name = (device.get('original_name') or '').strip().upper()
         key = (ip, mac)
 
         if ip == local_ip:
             print(f"  {ip} - omitido (equipo administrador actual)")
+            continue
+
+        if ip in IGNORED_IPS or raw_name in IGNORED_NAMES or original_name in IGNORED_NAMES:
+            print(f"  {ip} - {device['name']} - OMITIDO (equipo centro de mando)")
             continue
 
         if key in skipped_conflicts:

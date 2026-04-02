@@ -21,6 +21,9 @@ import tempfile
 import csv
 from typing import List, Dict
 
+IGNORED_IPS = {"192.168.0.234"}
+IGNORED_NAMES = {"CASTEL-30"}
+
 def is_admin():
     """Verifica si el script se ejecuta con permisos de administrador"""
     try:
@@ -131,6 +134,12 @@ def filter_veyon_clients(devices: List[Dict]) -> List[Dict]:
     for device in devices:
         ip = device['ip']
         name = device['name']
+        raw_name = (name or '').strip().upper()
+        original_name = (device.get('original_name') or '').strip().upper()
+
+        if ip in IGNORED_IPS or raw_name in IGNORED_NAMES or original_name in IGNORED_NAMES:
+            print(f"  {ip} - {name} - OMITIDO (equipo centro de mando)")
+            continue
         
         if test_veyon_client(ip):
             # Generar nombre para Veyon
