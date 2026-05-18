@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 ========================================
@@ -25,8 +25,14 @@ except ImportError:
 
 COMPUTER_PREFIX = "CASTEL"
 LOCATION_NAME = "SalaComputacion"
-IGNORED_IPS = {"192.168.0.234"}
-IGNORED_NAMES = {"CASTEL-30"}
+
+# Equipos que nunca deben aparecer en la cuadrícula de Veyon Master
+EXCLUDED_MACS = {
+    "00-E0-4C-78-31-1B", # Laptop Admin
+    "08-BF-B8-36-70-4F", # PC Profesor
+}
+
+PROFESOR_MAC = "08-BF-B8-36-70-4F"
 
 MAPEO_FISICO_MAC = {
     "08-BF-B8-BE-76-66": 1,
@@ -515,8 +521,8 @@ def filter_veyon_clients(devices: List[Dict]) -> List[Dict]:
             print(f"  {ip} - omitido (equipo administrador actual)")
             continue
 
-        if ip in IGNORED_IPS or raw_name in IGNORED_NAMES or original_name in IGNORED_NAMES:
-            print(f"  {ip} - {device['name']} - OMITIDO (equipo centro de mando)")
+        if mac in EXCLUDED_MACS:
+            print(f"  {ip} - {mac} - OMITIDO (equipo excluido: admin o profesor)")
             continue
 
         if key in skipped_conflicts:
@@ -556,7 +562,7 @@ def filter_veyon_clients(devices: List[Dict]) -> List[Dict]:
     return filtered_clients
 
 def update_veyon_safely(veyon_clients: List[Dict]):
-    """Actualiza Veyon SIN borrar la configuraciÃ³n existente"""
+    """Actualiza Veyon SIN borrar la configuración existente"""
     veyon_cli = r"C:\Program Files\Veyon\veyon-cli.exe"
     
     if not os.path.exists(veyon_cli):
@@ -566,16 +572,16 @@ def update_veyon_safely(veyon_clients: List[Dict]):
     print(f"Actualizando Veyon con {len(veyon_clients)} clientes...")
     
     try:
-        # Primero crear la ubicaciÃ³n si no existe
-        print(f"Creando ubicaciÃ³n '{LOCATION_NAME}'...")
+        # Primero crear la ubicación si no existe
+        print(f"Creando ubicación '{LOCATION_NAME}'...")
         result = subprocess.run([
             veyon_cli, "networkobjects", "add", "location", LOCATION_NAME
         ], capture_output=True, timeout=30)
         
         if result.returncode == 0:
-            print("  âœ“ UbicaciÃ³n creada/verificada")
+            print("  ✓ Ubicación creada/verificada")
         else:
-            print(f"  âš  UbicaciÃ³n ya existe o error: {result.stderr}")
+            print(f"  ⚠ Ubicación ya existe o error: {result.stderr}")
         
         # Ahora agregar computadoras
         added_count = 0
@@ -591,24 +597,58 @@ def update_veyon_safely(veyon_clients: List[Dict]):
                 veyon_cli, "networkobjects", "remove", "computer", name
             ], capture_output=True, text=True, timeout=30)
             
-            # Agregar computadora a la ubicaciÃ³n
+            # Agregar computadora a la ubicación
             result = subprocess.run([
                 veyon_cli, "networkobjects", "add", "computer",
                 name, ip, mac, LOCATION_NAME
             ], capture_output=True, timeout=30)
             
             if result.returncode == 0:
-                print(f"  âœ“ {name} agregado correctamente")
+                print(f"  ✓ {name} agregado correctamente")
                 added_count += 1
             else:
-                print(f"  âœ— Error agregando {name}: {result.stderr}")
+                print(f"  ✗ Error agregando {name}: {result.stderr}")
         
-        print(f"\n[OK] ActualizaciÃ³n completada: {added_count} computadoras agregadas")
+        print(f"\n[OK] Actualización completada: {added_count} computadoras agregadas")
         print("Abre Veyon Master para ver los cambios")
         return True
         
     except Exception as e:
         print(f"[ERROR] Error actualizando Veyon: {e}")
+        return False
+
+def sync_profesor_files(prof_ip: str):
+    """Sincroniza archivos y configuración con el PC del profesor vía WinRM"""
+    print(f"\n[WINRM] Iniciando sincronización con PC Profesor ({prof_ip})...")
+    
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    repo_root = os.path.abspath(os.path.join(script_dir, "..", ".."))
+    sync_script = os.path.join(repo_root, "deploy", "admin_winrm", "SYNC_PROFESOR.ps1")
+    
+    if not os.path.exists(sync_script):
+        print(f"[ERROR] No se encontró el script de sincronización: {sync_script}")
+        return False
+        
+    try:
+        cmd = [
+            "powershell.exe", "-ExecutionPolicy", "Bypass", "-File", sync_script,
+            "-ComputerName", prof_ip,
+            "-LocalRepoPath", repo_root,
+            "-LocalMasterConfig", os.path.expandvars(r"%APPDATA%\Veyon\Config\VeyonMaster.json")
+        ]
+        
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        
+        if result.returncode == 0:
+            print("[OK] Sincronización con PC Profesor completada.")
+            return True
+        else:
+            print(f"[ERROR] Falló la sincronización (Código {result.returncode})")
+            print(f"Detalle: {result.stdout}\n{result.stderr}")
+            return False
+            
+    except Exception as e:
+        print(f"[ERROR] Error al ejecutar sincronización WinRM: {e}")
         return False
 
 def main():
@@ -648,8 +688,18 @@ def main():
         print("ActualizaciÃ³n cancelada")
         return
     
-    # Actualizar Veyon (SIN borrar configuraciÃ³n)
+    # Actualizar Veyon (SIN borrar configuración)
     update_veyon_safely(veyon_clients)
+    
+    # Sincronización con el PC del profesor si fue detectado
+    prof_device = next((d for d in devices if d['mac'].upper() == PROFESOR_MAC), None)
+    if prof_device:
+        print(f"\n[INFO] Se ha detectado el PC del Profesor en {prof_device['ip']}")
+        if prompt_yes_no("¿Deseas sincronizar los archivos y configuración con el PC del Profesor? (s/N): "):
+            sync_profesor_files(prof_device['ip'])
+    else:
+        print("\n[INFO] No se detectó el PC del Profesor en la red para sincronización.")
+
     
     try:
         input("\nPresiona Enter para continuar...")
