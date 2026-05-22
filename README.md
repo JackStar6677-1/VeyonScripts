@@ -1,7 +1,11 @@
-﻿# Suite de Automatizacion - VeyonScripts y Optimizacion Windows 11
+# Suite de Automatización — VeyonScripts y Optimización Windows 11
 
-**Desarrollado por: Pablo Elias Avendano Miranda**  
-*Ingeniero en Informatica*
+<p align="center">
+  <img src="assets/hero.svg" alt="VeyonScripts Hero Banner" width="800">
+</p>
+
+**Desarrollado por: Pablo Elías Avendaño Miranda**  
+*Ingeniero en Informática*
 
 ---
 
@@ -142,14 +146,38 @@ La administracion remota usa dos capas:
 
 Esto evita el error tipico de intentar controlar ventanas graficas desde Session 0, donde WinRM no tiene escritorio interactivo.
 
-#### 3. Elevacion sin UAC manual
+#### 3. Elevación sin UAC manual
 
-Cuando una accion requiere permisos altos, no se intenta automatizar el cuadro UAC. En su lugar:
+Cuando una acción requiere permisos altos, no se intenta interactuar con la ventana emergente de UAC (User Account Control), la cual está bloqueada para sesiones no interactivas de WinRM. En su lugar, se implementa un diseño de ejecución asíncrono desacoplado:
 
 - Se instala `ADMIN_ELEVATION_BRIDGE.ps1` en cada cliente.
-- Se registra una tarea programada `Castel-AdminBridge` como `SYSTEM`.
-- WinRM deja un comando en `C:\ProgramData\CastelRemote\admin-queue\`.
-- La tarea procesa la cola con privilegios altos.
+- Se registra una tarea programada llamada `Castel-AdminBridge` que corre bajo el contexto del usuario especial `SYSTEM` (con privilegios administrativos máximos y sin restricciones de UAC).
+- El administrador, a través de WinRM, deposita un comando formateado en JSON en la cola local del cliente: `C:\ProgramData\CastelRemote\admin-queue\`.
+- Acto seguido, WinRM le ordena al programador de tareas iniciar la tarea programada (`schtasks.exe /Run /TN Castel-AdminBridge`).
+- La tarea programada lee los comandos pendientes de la cola, los ejecuta con privilegios de `SYSTEM` y guarda los resultados en `C:\ProgramData\CastelRemote\admin-processed\`.
+
+##### Diagrama de Secuencia: Elevación por Bridge (SYSTEM)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Admin as Administrador (WinRM)
+    participant ClientWinRM as Cliente (WinRM Session 0)
+    participant Queue as Cola Local (admin-queue/)
+    participant ScheduledTask as Castel-AdminBridge (Task SYSTEM)
+    participant Payload as Ejecución Payload (SYSTEM)
+    participant Processed as Historial (admin-processed/)
+
+    Admin->>ClientWinRM: Ejecuta comando admin (ej: ENVIAR_ADMIN_COMANDO_WINRM.ps1)
+    ClientWinRM->>Queue: Genera archivo de comando JSON (ID único)
+    ClientWinRM->>ScheduledTask: Ejecuta la tarea remota (schtasks /Run /TN Castel-AdminBridge)
+    Note over ScheduledTask: Se despierta la tarea en contexto SYSTEM
+    ScheduledTask->>Queue: Lee y deserializa el archivo JSON pendiente
+    ScheduledTask->>Payload: Ejecuta el script/comando solicitado (cmd o powershell)
+    Payload-->>Processed: Escribe el archivo de resultado JSON con StdOut/StdErr
+    Payload-->>Queue: Elimina el JSON de la cola tras finalizar
+    ClientWinRM->>Admin: Confirma el encolado exitoso
+```
 
 Con esto se pueden lanzar:
 
@@ -157,7 +185,7 @@ Con esto se pueden lanzar:
 - PowerShell inline
 - Comandos `cmd`
 
-sin pedir la clave `administrativa` en ventanas emergentes.
+sin requerir interacción física o credenciales interactivas en ventanas emergentes.
 
 #### 4. Reset de navegadores compartidos
 
