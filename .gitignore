@@ -49,14 +49,34 @@ desktop.ini
 *.rar
 *.zip
 *.7z
+*.sqlite
+*.db
+*.db-journal
+*.sqlite-journal
 
 # Configuraciones locales
 *.cfg
+*.local.*
+*.secret.*
+*.token.*
+*.key
+*.pem
+*.pfx
+*.cer
 
 # Artefactos operativos y reportes locales
 reports/runs/
 reports/old/
 data/scans/
+backups/
+memory/
+tasks/
+tmp_convenios/
+void_env/
+config/
+**/_reports/
+openclaw-*.log
+query
 deploy/kit_pendrive/*.csv
 deploy/kit_pendrive/*_status_*.csv
 deploy/kit_pendrive/queue_admin_command_*.csv
@@ -64,6 +84,13 @@ deploy/kit_pendrive/queue_admin_command_*.csv
 # Inventario y topologia local del laboratorio
 deploy/kit_pendrive/hosts_castel.txt
 data/reservas_dhcp_castel.csv
+data/*.csv
+!examples/*.csv
 
 # Herramientas con configuracion local sensible
 tools/wakemeonlan/*.cfg
+
+# Mantener ejemplos y documentacion versionables
+!examples/
+!docs/
+!docs/**/*.md

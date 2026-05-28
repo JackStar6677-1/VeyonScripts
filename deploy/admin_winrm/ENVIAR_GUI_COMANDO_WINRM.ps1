@@ -3,7 +3,7 @@ param(
     [string]$Action,
     [string]$HostsFile = ".\hosts_castel.txt",
     [string[]]$UserCandidates = @("Colegio", "colegio", "Admin", "Administrador", "Usuario", "Alumno", "Estudiante", "Profesor"),
-    [string]$PasswordPlain = "administrativa",
+    [string]$PasswordPlain = "",
     [string]$Path = "",
     [string]$Arguments = "",
     [string]$WorkingDirectory = "",
@@ -53,6 +53,9 @@ if ($Action -eq "keys") {
 }
 
 $commandJson = $commandObject | ConvertTo-Json -Depth 5
+if ([string]::IsNullOrWhiteSpace($PasswordPlain)) {
+    $PasswordPlain = Read-Host "Clave local de WinRM"
+}
 $pass = ConvertTo-SecureString $PasswordPlain -AsPlainText -Force
 
 function Get-WorkingCredential {

@@ -1,7 +1,7 @@
 param(
     [string]$HostsFile = ".\hosts_castel.txt",
     [string[]]$UserCandidates = @("Colegio", "colegio", "Admin", "Administrador", "Usuario", "Alumno", "Estudiante", "Profesor"),
-    [string]$PasswordPlain = "administrativa",
+    [string]$PasswordPlain = "",
     [switch]$IncludeEdge,
     [switch]$DisableChromeSignin,
     [switch]$SkipBridgeInstall,

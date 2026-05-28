@@ -15,6 +15,7 @@ import subprocess
 import socket
 import tempfile
 import csv
+import json
 from collections import defaultdict
 from typing import List, Dict, Tuple
 
@@ -24,63 +25,77 @@ except ImportError:
     msvcrt = None
 
 COMPUTER_PREFIX = "CASTEL"
-LOCATION_NAME = "SalaComputacion"
+DEFAULT_LOCATION_NAME = "SalaComputacion"
+LOCAL_TOPOLOGY_PATH = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "..", "..", "config", "veyon_topology.local.json")
+)
 
-# Equipos que nunca deben aparecer en la cuadrícula de Veyon Master
-EXCLUDED_MACS = {
-    "00-E0-4C-78-31-1B", # Laptop Admin
-    "08-BF-B8-36-70-4F", # PC Profesor
-}
+def normalize_mac_map(raw_map: Dict) -> Dict:
+    """Normaliza claves MAC de un diccionario cargado desde configuracion local."""
+    return {
+        str(mac).strip().upper(): value
+        for mac, value in raw_map.items()
+        if str(mac).strip()
+    }
 
-PROFESOR_MAC = "08-BF-B8-36-70-4F"
+def load_local_topology() -> Dict:
+    """Carga topologia privada ignorada por Git, sin exponer MACs reales en el repo."""
+    if not os.path.exists(LOCAL_TOPOLOGY_PATH):
+        print(f"[WARN] Topologia local no encontrada: {LOCAL_TOPOLOGY_PATH}")
+        print("[WARN] Se usaran nombres automaticos y solo la ubicacion por defecto.")
+        return {}
 
+    try:
+        with open(LOCAL_TOPOLOGY_PATH, "r", encoding="utf-8") as file:
+            return json.load(file)
+    except Exception as exc:
+        print(f"[WARN] No se pudo leer la topologia local: {exc}")
+        return {}
+
+LOCAL_TOPOLOGY = load_local_topology()
+
+# La topologia real vive en config/veyon_topology.local.json, ignorado por Git.
+ROOM_PARENT_LOCATIONS = LOCAL_TOPOLOGY.get("room_parent_locations", {})
+COMPUTER_NAME_OVERRIDES_BY_MAC = normalize_mac_map(
+    LOCAL_TOPOLOGY.get("computer_name_overrides_by_mac", {})
+)
+LOCATION_OVERRIDES_BY_MAC = normalize_mac_map(
+    LOCAL_TOPOLOGY.get("location_overrides_by_mac", {})
+)
+EXCLUDED_MACS = set(normalize_mac_map({mac: True for mac in LOCAL_TOPOLOGY.get("excluded_macs", [])}))
+PROFESOR_MAC = str(LOCAL_TOPOLOGY.get("profesor_mac", "")).strip().upper()
 MAPEO_FISICO_MAC = {
-    "08-BF-B8-BE-76-66": 1,
-    "08-BF-B8-36-6C-21": 2,
-    "08-BF-B8-36-6F-B6": 3,
-    "08-BF-B8-36-6E-6E": 4,
-    "08-BF-B8-36-6E-D7": 5,
-    "08-BF-B8-36-70-4F": 6,
-    "08-BF-B8-36-6B-32": 7,
-    "08-BF-B8-36-6C-04": 8,
-    "08-BF-B8-36-6C-2A": 9,
-    "08-BF-B8-36-6B-67": 10,
-    "08-BF-B8-36-6B-5A": 11,
-    "08-BF-B8-6E-20-29": 12,
-    "08-BF-B8-36-6B-4A": 13,
-    "30-9C-23-D4-B9-D2": 14,
-    "08-BF-B8-A3-8B-87": 15,
-    "08-BF-B8-A3-8A-3C": 16,
-    "08-BF-B8-A3-8B-7E": 17,
-    "08-BF-B8-A3-8B-32": 18,
-    "08-BF-B8-A3-89-FB": 19,
-    "08-BF-B8-A2-2B-5F": 20,
-    "08-BF-B8-A2-2B-19": 21,
-    "08-BF-B8-6E-1F-F0": 22,
-    "30-9C-23-0C-68-CD": 23,
-    "08-BF-B8-6E-20-45": 24,
-    "08-BF-B8-6E-20-F3": 25,
-    "08-BF-B8-6E-20-4B": 26,
-    "08-BF-B8-6E-1F-F5": 27,
-    "04-7C-16-BD-C2-C6": 28,
-    "04-7C-16-BD-C2-CF": 29,
-    "04-7C-16-BD-C3-2F": 30,
-    "04-7C-16-BD-C2-9C": 31,
-    "04-7C-16-BD-C2-94": 32,
-    "04-7C-16-BD-C2-E4": 33,
-    "08-BF-B8-A3-8A-CD": 34,
-    "08-BF-B8-BE-76-FC": 35,
-    "08-BF-B8-BE-77-0D": 36,
-    "08-BF-B8-A3-8B-95": 37,
-    "04-7C-16-BD-C2-AD": 38,
-    "08-BF-B8-BE-76-3A": 39,
-    "30-9C-23-09-06-4C": 40,
-    "30-9C-23-AA-BF-D8": 41,
-    "A8-A1-59-9B-B2-D8": 42,
+    mac: int(number)
+    for mac, number in normalize_mac_map(LOCAL_TOPOLOGY.get("physical_mac_map", {})).items()
 }
 
 def format_computer_name(number: int) -> str:
     return f"{COMPUTER_PREFIX}-{number:02d}"
+
+def get_client_name(mac: str, fallback_number: int) -> str:
+    """Devuelve el nombre visible de Veyon para un equipo detectado."""
+    normalized_mac = (mac or "").strip().upper()
+    return COMPUTER_NAME_OVERRIDES_BY_MAC.get(normalized_mac) or format_computer_name(fallback_number)
+
+def get_client_location(client: Dict) -> str:
+    """Devuelve la ubicacion Veyon correcta para un cliente detectado."""
+    mac = (client.get("mac") or "").strip().upper()
+
+    return (
+        LOCATION_OVERRIDES_BY_MAC.get(mac)
+        or DEFAULT_LOCATION_NAME
+    )
+
+def get_location_chain(location: str) -> List[str]:
+    """Devuelve la cadena de ubicaciones que debe existir antes de agregar un PC."""
+    parent = ROOM_PARENT_LOCATIONS.get(location)
+    if parent:
+        return [parent, location]
+    return [location]
+
+def get_location_parent(location: str) -> str:
+    """Devuelve la ubicacion padre para crear jerarquia en Veyon."""
+    return ROOM_PARENT_LOCATIONS.get(location, "")
 
 def get_scan_ranges() -> List[Tuple[str, str]]:
     """Detecta rangos IPv4 para escaneo."""
@@ -538,7 +553,7 @@ def filter_veyon_clients(devices: List[Dict]) -> List[Dict]:
 
         if tested_ips[ip]:
             if mac in MAPEO_FISICO_MAC:
-                veyon_name = format_computer_name(MAPEO_FISICO_MAC[mac])
+                veyon_name = get_client_name(mac, MAPEO_FISICO_MAC[mac])
             else:
                 veyon_name = format_computer_name(next_number)
                 next_number += 1
@@ -572,16 +587,28 @@ def update_veyon_safely(veyon_clients: List[Dict]):
     print(f"Actualizando Veyon con {len(veyon_clients)} clientes...")
     
     try:
-        # Primero crear la ubicación si no existe
-        print(f"Creando ubicación '{LOCATION_NAME}'...")
-        result = subprocess.run([
-            veyon_cli, "networkobjects", "add", "location", LOCATION_NAME
-        ], capture_output=True, timeout=30)
-        
-        if result.returncode == 0:
-            print("  ✓ Ubicación creada/verificada")
-        else:
-            print(f"  ⚠ Ubicación ya existe o error: {result.stderr}")
+        # Primero crear las ubicaciones necesarias si no existen.
+        locations = []
+        seen_locations = set()
+        for client in veyon_clients:
+            for location in get_location_chain(get_client_location(client)):
+                if location not in seen_locations:
+                    seen_locations.add(location)
+                    locations.append(location)
+
+        for location in locations:
+            print(f"Creando ubicacion '{location}'...")
+            add_location_cmd = [veyon_cli, "networkobjects", "add", "location", location]
+            parent = get_location_parent(location)
+            if parent:
+                add_location_cmd.append(parent)
+
+            result = subprocess.run(add_location_cmd, capture_output=True, timeout=30)
+
+            if result.returncode == 0:
+                print("  [OK] Ubicacion creada/verificada")
+            else:
+                print(f"  [INFO] Ubicacion ya existe o no requiere cambios: {result.stderr}")
         
         # Ahora agregar computadoras
         added_count = 0
@@ -589,18 +616,24 @@ def update_veyon_safely(veyon_clients: List[Dict]):
             name = client['name']
             ip = client['ip']
             mac = client['mac']
+            location = get_client_location(client)
             
-            print(f"Agregando {name} ({ip})...")
+            print(f"Agregando {name} ({ip}) en {location}...")
 
-            # Reemplazar por nombre para mantener configuraciones existentes.
-            subprocess.run([
-                veyon_cli, "networkobjects", "remove", "computer", name
-            ], capture_output=True, text=True, timeout=30)
+            # Reemplazar por nombre actual y por el nombre CASTEL-XX historico si cambio.
+            names_to_remove = {name}
+            if mac in MAPEO_FISICO_MAC:
+                names_to_remove.add(format_computer_name(MAPEO_FISICO_MAC[mac]))
+
+            for existing_name in names_to_remove:
+                subprocess.run([
+                    veyon_cli, "networkobjects", "remove", existing_name
+                ], capture_output=True, text=True, timeout=30)
             
             # Agregar computadora a la ubicación
             result = subprocess.run([
                 veyon_cli, "networkobjects", "add", "computer",
-                name, ip, mac, LOCATION_NAME
+                name, ip, mac, location
             ], capture_output=True, timeout=30)
             
             if result.returncode == 0:
@@ -709,6 +742,5 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
 

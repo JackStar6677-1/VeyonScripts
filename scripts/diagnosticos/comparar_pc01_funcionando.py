@@ -15,7 +15,7 @@ class ComparadorPC01:
         self.veyon_cli = r"C:\Program Files\Veyon\veyon-cli.exe"
         self.pc01_ip = "192.168.50.236"
         self.pc_funcionando_ip = "192.168.50.222"  # PC-02 que funciona
-        self.pc_funcionando_mac = "00-D8-61-CB-96-9A"
+        self.pc_funcionando_mac = "02-00-00-00-00-08"
         
     def run_comparacion(self):
         """Ejecuta comparación entre PC-01 y PC funcionando"""

@@ -1,7 +1,7 @@
 param(
     [string]$ComputerName = "192.168.0.106",
     [string]$UserName = "Colegio",
-    [string]$PasswordPlain = "administrativa",
+    [string]$PasswordPlain = "",
     [string]$LocalRepoPath = "C:\Users\Profesor\Documents\GitHub\VeyonScripts",
     [string]$LocalMasterConfig = "C:\Users\Profesor\AppData\Roaming\Veyon\Config\VeyonMaster.json",
     [string]$LocalPrivateKey = "C:\ProgramData\Veyon\keys\private\Sala-de-computacion\key",
@@ -19,6 +19,9 @@ if (-not (Test-Path $LocalPublicKey)) { throw "No existe clave publica local: $L
 if (-not (Test-Path $LocalMasterExe)) { throw "No existe veyon-master.exe local: $LocalMasterExe" }
 if (-not (Test-Path $LocalVeyonCli)) { throw "No existe veyon-cli.exe local: $LocalVeyonCli" }
 
+if ([string]::IsNullOrWhiteSpace($PasswordPlain)) {
+    $PasswordPlain = Read-Host "Clave local de WinRM"
+}
 $pass = ConvertTo-SecureString $PasswordPlain -AsPlainText -Force
 $cred = New-Object System.Management.Automation.PSCredential("$ComputerName\$UserName", $pass)
 $session = $null

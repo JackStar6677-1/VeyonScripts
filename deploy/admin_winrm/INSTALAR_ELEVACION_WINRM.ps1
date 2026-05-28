@@ -1,7 +1,7 @@
 param(
     [string]$HostsFile = ".\hosts_castel.txt",
     [string[]]$UserCandidates = @("Colegio", "colegio", "Admin", "Administrador", "Usuario", "Alumno", "Estudiante", "Profesor"),
-    [string]$PasswordPlain = "administrativa",
+    [string]$PasswordPlain = "",
     [string]$LocalBridgePath = "..\componentes_cliente\ADMIN_ELEVATION_BRIDGE.ps1",
     [string[]]$LocalPayloadPaths = @(
         "..\componentes_cliente\RESET_CHROME_COMPARTIDO.ps1",
@@ -55,6 +55,9 @@ foreach ($payloadPath in $LocalPayloadPaths) {
             Content = Get-Content -Path $payloadPath -Raw -Encoding UTF8
         }
     }
+}
+if ([string]::IsNullOrWhiteSpace($PasswordPlain)) {
+    $PasswordPlain = Read-Host "Clave local de WinRM"
 }
 $pass = ConvertTo-SecureString $PasswordPlain -AsPlainText -Force
 

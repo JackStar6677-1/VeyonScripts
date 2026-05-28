@@ -1,0 +1,23 @@
+{
+  "room_parent_locations": {
+    "6B": "SalasBasica",
+    "4MB": "SalasMedia"
+  },
+  "computer_name_overrides_by_mac": {
+    "02-00-00-00-00-04": "6B",
+    "02-00-00-00-00-40": "4MB"
+  },
+  "location_overrides_by_mac": {
+    "02-00-00-00-00-04": "6B",
+    "02-00-00-00-00-40": "4MB"
+  },
+  "excluded_macs": [
+    "02-00-00-00-00-99"
+  ],
+  "profesor_mac": "02-00-00-00-00-99",
+  "physical_mac_map": {
+    "02-00-00-00-00-01": 1,
+    "02-00-00-00-00-04": 4,
+    "02-00-00-00-00-40": 40
+  }
+}

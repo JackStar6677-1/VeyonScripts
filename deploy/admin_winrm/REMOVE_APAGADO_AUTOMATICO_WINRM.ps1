@@ -1,7 +1,7 @@
 param(
     [string]$HostsFile = ".\hosts_castel.txt",
     [string[]]$UserCandidates = @("Colegio", "colegio", "Admin", "Administrador", "Usuario", "Alumno", "Estudiante", "Profesor"),
-    [string]$PasswordPlain = "administrativa"
+    [string]$PasswordPlain = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -21,6 +21,9 @@ if ($hosts.Count -eq 0) {
     exit 1
 }
 
+if ([string]::IsNullOrWhiteSpace($PasswordPlain)) {
+    $PasswordPlain = Read-Host "Clave local de WinRM"
+}
 $pass = ConvertTo-SecureString $PasswordPlain -AsPlainText -Force
 
 function Get-WorkingCredential {

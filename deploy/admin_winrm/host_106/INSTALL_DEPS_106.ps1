@@ -1,7 +1,7 @@
 param(
     [string]$ComputerName = "192.168.0.106",
     [string]$UserName = "Colegio",
-    [string]$PasswordPlain = "administrativa",
+    [string]$PasswordPlain = "",
     [string]$PythonInstallerPath = ""
 )
 
@@ -23,6 +23,9 @@ if (-not (Test-Path $PythonInstallerPath)) {
     throw "No existe PythonInstallerPath: $PythonInstallerPath"
 }
 
+if ([string]::IsNullOrWhiteSpace($PasswordPlain)) {
+    $PasswordPlain = Read-Host "Clave local de WinRM"
+}
 $pass = ConvertTo-SecureString $PasswordPlain -AsPlainText -Force
 $cred = New-Object System.Management.Automation.PSCredential("$ComputerName\$UserName", $pass)
 $session = $null

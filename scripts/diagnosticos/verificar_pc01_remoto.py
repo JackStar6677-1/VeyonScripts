@@ -12,7 +12,7 @@ import os
 class VerificadorRemotoPC01:
     def __init__(self):
         self.pc01_ip = "192.168.50.236"
-        self.pc01_mac = "00-D8-61-CB-82-2E"
+        self.pc01_mac = "02-00-00-00-00-02"
         
     def run_verificacion_remota(self):
         """Ejecuta verificación remota del PC-01"""

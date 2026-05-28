@@ -8,6 +8,7 @@ Genera reporte CSV y TXT en reports/runs/<fecha>.
 """
 
 import csv
+import json
 import os
 import socket
 import subprocess
@@ -16,51 +17,30 @@ from datetime import datetime
 from typing import Dict, List, Tuple
 
 COMPUTER_PREFIX = "CASTEL"
+LOCAL_TOPOLOGY_PATH = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "..", "..", "config", "veyon_topology.local.json")
+)
 
-MAPEO_FISICO_MAC = {
-    "08-BF-B8-BE-76-66": 1,
-    "08-BF-B8-36-6C-21": 2,
-    "08-BF-B8-36-6F-B6": 3,
-    "08-BF-B8-36-6E-6E": 4,
-    "08-BF-B8-36-6E-D7": 5,
-    "08-BF-B8-36-70-4F": 6,
-    "08-BF-B8-36-6B-32": 7,
-    "08-BF-B8-36-6C-04": 8,
-    "08-BF-B8-36-6C-2A": 9,
-    "08-BF-B8-36-6B-67": 10,
-    "08-BF-B8-36-6B-5A": 11,
-    "08-BF-B8-6E-20-29": 12,
-    "08-BF-B8-36-6B-4A": 13,
-    "30-9C-23-D4-B9-D2": 14,
-    "08-BF-B8-A3-8B-87": 15,
-    "08-BF-B8-A3-8A-3C": 16,
-    "08-BF-B8-A3-8B-7E": 17,
-    "08-BF-B8-A3-8B-32": 18,
-    "08-BF-B8-A3-89-FB": 19,
-    "08-BF-B8-A2-2B-5F": 20,
-    "08-BF-B8-A2-2B-19": 21,
-    "08-BF-B8-6E-1F-F0": 22,
-    "30-9C-23-0C-68-CD": 23,
-    "08-BF-B8-6E-20-45": 24,
-    "08-BF-B8-6E-20-F3": 25,
-    "08-BF-B8-6E-20-4B": 26,
-    "08-BF-B8-6E-1F-F5": 27,
-    "04-7C-16-BD-C2-C6": 28,
-    "04-7C-16-BD-C2-CF": 29,
-    "04-7C-16-BD-C3-2F": 30,
-    "04-7C-16-BD-C2-9C": 31,
-    "04-7C-16-BD-C2-94": 32,
-    "04-7C-16-BD-C2-E4": 33,
-    "08-BF-B8-A3-8A-CD": 34,
-    "08-BF-B8-BE-76-FC": 35,
-    "08-BF-B8-BE-77-0D": 36,
-    "08-BF-B8-A3-8B-95": 37,
-    "04-7C-16-BD-C2-AD": 38,
-    "08-BF-B8-BE-76-3A": 39,
-    "30-9C-23-09-06-4C": 40,
-    "30-9C-23-AA-BF-D8": 41,
-    "A8-A1-59-9B-B2-D8": 42,
-}
+def load_physical_mac_map() -> Dict[str, int]:
+    """Carga el mapeo fisico privado desde config/veyon_topology.local.json."""
+    if not os.path.exists(LOCAL_TOPOLOGY_PATH):
+        print(f"[WARN] Topologia local no encontrada: {LOCAL_TOPOLOGY_PATH}")
+        return {}
+
+    try:
+        with open(LOCAL_TOPOLOGY_PATH, "r", encoding="utf-8") as file:
+            topology = json.load(file)
+    except Exception as exc:
+        print(f"[WARN] No se pudo leer la topologia local: {exc}")
+        return {}
+
+    return {
+        str(mac).strip().upper(): int(number)
+        for mac, number in topology.get("physical_mac_map", {}).items()
+        if str(mac).strip()
+    }
+
+MAPEO_FISICO_MAC = load_physical_mac_map()
 
 
 def format_computer_name(number: int) -> str:

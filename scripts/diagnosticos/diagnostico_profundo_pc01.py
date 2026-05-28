@@ -15,7 +15,7 @@ class DiagnosticoProfundoPC01:
     def __init__(self):
         self.veyon_cli = r"C:\Program Files\Veyon\veyon-cli.exe"
         self.pc01_ip = "192.168.50.236"
-        self.pc01_mac = "00-D8-61-CB-82-2E"
+        self.pc01_mac = "02-00-00-00-00-02"
         
     def run_diagnostico_profundo(self):
         """Ejecuta diagnóstico profundo del PC-01"""
