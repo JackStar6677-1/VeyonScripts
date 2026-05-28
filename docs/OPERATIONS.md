@@ -26,7 +26,8 @@ El flujo esperado:
 4. Resuelve conflictos de IP/MAC.
 5. Asigna nombres `CASTEL-XX` o nombres especiales por MAC.
 6. Crea ubicaciones necesarias, incluyendo grupos como `SalasBasica` y `SalasMedia`.
-7. Reemplaza cada equipo por nombre usando `veyon-cli`.
+7. Exporta el estado actual de Veyon.
+8. Reemplaza solo equipos nuevos o con IP, nombre o ubicacion distinta.
 
 ## Ubicaciones fuera de sala principal
 

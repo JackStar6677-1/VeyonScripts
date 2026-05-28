@@ -97,6 +97,65 @@ def get_location_parent(location: str) -> str:
     """Devuelve la ubicacion padre para crear jerarquia en Veyon."""
     return ROOM_PARENT_LOCATIONS.get(location, "")
 
+def export_current_veyon_computers(veyon_cli: str) -> Dict[str, Dict]:
+    """Exporta los equipos actuales de Veyon indexados por MAC y nombre."""
+    current_by_mac: Dict[str, Dict] = {}
+    current_by_name: Dict[str, Dict] = {}
+
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".csv") as temp_file:
+        export_path = temp_file.name
+
+    try:
+        result = subprocess.run([
+            veyon_cli, "networkobjects", "export", export_path,
+            "format", "%type%;%location%;%name%;%host%;%mac%"
+        ], capture_output=True, text=True, timeout=30)
+
+        if result.returncode != 0:
+            print(f"[WARN] No se pudo exportar el estado actual de Veyon: {result.stderr}")
+            return {"by_mac": current_by_mac, "by_name": current_by_name}
+
+        with open(export_path, "r", encoding="utf-8-sig", newline="") as file:
+            reader = csv.reader(file, delimiter=";")
+            for row in reader:
+                if len(row) < 5:
+                    continue
+                object_type, location, name, host, mac = [cell.strip() for cell in row[:5]]
+                if object_type.lower() not in {"computer", "equipo"}:
+                    continue
+
+                entry = {
+                    "location": location,
+                    "name": name,
+                    "ip": host,
+                    "mac": mac.upper(),
+                }
+                if entry["mac"]:
+                    current_by_mac[entry["mac"]] = entry
+                if entry["name"]:
+                    current_by_name[entry["name"].upper()] = entry
+    except Exception as exc:
+        print(f"[WARN] Error leyendo estado actual de Veyon: {exc}")
+    finally:
+        try:
+            os.remove(export_path)
+        except OSError:
+            pass
+
+    return {"by_mac": current_by_mac, "by_name": current_by_name}
+
+def needs_veyon_update(current: Dict, desired: Dict) -> bool:
+    """Indica si un equipo debe reescribirse en Veyon."""
+    if not current:
+        return True
+
+    return (
+        (current.get("name") or "").strip().upper() != desired["name"].strip().upper()
+        or (current.get("ip") or "").strip() != desired["ip"].strip()
+        or (current.get("mac") or "").strip().upper() != desired["mac"].strip().upper()
+        or (current.get("location") or "").strip().upper() != desired["location"].strip().upper()
+    )
+
 def get_scan_ranges() -> List[Tuple[str, str]]:
     """Detecta rangos IPv4 para escaneo."""
     ranges: List[Tuple[str, str]] = [("192.168.0.1", "192.168.0.254"), ("192.168.100.1", "192.168.100.254")]
@@ -610,18 +669,44 @@ def update_veyon_safely(veyon_clients: List[Dict]):
             else:
                 print(f"  [INFO] Ubicacion ya existe o no requiere cambios: {result.stderr}")
         
-        # Ahora agregar computadoras
+        current_objects = export_current_veyon_computers(veyon_cli)
+        current_by_mac = current_objects["by_mac"]
+        current_by_name = current_objects["by_name"]
+
+        # Ahora sincronizar solo computadoras nuevas o modificadas.
         added_count = 0
+        skipped_count = 0
         for client in veyon_clients:
             name = client['name']
             ip = client['ip']
             mac = client['mac']
             location = get_client_location(client)
-            
-            print(f"Agregando {name} ({ip}) en {location}...")
+            desired = {
+                "name": name,
+                "ip": ip,
+                "mac": mac,
+                "location": location,
+            }
+
+            current = current_by_mac.get(mac.upper()) or current_by_name.get(name.upper())
+            if not needs_veyon_update(current, desired):
+                print(f"Sin cambios {name} ({ip}) en {location}")
+                skipped_count += 1
+                continue
+
+            if current:
+                print(
+                    f"Actualizando {name}: "
+                    f"{current.get('ip', 'sin-ip')} -> {ip}, "
+                    f"{current.get('location', 'sin-ubicacion')} -> {location}"
+                )
+            else:
+                print(f"Agregando {name} ({ip}) en {location}...")
 
             # Reemplazar por nombre actual y por el nombre CASTEL-XX historico si cambio.
             names_to_remove = {name}
+            if current and current.get("name"):
+                names_to_remove.add(current["name"])
             if mac in MAPEO_FISICO_MAC:
                 names_to_remove.add(format_computer_name(MAPEO_FISICO_MAC[mac]))
 
@@ -637,12 +722,12 @@ def update_veyon_safely(veyon_clients: List[Dict]):
             ], capture_output=True, timeout=30)
             
             if result.returncode == 0:
-                print(f"  ✓ {name} agregado correctamente")
+                print(f"  ✓ {name} sincronizado correctamente")
                 added_count += 1
             else:
-                print(f"  ✗ Error agregando {name}: {result.stderr}")
+                print(f"  ✗ Error sincronizando {name}: {result.stderr}")
         
-        print(f"\n[OK] Actualización completada: {added_count} computadoras agregadas")
+        print(f"\n[OK] Actualización completada: {added_count} cambios aplicados, {skipped_count} sin cambios")
         print("Abre Veyon Master para ver los cambios")
         return True
         
@@ -742,5 +827,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
