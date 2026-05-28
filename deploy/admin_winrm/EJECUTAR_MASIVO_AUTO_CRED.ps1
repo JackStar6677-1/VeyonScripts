@@ -35,8 +35,8 @@ if ($hosts.Count -eq 0) {
     exit 1
 }
 
-# Una sola clave para todos (ej: administrativa)
-$passSecure = Read-Host "Contrasena comun (ej: administrativa)" -AsSecureString
+# Una sola clave para todos (ej: clave local)
+$passSecure = Read-Host "Contrasena comun (ej: clave local)" -AsSecureString
 
 $ext = [IO.Path]::GetExtension((Resolve-Path $TargetScript).Path).ToLowerInvariant()
 $scriptPath = (Resolve-Path $TargetScript).Path

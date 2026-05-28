@@ -24,7 +24,21 @@ except ImportError:
     msvcrt = None
 
 COMPUTER_PREFIX = "CASTEL"
-LOCATION_NAME = "SalaComputacion"
+DEFAULT_LOCATION_NAME = "SalaComputacion"
+
+# Salas reales para equipos que no pertenecen a la sala de computacion.
+LOCATION_OVERRIDES_BY_NAME = {
+    "CASTEL-04": "6B",
+    "CASTEL-40": "CuartoMedioB",
+}
+LOCATION_OVERRIDES_BY_IP = {
+    "192.168.0.104": "6B",
+    "192.168.0.160": "CuartoMedioB",
+}
+LOCATION_OVERRIDES_BY_MAC = {
+    "08-BF-B8-36-6E-6E": "6B",
+    "30-9C-23-09-06-4C": "CuartoMedioB",
+}
 
 # Equipos que nunca deben aparecer en la cuadrícula de Veyon Master
 EXCLUDED_MACS = {
@@ -81,6 +95,19 @@ MAPEO_FISICO_MAC = {
 
 def format_computer_name(number: int) -> str:
     return f"{COMPUTER_PREFIX}-{number:02d}"
+
+def get_client_location(client: Dict) -> str:
+    """Devuelve la ubicacion Veyon correcta para un cliente detectado."""
+    name = (client.get("name") or "").strip().upper()
+    ip = (client.get("ip") or "").strip()
+    mac = (client.get("mac") or "").strip().upper()
+
+    return (
+        LOCATION_OVERRIDES_BY_NAME.get(name)
+        or LOCATION_OVERRIDES_BY_IP.get(ip)
+        or LOCATION_OVERRIDES_BY_MAC.get(mac)
+        or DEFAULT_LOCATION_NAME
+    )
 
 def get_scan_ranges() -> List[Tuple[str, str]]:
     """Detecta rangos IPv4 para escaneo."""
@@ -572,16 +599,18 @@ def update_veyon_safely(veyon_clients: List[Dict]):
     print(f"Actualizando Veyon con {len(veyon_clients)} clientes...")
     
     try:
-        # Primero crear la ubicación si no existe
-        print(f"Creando ubicación '{LOCATION_NAME}'...")
-        result = subprocess.run([
-            veyon_cli, "networkobjects", "add", "location", LOCATION_NAME
-        ], capture_output=True, timeout=30)
-        
-        if result.returncode == 0:
-            print("  ✓ Ubicación creada/verificada")
-        else:
-            print(f"  ⚠ Ubicación ya existe o error: {result.stderr}")
+        # Primero crear las ubicaciones necesarias si no existen.
+        locations = sorted({get_client_location(client) for client in veyon_clients})
+        for location in locations:
+            print(f"Creando ubicacion '{location}'...")
+            result = subprocess.run([
+                veyon_cli, "networkobjects", "add", "location", location
+            ], capture_output=True, timeout=30)
+
+            if result.returncode == 0:
+                print("  [OK] Ubicacion creada/verificada")
+            else:
+                print(f"  [INFO] Ubicacion ya existe o no requiere cambios: {result.stderr}")
         
         # Ahora agregar computadoras
         added_count = 0
@@ -589,18 +618,19 @@ def update_veyon_safely(veyon_clients: List[Dict]):
             name = client['name']
             ip = client['ip']
             mac = client['mac']
+            location = get_client_location(client)
             
-            print(f"Agregando {name} ({ip})...")
+            print(f"Agregando {name} ({ip}) en {location}...")
 
             # Reemplazar por nombre para mantener configuraciones existentes.
             subprocess.run([
-                veyon_cli, "networkobjects", "remove", "computer", name
+                veyon_cli, "networkobjects", "remove", name
             ], capture_output=True, text=True, timeout=30)
             
             # Agregar computadora a la ubicación
             result = subprocess.run([
                 veyon_cli, "networkobjects", "add", "computer",
-                name, ip, mac, LOCATION_NAME
+                name, ip, mac, location
             ], capture_output=True, timeout=30)
             
             if result.returncode == 0:

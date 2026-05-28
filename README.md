@@ -1,549 +1,105 @@
-﻿# Suite de Automatizacion - VeyonScripts y Optimizacion Windows 11
+# Castel LabOps
 
-**Desarrollado por: Pablo Elias Avendano Miranda**  
-*Ingeniero en Informatica*
+Suite operativa para administrar laboratorios Windows del Colegio Castel Gandolfo con Veyon, Wake-on-LAN, WinRM y utilidades de soporte en terreno.
 
----
-
-## Descripcion General
-
-Este repositorio contiene **dos proyectos principales** de automatizacion desarrollados con enfoque practico y orientados a resolver problemas reales en ambientes educativos y profesionales.
-
-### Proyectos Incluidos:
-
-1. **VeyonScripts**: Suite de automatizacion para gestion de laboratorios con Veyon
-2. **Optimizacion Windows 11**: Scripts de optimizacion para PCs con recursos limitados (4GB RAM + HDD)
-
-### Estructura Actualizada (2026-03-05)
-
-- `scripts/principales`, `scripts/diagnosticos`, `scripts/soluciones`, `scripts/legacy`
-- `launchers/` (launchers reales)
-- `tools/wakemeonlan/` y `tools/optimizacion_windows/`
-- `apps/veyongui/`
-- `deploy/kit_pendrive/`, `deploy/admin_winrm/`, `deploy/componentes_cliente/`
-- `data/`, `reports/`, `backups/`
-- Wrappers `.bat` en raiz para compatibilidad (`VEYON_MAESTRO.bat`, etc.)
+**Autor:** Pablo Elias Avendano Miranda
+**Plataforma principal:** Windows / PowerShell
+**Enfoque:** automatizacion pragmatica para salas de computacion, PCs de profesor y equipos de curso.
 
 ---
 
-## Proyecto 1: VeyonScripts - Automatizacion para Laboratorios
+## Que resuelve
 
-Suite completa de automatizacion para **Veyon** (Virtual Eye On Networks), permitiendo la gestion inteligente de laboratorios de computacion con mapeo fisico automatico basado en direcciones MAC.
+Este repositorio agrupa scripts y launchers para:
 
-### Estructura del Proyecto VeyonScripts
+- Actualizar el directorio de Veyon desde escaneos de red.
+- Mantener nombres logicos `CASTEL-XX` aunque cambien las IPs.
+- Separar equipos fuera de la sala principal en ubicaciones Veyon propias.
+- Encender equipos por Wake-on-LAN.
+- Ejecutar tareas clave locals por WinRM.
+- Preparar PCs con un kit portable.
+- Instalar componentes cliente para acciones interactivas o elevadas.
+- Documentar procedimientos repetibles sin subir datos reales del colegio.
 
-```
+## Estructura
+
+```text
 VeyonScripts/
-|-- scripts/                         # Scripts organizados
-|   |-- principales/                # Scripts principales de uso diario
-|   |   |-- VEYON_MAESTRO.py        # Script maestro con WakeMeOnLAN
-|   |   `-- MAPEO_FISICO_ADMIN.py   # Script de mapeo fisico por MAC
-|   |-- diagnosticos/               # Scripts de diagnostico
-|   |   |-- diagnostico_veyon.py          # Diagnostico general
-|   |   |-- diagnostico_profundo_pc01.py  # Diagnostico profundo PC-01
-|   |   |-- comparar_pc01_funcionando.py  # Comparador PC-01 vs PC funcionando
-|   |   |-- verificar_claves_veyon.py     # Verificador de claves
-|   |   `-- verificar_pc01_remoto.py      # Verificador remoto PC-01
-|   `-- soluciones/                 # Scripts de solucion de problemas
-|       |-- solucion_pc01.py              # Solucionador PC-01
-|       `-- solucionar_clon_pc01.py       # Solucionador para clones
-|-- apps/veyongui/                  # Interfaz grafica visual
-|   |-- physical_mapping_gui.py     # GUI principal funcional
-|   |-- launch_gui.bat              # Launcher de la GUI
-|   `-- README_GUI.md               # Documentacion de la GUI
-|-- VEYON_MAESTRO.bat               # Launcher script maestro (ADMIN)
-|-- MAPEO_FISICO_ADMIN.bat          # Launcher mapeo fisico (ADMIN)
-|-- SOLUCIONAR_PC01_ADMIN.bat       # Launcher solucionador PC-01 (ADMIN)
-`-- WakeMeOnLAN.exe                 # Herramienta de escaneo de red
+|-- apps/                    # GUI y herramientas visuales
+|-- deploy/                  # Material de despliegue y operacion remota
+|   |-- admin_ssh/           # Sincronizacion por SSH para equipos puntuales
+|   |-- admin_winrm/         # Orquestacion remota desde el PC administrador
+|   |-- componentes_cliente/ # Payloads que se instalan en los clientes
+|   `-- kit_pendrive/        # Kit portable/manual para terreno
+|-- docs/                    # Arquitectura, seguridad y operacion
+|-- examples/                # Datos de ejemplo sanitizados
+|-- launchers/               # Launchers reales invocados desde la raiz
+|-- reports/                 # Plantillas o reportes publicables
+|-- scripts/                 # Scripts principales, diagnosticos y legacy
+|-- tools/                   # Herramientas auxiliares
+`-- *.bat                    # Wrappers de compatibilidad para escritorio
 ```
 
-### Caracteristicas Principales de VeyonScripts:
-- **Mapeo Fisico por MAC**: Asigna numeros de PC basados en direcciones MAC unicas
-- **Compatibilidad con IPs Dinamicas**: Funciona aunque las IPs cambien
-- **Escaneo con WakeMeOnLAN**: Integracion con herramienta profesional de red
-- **Interfaz Grafica**: GUI intuitiva con drag & drop
-- **Diagnosticos Profundos**: Suite completa de herramientas de diagnostico
-- **Solucion Automatizada**: Scripts para resolver problemas comunes
+Las carpetas `data/`, `config/`, `memory/`, `tasks/`, `backups/`, `void_env/`, `_reports/` y archivos `.cfg`/logs operativos son locales. No deben versionarse.
 
-### Uso Rapido - VeyonScripts:
-```bash
-# Mapeo fisico automatico
-MAPEO_FISICO_ADMIN.bat
+## Uso rapido
 
-# Interfaz grafica
-apps/veyongui/launch_gui.bat
-
-# Script maestro
-VEYON_MAESTRO.bat
-```
-
-### Operacion Remota Real del Laboratorio
-
-Ademas del mapeo y la gestion de Veyon, este repositorio evoluciono para cubrir la operacion diaria del laboratorio por red local:
-
-- **Wake-on-LAN masivo**: encendido remoto por broadcast usando MACs e IPs reservadas.
-- **WinRM masivo**: ejecucion de scripts en lote sobre los equipos del laboratorio.
-- **Gestion de energia**: despliegue y retiro de tareas programadas de apagado.
-- **GUI remota asistida**: apertura de aplicaciones visibles en la sesion del alumno y envio de teclas.
-- **Bridge de elevacion**: ejecucion de comandos elevados sin depender del prompt UAC.
-
-Esto permite administrar la sala incluso cuando los equipos tienen usuarios locales distintos, estan parcialmente dormidos o requieren automatizacion por lotes.
-
-### Estructura Operativa `deploy/`
-
-La operacion remota ahora esta separada en tres carpetas:
-
-- `deploy/kit_pendrive/`: solo material portable/manual para preparar cada PC.
-- `deploy/admin_winrm/`: scripts que se ejecutan desde el PC administrador sobre toda la sala.
-- `deploy/componentes_cliente/`: payloads y componentes que luego se copian a los clientes.
-
-### `deploy/kit_pendrive/`
-
-- `PREPARAR_REMOTO_WIN10.bat`: prepara cada PC para administracion remota.
-
-### `deploy/admin_winrm/`
-
-- `EJECUTAR_MASIVO_WINRM.ps1`: motor base para ejecutar payloads por WinRM.
-- `EJECUTAR_MASIVO_AUTO_CRED.ps1`: variante que prueba usuarios locales comunes con una clave compartida.
-- `PROGRAMAR_ENERGIA_LAB_WINRM.ps1`: crea tarea diaria de apagado cuando se necesita.
-- `ENVIAR_WOL_CASTEL.ps1`: envio de magic packets para despertar equipos.
-- `INSTALAR_GUI_AGENTE_WINRM.ps1`: instala el agente GUI por WinRM.
-- `ENVIAR_GUI_COMANDO_WINRM.ps1`: encola apertura de GUI y teclas como `~`, `1`, `{TAB}`, `%{F4}`.
-- `INSTALAR_ELEVACION_WINRM.ps1`: instala el bridge y crea la tarea `Castel-AdminBridge` como `SYSTEM`.
-- `ENVIAR_ADMIN_COMANDO_WINRM.ps1`: encola comandos elevados y dispara la tarea remota.
-- `CASTEL_REMOTO.ps1`: orquestador central para operaciones tipicas del laboratorio.
-
-### `deploy/componentes_cliente/`
-
-- `GUI_AGENTE_INTERACTIVO.ps1`: agente local que corre dentro de la sesion del usuario.
-- `ADMIN_ELEVATION_BRIDGE.ps1`: bridge elevado que procesa comandos admin desde cola local.
-- `RESET_CHROME_COMPARTIDO.ps1`: cierra Chrome y elimina perfiles locales de navegador para dejarlo "como nuevo".
-- `PROTEGER_MATERIALES_SALA.ps1`: protege carpetas institucionales para que usuarios puedan abrir archivos pero no borrarlos.
-- `CREAR_CARPETA_ENTREGA_SALA.ps1`: crea una carpeta fija en el escritorio publico con escritura permitida pero borrado denegado.
-
-### Arquitectura Operativa
-
-#### 1. Encendido remoto
-
-El encendido se basa en el archivo `data/reservas_dhcp_castel.csv`, que mantiene:
-
-- Nombre logico del equipo
-- Direccion MAC
-- IP reservada
-
-Con eso se puede enviar Wake-on-LAN por broadcast a toda la sala sin depender del estado de Veyon.
-
-#### 2. Ejecucion remota por WinRM
-
-La administracion remota usa dos capas:
-
-- **Capa no interactiva**: WinRM ejecuta scripts, consulta estado, modifica tareas programadas, aplica politicas o reinicia servicios.
-- **Capa interactiva**: un agente local en la sesion del usuario recibe comandos en cola y permite abrir GUIs visibles o mandar teclas.
-
-Esto evita el error tipico de intentar controlar ventanas graficas desde Session 0, donde WinRM no tiene escritorio interactivo.
-
-#### 3. Elevacion sin UAC manual
-
-Cuando una accion requiere permisos altos, no se intenta automatizar el cuadro UAC. En su lugar:
-
-- Se instala `ADMIN_ELEVATION_BRIDGE.ps1` en cada cliente.
-- Se registra una tarea programada `Castel-AdminBridge` como `SYSTEM`.
-- WinRM deja un comando en `C:\ProgramData\CastelRemote\admin-queue\`.
-- La tarea procesa la cola con privilegios altos.
-
-Con esto se pueden lanzar:
-
-- Scripts `.ps1` ya presentes en el cliente
-- PowerShell inline
-- Comandos `cmd`
-
-sin pedir la clave `administrativa` en ventanas emergentes.
-
-#### 4. Reset de navegadores compartidos
-
-Para laboratorios donde alumnos o docentes dejan cuentas abiertas en Chrome, se puede usar un reset masivo:
-
-- Se cierran procesos `chrome.exe`.
-- Se elimina `AppData\Local\Google\Chrome\User Data` en cada perfil local de usuario.
-- Opcionalmente se puede aplicar politica para bloquear inicio de sesion y sincronizacion.
-
-Esto deja Chrome como recien instalado para el siguiente uso del equipo, sin tener que ir PC por PC borrando perfiles manualmente.
-
-#### 5. Proteccion de materiales institucionales
-
-Para evitar que usuarios eliminen documentos compartidos del colegio, el enfoque correcto no es bloquear todo el perfil del usuario, sino proteger carpetas concretas de materiales:
-
-- Se definen carpetas institucionales como `C:\MaterialesSala` o equivalentes bajo `Public`.
-- Se ajustan ACLs NTFS para `Users`.
-- Los usuarios pueden abrir y leer archivos.
-- Se niega eliminacion de archivos y subcarpetas.
-
-Esto sirve para PDFs, Word, Excel, PowerPoint, plantillas o recursos docentes que deban estar siempre disponibles en todos los equipos.
-
-#### 6. Carpeta de entrega controlada en escritorio
-
-Tambien se puede crear una carpeta unica en el escritorio compartido, pensada para dejar archivos temporales de trabajo o entrega:
-
-- Ruta sugerida: `C:\Users\Public\Desktop\Entrega Sala`
-- Visible para todos los usuarios del equipo
-- `Users` puede leer y escribir
-- `Users` no puede borrar ni la carpeta ni su contenido
-
-Esto sirve cuando se quiere un punto comun de trabajo sin riesgo de que alumnos eliminen materiales o rompan la estructura de la carpeta.
-
-#### 7. Orquestacion central
-
-Para simplificar la operacion diaria, el kit incluye un orquestador que centraliza las tareas mas comunes:
-
-- consulta de estado de la sala
-- Wake-on-LAN
-- instalacion de componentes base
-- ejecucion de payloads admin
-- lanzamiento de GUI y teclas
-- acciones operativas tipicas como reset de Chrome o creacion de carpeta de entrega
-
-Esto reduce la cantidad de comandos distintos que hay que memorizar y baja el riesgo operativo cuando se trabaja rapido en terreno.
-
-### Flujos Recomendados
-
-#### Preparar laboratorio nuevo
-
-1. Ejecutar `PREPARAR_REMOTO_WIN10.bat` una vez por equipo.
-2. Validar conectividad WinRM.
-3. Instalar agente GUI con `INSTALAR_GUI_AGENTE_WINRM.ps1`.
-4. Instalar bridge admin con `INSTALAR_ELEVACION_WINRM.ps1`.
-5. Probar un comando simple por WinRM y uno elevado.
-
-#### Despertar y operar una sala
-
-1. Enviar Wake-on-LAN a todos los hosts del laboratorio.
-2. Verificar equipos accesibles por WinRM.
-3. Ejecutar acciones remotas no interactivas.
-4. Si una aplicacion requiere interfaz visible, usar `ENVIAR_GUI_COMANDO_WINRM.ps1`.
-5. Si requiere privilegios altos, usar `ENVIAR_ADMIN_COMANDO_WINRM.ps1`.
-
-#### Retirar apagado automatico
-
-Cuando exista una tarea de apagado como `JackOptimized-AutoShutdown-1730`, debe retirarse por WinRM buscando:
-
-- Tareas conocidas por nombre
-- Tareas no-Microsoft que usen `shutdown.exe`
-- Tareas no-Microsoft que usen `logoff.exe`
-
-Esto ya se uso con exito en la red del laboratorio para evitar apagados fuera de horario.
-
-### Ejemplos Operativos
+Ejecutar desde PowerShell o con los `.bat` de la raiz:
 
 ```powershell
-# Instalar agente GUI
-cd deploy\admin_winrm
-.\INSTALAR_GUI_AGENTE_WINRM.ps1
-
-# Abrir Bloc de notas visible en los clientes
-.\ENVIAR_GUI_COMANDO_WINRM.ps1 -Action launch -Path "C:\Windows\System32\notepad.exe"
-
-# Enviar Enter a una ventana por titulo
-.\ENVIAR_GUI_COMANDO_WINRM.ps1 -Action keys -WindowTitle "Sin titulo: Bloc de notas" -Keys "~"
-
-# Instalar bridge elevado
-.\INSTALAR_ELEVACION_WINRM.ps1
-
-# Ejecutar comando admin sin UAC visible
-.\ENVIAR_ADMIN_COMANDO_WINRM.ps1 -Action cmd -Command "gpupdate /force"
-
-# Reset total de Chrome en un cliente o grupo
-.\ENVIAR_ADMIN_COMANDO_WINRM.ps1 -Action powershell_file -Path "C:\ProgramData\CastelRemote\RESET_CHROME_COMPARTIDO.ps1"
-
-# Proteger carpetas de materiales institucionales
-.\ENVIAR_ADMIN_COMANDO_WINRM.ps1 -Action powershell_file -Path "C:\ProgramData\CastelRemote\PROTEGER_MATERIALES_SALA.ps1"
-
-# Crear carpeta fija en el escritorio publico con escritura pero sin borrado
-.\ENVIAR_ADMIN_COMANDO_WINRM.ps1 -Action powershell_file -Path "C:\ProgramData\CastelRemote\CREAR_CARPETA_ENTREGA_SALA.ps1"
-
-# Usar el orquestador central
-.\CASTEL_REMOTO.ps1 -Action status
-.\CASTEL_REMOTO.ps1 -Action reset-chrome -DisableChromeSignin
+.\VEYON_MAESTRO.bat
+.\MAPEO_FISICO_ADMIN.bat
+.\WINRM_MAESTRO.bat
 ```
 
----
+Los launchers de la raiz llaman a `launchers/`, y estos ejecutan los scripts reales dentro de `scripts/principales/`.
 
-## Proyecto 2: Optimizacion Windows 11
+## Flujo recomendado
 
-Suite de scripts especializados para optimizar Windows 11 en equipos con recursos limitados (4GB RAM + HDD), mejorando significativamente el rendimiento sin necesidad de actualizar hardware.
+1. Preparar cada PC cliente con `deploy/kit_pendrive/`.
+2. Validar conectividad y credenciales fuera del repo.
+3. Mantener inventarios reales en `data/` local, nunca en Git.
+4. Ejecutar el maestro de Veyon desde el PC administrador.
+5. Usar `deploy/admin_winrm/` para acciones masivas.
+6. Guardar salidas operativas en `_reports/` local.
 
-### Estructura del Proyecto Optimizacion Windows
+## Ubicaciones Veyon especiales
 
-```
-optimizacion_windows/
-|-- 00_CREAR_PUNTO_RESTAURACION.py     # Crear backup antes de optimizar
-|-- 01_deshabilitar_servicios.py       # Deshabilitar servicios innecesarios
-|-- 02_optimizar_rendimiento_visual.py # Optimizar efectos visuales
-|-- 03_limpiar_archivos_temp.py        # Limpieza profunda de archivos
-|-- 04_optimizar_hdd.py                # Optimizacion especifica para HDD
-|-- 05_optimizar_inicio.py             # Gestion de programas de inicio
-|-- OPTIMIZAR_TODO.py                  # Script maestro (ejecuta todos)
-|-- INFO_SISTEMA.py                    # Analisis del sistema
-`-- *.bat                              # Launchers con permisos admin
-```
+`scripts/principales/VEYON_MAESTRO.py` mantiene reglas explicitas para equipos que no pertenecen a `SalaComputacion`:
 
-### Caracteristicas Principales de Optimizacion Windows:
-- **Deshabilitar Servicios**: Libera RAM deshabilitando servicios innecesarios
-- **Optimizar Efectos Visuales**: Deshabilita animaciones y transparencias
-- **Limpieza Profunda**: Elimina archivos temporales y cache
-- **Optimizacion HDD**: Deshabilita indexacion y superfetch
-- **Gestion de Inicio**: Optimiza programas que se ejecutan al arrancar
-- **Punto de Restauracion**: Crea backup antes de optimizar
+| Equipo | IP | Ubicacion Veyon |
+| --- | --- | --- |
+| `CASTEL-04` | `192.168.0.104` | `6B` |
+| `CASTEL-40` | `192.168.0.160` | `CuartoMedioB` |
 
-### Mejoras Esperadas:
-- Inicio 30-50% mas rapido
-- 200-400 MB de RAM liberada
-- Reduccion de uso de disco del 80% al 10-30%
-- 2-6 GB de espacio liberado
+Estas reglas evitan que el maestro vuelva a mezclar PCs de curso dentro de la sala principal.
 
-### Uso Rapido - Optimizacion Windows:
-```bash
-# Analizar sistema
-cd tools/optimizacion_windows
-INFO_SISTEMA.bat
+## Documentacion
 
-# Crear punto de restauracion
-00_CREAR_PUNTO_RESTAURACION_ADMIN.bat
+- [Arquitectura](docs/ARCHITECTURE.md)
+- [Operacion diaria](docs/OPERATIONS.md)
+- [Seguridad y datos locales](docs/SECURITY.md)
+- [Ejemplo de reservas DHCP sanitizado](examples/reservas_dhcp_castel.example.csv)
+- [GUI de mapeo fisico](apps/veyongui/README_GUI.md)
 
-# Ejecutar todo
-OPTIMIZAR_TODO_ADMIN.bat
-```
+## Politica de datos
 
----
+Este repo puede ser publico o privado, pero debe tratarse como codigo fuente. No se suben:
 
-## Analisis Tecnico de VeyonScripts
+- Inventarios reales de IP/MAC.
+- Configuraciones de WakeMeOnLAN.
+- Logs o reportes con usuarios/equipos reales.
+- Respaldos de drivers, exports o binarios generados.
+- Entornos virtuales Python.
+- Bases SQLite locales.
 
-### 1. MAPEO_FISICO_ADMIN.py - Script Principal
+Usa `examples/` para ejemplos artificiales y `docs/` para explicar formatos.
 
-**Proposito**: Mapeo inteligente de PCs fisicos en laboratorios usando direcciones MAC.
+## Validacion basica
 
-**Funcionalidades Tecnicas**:
-```python
-# Mapeo fisico predefinido (0-15)
-MAPEO_FISICO_MAC = {
-    '00-D8-61-CB-82-61': 0,   # PC-00 (192.168.50.122)
-    '00-D8-61-CB-82-2E': 1,   # PC-01 (192.168.50.236)
-    # ... mas mapeos
-}
-
-# Funciones principales
-- scan_network_with_wakemeonlan()    # Escaneo de red
-- filter_veyon_clients_with_physical_mapping()  # Filtrado y mapeo
-- clear_existing_computers()         # Limpieza de Veyon
-- update_veyon_with_physical_mapping()  # Actualizacion
+```powershell
+python -m py_compile .\scripts\principales\VEYON_MAESTRO.py
+git status --short
 ```
 
-**Ventajas**:
-- **Consistencia**: Los numeros de PC siempre coinciden con la posicion fisica
-- **Mantenimiento**: No requiere reconfiguracion manual al cambiar IPs
-- **Escalabilidad**: Facil agregar nuevos PCs al mapeo
-- **Robustez**: Manejo de errores y verificacion de eliminacion
-
-### 2. VEYON_MAESTRO.py - Script Maestro
-
-**Proposito**: Script unificado para gestion completa de Veyon con WakeMeOnLAN.
-
-**Caracteristicas**:
-- **Integracion WakeMeOnLAN**: Escaneo profesional de red
-- **Nombres Reales de PC**: Obtiene nombres reales de los equipos
-- **Manejo de Duplicados**: Asigna sufijos automaticamente
-- **Actualizacion Segura**: No borra configuracion de autenticacion
-- **Deteccion de Veyon**: Identifica que PCs tienen Veyon instalado
-
-**Flujo de Trabajo**:
-1. Escanea la red con WakeMeOnLAN
-2. Procesa nombres y maneja duplicados
-3. Detecta clientes Veyon
-4. Actualiza configuracion de Veyon
-5. Exporta configuracion a archivo
-
-### 3. VeyonGUI/physical_mapping_gui.py - Interfaz Grafica
-
-**Proposito**: GUI intuitiva para mapeo fisico con drag & drop.
-
-**Funcionalidades Tecnicas**:
-```python
-# Interfaz con tkinter
-class PhysicalMappingGUI:
-    def scan_network()           # Escaneo con WakeMeOnLAN
-    def add_to_physical_order()  # Drag & drop
-    def update_veyon()          # Actualizacion de Veyon
-    def save_mapping()          # Exportar configuracion
-    def load_mapping()          # Importar configuracion
-```
-
----
-
-## Potencial como Addon Oficial de Veyon
-
-### Ventajas para Veyon
-
-1. **Funcionalidad Unica**:
-   - Mapeo fisico automatico no disponible en Veyon nativo
-   - Gestion inteligente de laboratorios de computacion
-   - Compatibilidad con IPs dinamicas
-
-2. **Integracion Perfecta**:
-   - Usa APIs nativas de Veyon (`veyon-cli`)
-   - No modifica archivos de configuracion directamente
-   - Mantiene compatibilidad con versiones futuras
-
-3. **Valor Educativo**:
-   - Ideal para laboratorios escolares y universitarios
-   - Facilita la gestion de aulas de computacion
-   - Reduce tiempo de configuracion manual
-
-4. **Escalabilidad**:
-   - Facil adaptacion a diferentes tamanos de laboratorio
-   - Configuracion flexible de mapeos fisicos
-   - Soporte para multiples ubicaciones
-
----
-
-## Casos de Uso
-
-### VeyonScripts - Laboratorios Educativos
-- Gestion automatica de aulas de computacion
-- Mapeo fisico consistente independiente de IPs
-- Facilita identificacion de equipos por estudiantes
-
-### Optimizacion Windows - Equipos con Recursos Limitados
-- Laboratorios con equipos antiguos (4GB RAM + HDD)
-- Centros educativos con presupuesto limitado
-- Maximizar rendimiento sin actualizar hardware
-
----
-
-## Instalacion y Uso
-
-### Requisitos Generales:
-- Windows 10/11
-- Python 3.7+
-- Permisos de administrador
-
-### Requisitos Especificos VeyonScripts:
-- Veyon 4.x+
-- WakeMeOnLAN (incluido)
-- WinRM habilitado en los clientes para despliegue masivo
-- Credencial comun o usuarios locales conocidos para acceso remoto
-
-### Instalacion:
-```bash
-# Clonar repositorio
-git clone https://github.com/JackStar6677-1/VeyonScripts.git
-cd VeyonScripts
-
-# Instalar dependencias (opcional)
-pip install -r requirements.txt
-
-# Usar VeyonScripts
-python MAPEO_FISICO_ADMIN.py
-
-# Usar Optimizacion Windows
-cd tools/optimizacion_windows
-python OPTIMIZAR_TODO.py
-```
-
-### Consideraciones Operativas
-
-- WinRM sirve para automatizacion administrativa, no para manipular directamente ventanas visibles.
-- Las GUIs visibles requieren un agente corriendo dentro de la sesion del usuario conectado.
-- La elevacion remota debe hacerse por tarea programada o servicio controlado, no intentando escribir la contrasena en UAC.
-- Los reportes de ejecucion deben guardarse en `reports/runs/` para mantener trazabilidad de cambios masivos.
-- Antes de cambios agresivos en toda la sala, conviene probar en 1 o 2 equipos representativos.
-- El reset de Chrome elimina sesiones, historial, extensiones, cache y perfiles locales del navegador en ese equipo.
-- La proteccion de materiales debe aplicarse solo a carpetas institucionales, no al espacio normal de trabajo del usuario.
-
----
-
-## Documentacion Adicional
-
-Cada proyecto incluye su propia documentacion detallada:
-
-- **VeyonScripts**: Documentacion completa en este README
-- **Optimizacion Windows**: Ver `tools/optimizacion_windows/README.md`
-
----
-
-## Metricas de Exito
-
-### VeyonScripts:
-- **Tiempo de Configuracion**: Reduccion del 90% vs configuracion manual
-- **Precision de Mapeo**: 100% de precision en mapeo fisico
-- **Mantenimiento**: Cero intervencion manual al cambiar IPs
-- **Escalabilidad**: Soporte para 1-100+ PCs por laboratorio
-
-### Optimizacion Windows:
-- **Inicio**: 30-50% mas rapido
-- **RAM liberada**: 200-400 MB
-- **Uso de disco**: Reduccion del 80% al 10-30% en reposo
-- **Espacio liberado**: 2-6 GB
-
----
-
-## Contribuciones
-
-Este repositorio esta en GitHub principalmente como base personal de trabajo, documentacion y mejora continua. Si ademas le sirve a otra persona para administrar laboratorios, aprender o adaptar ideas a su entorno, mejor todavia.
-
-Las areas de mejora incluyen:
-
-**VeyonScripts:**
-- Interfaz grafica mas intuitiva
-- Soporte para mas tipos de dispositivos
-- Integracion con sistemas de gestion de red
-
-**Optimizacion Windows:**
-- Mas scripts de optimizacion
-- Deteccion automatica de tipo de disco
-- Scripts de reversion automatica
-
----
-
-## Licencia
-
-Ambos proyectos estan bajo la licencia MIT. Ver `LICENSE` para mas detalles.
-
-### Creditos de Terceros
-
-- `WakeMeOnLAN.exe` no fue desarrollado en este repositorio.
-- Todos los derechos, creditos y propiedad intelectual de `WakeMeOnLAN.exe` corresponden a sus creadores y mantenedores originales.
-- Sitio oficial consultado: `https://www.wakemeonlan.org/es/`
-- Este repositorio lo usa como herramienta externa de apoyo para escaneo y Wake-on-LAN dentro de flujos de administracion de laboratorio.
-- Si se requiere distribucion, licencia o validacion adicional del ejecutable, debe revisarse directamente con su fuente oficial.
-
----
-
-## Autor
-
-**Pablo Elias Avendano Miranda**  
-*Ingeniero en Informatica*
-
-Estos proyectos fueron desarrollados con dedicacion y atencion al detalle para resolver problemas reales en entornos educativos y profesionales. La experiencia practica ha sido fundamental para crear soluciones robustas y confiables.
-
-### Especializacion
-- Automatizacion de Sistemas
-- Optimizacion de Sistemas Operativos
-- Gestion de Redes y Laboratorios
-- Desarrollo de Software Educativo
-
-### Filosofia de Desarrollo
-
-> "La tecnologia debe ser accesible para todos. No se trata de tener el mejor hardware, sino de aprovechar al maximo lo que tienes."
-
----
-
-**© 2025 Pablo Elias Avendano Miranda - Todos los derechos reservados**
-
----
-
-## Enlaces Rapidos
-
-- **GitHub**: https://github.com/JackStar6677-1/VeyonScripts
-- **Documentacion VeyonScripts**: Este README
-- **Documentacion Optimizacion Windows**: `tools/optimizacion_windows/README.md`
-- **Informacion del Autor**: `AUTHOR.md`
-
+Para pruebas reales de Veyon se requiere Windows con Veyon instalado y permisos de administrador.

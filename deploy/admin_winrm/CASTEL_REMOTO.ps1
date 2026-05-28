@@ -17,7 +17,7 @@ param(
     [string]$Action = "status",
     [string]$HostsFile = ".\hosts_castel.txt",
     [string[]]$UserCandidates = @("Colegio", "colegio", "Admin", "Administrador", "Usuario", "Alumno", "Estudiante", "Profesor"),
-    [string]$PasswordPlain = "administrativa",
+    [string]$PasswordPlain = "",
     [switch]$WhatIfMode,
     [string]$Path = "",
     [string]$Arguments = "",
@@ -31,6 +31,10 @@ param(
 
 $ErrorActionPreference = "Stop"
 $kitRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+
+if ([string]::IsNullOrWhiteSpace($PasswordPlain) -and $Action -ne "wol") {
+    $PasswordPlain = Read-Host "Clave local de WinRM"
+}
 
 function Resolve-KitPath {
     param([string]$Name)
@@ -95,6 +99,9 @@ function Get-StatusReport {
     )
 
     $hosts = Get-Hosts -FilePath $FilePath
+    if ([string]::IsNullOrWhiteSpace($PlainPassword)) {
+        $PlainPassword = Read-Host "Clave local de WinRM"
+    }
     $password = ConvertTo-SecureString $PlainPassword -AsPlainText -Force
     $results = @()
 

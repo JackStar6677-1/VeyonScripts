@@ -1,7 +1,7 @@
 param(
     [string]$ComputerName = "192.168.0.106",
     [string]$UserName = "Colegio",
-    [string]$PasswordPlain = "administrativa",
+    [string]$PasswordPlain = "",
     [string]$LocalRepoPath = "C:\Users\Profesor\Documents\GitHub\VeyonScripts",
     [string]$RemoteRepoPath = "C:\CastelAdmin\VeyonScripts",
     [string]$LocalMasterConfig = "C:\Users\Profesor\AppData\Roaming\Veyon\Config\VeyonMaster.json",
@@ -34,6 +34,9 @@ if (-not (Test-NetConnection -ComputerName $ComputerName -Port 5985 -Information
     exit 0
 }
 
+if ([string]::IsNullOrWhiteSpace($PasswordPlain)) {
+    $PasswordPlain = Read-Host "Clave local de WinRM"
+}
 $pass = ConvertTo-SecureString $PasswordPlain -AsPlainText -Force
 $cred = New-Object System.Management.Automation.PSCredential("$ComputerName\$UserName", $pass)
 $session = $null

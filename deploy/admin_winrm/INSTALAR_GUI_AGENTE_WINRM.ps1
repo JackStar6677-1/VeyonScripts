@@ -1,7 +1,7 @@
 param(
     [string]$HostsFile = ".\hosts_castel.txt",
     [string[]]$UserCandidates = @("Colegio", "colegio", "Admin", "Administrador", "Usuario", "Alumno", "Estudiante", "Profesor"),
-    [string]$PasswordPlain = "administrativa",
+    [string]$PasswordPlain = "",
     [string]$LocalAgentPath = "..\componentes_cliente\GUI_AGENTE_INTERACTIVO.ps1"
 )
 
@@ -23,6 +23,9 @@ $hosts = Get-Content $HostsFile |
     Select-Object -Unique
 
 $agentContent = Get-Content -Path $LocalAgentPath -Raw -Encoding UTF8
+if ([string]::IsNullOrWhiteSpace($PasswordPlain)) {
+    $PasswordPlain = Read-Host "Clave local de WinRM"
+}
 $pass = ConvertTo-SecureString $PasswordPlain -AsPlainText -Force
 
 function Get-WorkingCredential {
