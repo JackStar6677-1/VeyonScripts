@@ -67,12 +67,12 @@ Los launchers de la raiz llaman a `launchers/`, y estos ejecutan los scripts rea
 
 `scripts/principales/VEYON_MAESTRO.py` mantiene reglas explicitas para equipos que no pertenecen a `SalaComputacion`:
 
-| Equipo | IP | Ubicacion Veyon |
-| --- | --- | --- |
-| `CASTEL-04` | `192.168.0.104` | `6B` |
-| `CASTEL-40` | `192.168.0.160` | `CuartoMedioB` |
+| Nombre Veyon | MAC | Grupo | Ubicacion Veyon |
+| --- | --- | --- | --- |
+| `6B` | `08-BF-B8-36-6E-6E` | `SalasBasica` | `6B` |
+| `4MB` | `30-9C-23-09-06-4C` | `SalasMedia` | `4MB` |
 
-Estas reglas evitan que el maestro vuelva a mezclar PCs de curso dentro de la sala principal.
+Estas reglas usan MAC como identificador permanente porque la IP cambia por DHCP. El maestro crea los grupos `SalasBasica` y `SalasMedia`, ubica cada sala bajo su grupo y evita que los PCs de curso vuelvan a mezclarse dentro de la sala principal.
 
 ## Documentacion
 

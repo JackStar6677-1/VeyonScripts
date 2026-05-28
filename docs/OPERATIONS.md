@@ -24,8 +24,8 @@ El flujo esperado:
 2. Escanea rangos IPv4 con WakeMeOnLAN.
 3. Verifica puerto Veyon en clientes detectados.
 4. Resuelve conflictos de IP/MAC.
-5. Asigna nombres `CASTEL-XX`.
-6. Crea ubicaciones necesarias.
+5. Asigna nombres `CASTEL-XX` o nombres especiales por MAC.
+6. Crea ubicaciones necesarias, incluyendo grupos como `SalasBasica` y `SalasMedia`.
 7. Reemplaza cada equipo por nombre usando `veyon-cli`.
 
 ## Ubicaciones fuera de sala principal
@@ -33,12 +33,18 @@ El flujo esperado:
 Cuando un PC fisicamente no pertenece a `SalaComputacion`, agrega una regla en `scripts/principales/VEYON_MAESTRO.py`:
 
 ```python
-LOCATION_OVERRIDES_BY_NAME = {
-    "CASTEL-04": "6B",
+ROOM_PARENT_LOCATIONS = {
+    "6B": "SalasBasica",
+}
+COMPUTER_NAME_OVERRIDES_BY_MAC = {
+    "08-BF-B8-36-6E-6E": "6B",
+}
+LOCATION_OVERRIDES_BY_MAC = {
+    "08-BF-B8-36-6E-6E": "6B",
 }
 ```
 
-Replica la regla por IP y MAC si el equipo puede aparecer con nombres temporales.
+No uses IP para estas reglas: en el colegio cambian por DHCP. Usa MAC para mantener nombre y ubicacion aunque el escaneo semanal detecte otra IP.
 
 ## WinRM
 

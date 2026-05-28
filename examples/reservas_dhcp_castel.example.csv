@@ -1,4 +1,4 @@
-Nombre,MAC,IP_Reservada,Ubicacion
-CASTEL-01,02-00-00-00-00-01,192.0.2.101,SalaComputacion
-CASTEL-04,02-00-00-00-00-04,192.0.2.104,6B
-CASTEL-40,02-00-00-00-00-40,192.0.2.160,CuartoMedioB
+Nombre,MAC,Ultima_IP,Grupo,Ubicacion
+CASTEL-01,02-00-00-00-00-01,192.0.2.101,,SalaComputacion
+6B,02-00-00-00-00-04,192.0.2.104,SalasBasica,6B
+4MB,02-00-00-00-00-40,192.0.2.160,SalasMedia,4MB

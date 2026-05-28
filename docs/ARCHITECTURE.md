@@ -57,13 +57,11 @@ flowchart LR
 
 ## Reglas de ubicacion
 
-El maestro de Veyon asigna una ubicacion por defecto (`SalaComputacion`) y aplica overrides por nombre, IP o MAC cuando un equipo pertenece a una sala de curso.
+El maestro de Veyon asigna una ubicacion por defecto (`SalaComputacion`) y aplica overrides por MAC cuando un equipo pertenece a una sala de curso. La IP no se usa como regla permanente porque cambia por DHCP.
 
 Orden de resolucion:
 
-1. Nombre logico (`CASTEL-XX`).
-2. IP detectada.
-3. MAC detectada.
-4. Ubicacion por defecto.
+1. MAC detectada.
+2. Ubicacion por defecto.
 
-Esto protege los casos donde WakeMeOnLAN detecta el equipo con nombre temporal o IP distinta.
+Los nombres visibles tambien pueden cambiar por MAC. Por ejemplo, los equipos historicos `CASTEL-04` y `CASTEL-40` se publican como `6B` y `4MB`, dentro de las ubicaciones agrupadoras `SalasBasica` y `SalasMedia`.

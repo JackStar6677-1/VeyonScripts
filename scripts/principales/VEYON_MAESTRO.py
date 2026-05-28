@@ -27,17 +27,18 @@ COMPUTER_PREFIX = "CASTEL"
 DEFAULT_LOCATION_NAME = "SalaComputacion"
 
 # Salas reales para equipos que no pertenecen a la sala de computacion.
-LOCATION_OVERRIDES_BY_NAME = {
-    "CASTEL-04": "6B",
-    "CASTEL-40": "CuartoMedioB",
+# La IP es dinamica en el colegio; las reglas permanentes dependen de MAC.
+ROOM_PARENT_LOCATIONS = {
+    "6B": "SalasBasica",
+    "4MB": "SalasMedia",
 }
-LOCATION_OVERRIDES_BY_IP = {
-    "192.168.0.104": "6B",
-    "192.168.0.160": "CuartoMedioB",
+COMPUTER_NAME_OVERRIDES_BY_MAC = {
+    "08-BF-B8-36-6E-6E": "6B",
+    "30-9C-23-09-06-4C": "4MB",
 }
 LOCATION_OVERRIDES_BY_MAC = {
     "08-BF-B8-36-6E-6E": "6B",
-    "30-9C-23-09-06-4C": "CuartoMedioB",
+    "30-9C-23-09-06-4C": "4MB",
 }
 
 # Equipos que nunca deben aparecer en la cuadrícula de Veyon Master
@@ -96,18 +97,30 @@ MAPEO_FISICO_MAC = {
 def format_computer_name(number: int) -> str:
     return f"{COMPUTER_PREFIX}-{number:02d}"
 
+def get_client_name(mac: str, fallback_number: int) -> str:
+    """Devuelve el nombre visible de Veyon para un equipo detectado."""
+    normalized_mac = (mac or "").strip().upper()
+    return COMPUTER_NAME_OVERRIDES_BY_MAC.get(normalized_mac) or format_computer_name(fallback_number)
+
 def get_client_location(client: Dict) -> str:
     """Devuelve la ubicacion Veyon correcta para un cliente detectado."""
-    name = (client.get("name") or "").strip().upper()
-    ip = (client.get("ip") or "").strip()
     mac = (client.get("mac") or "").strip().upper()
 
     return (
-        LOCATION_OVERRIDES_BY_NAME.get(name)
-        or LOCATION_OVERRIDES_BY_IP.get(ip)
-        or LOCATION_OVERRIDES_BY_MAC.get(mac)
+        LOCATION_OVERRIDES_BY_MAC.get(mac)
         or DEFAULT_LOCATION_NAME
     )
+
+def get_location_chain(location: str) -> List[str]:
+    """Devuelve la cadena de ubicaciones que debe existir antes de agregar un PC."""
+    parent = ROOM_PARENT_LOCATIONS.get(location)
+    if parent:
+        return [parent, location]
+    return [location]
+
+def get_location_parent(location: str) -> str:
+    """Devuelve la ubicacion padre para crear jerarquia en Veyon."""
+    return ROOM_PARENT_LOCATIONS.get(location, "")
 
 def get_scan_ranges() -> List[Tuple[str, str]]:
     """Detecta rangos IPv4 para escaneo."""
@@ -565,7 +578,7 @@ def filter_veyon_clients(devices: List[Dict]) -> List[Dict]:
 
         if tested_ips[ip]:
             if mac in MAPEO_FISICO_MAC:
-                veyon_name = format_computer_name(MAPEO_FISICO_MAC[mac])
+                veyon_name = get_client_name(mac, MAPEO_FISICO_MAC[mac])
             else:
                 veyon_name = format_computer_name(next_number)
                 next_number += 1
@@ -600,12 +613,22 @@ def update_veyon_safely(veyon_clients: List[Dict]):
     
     try:
         # Primero crear las ubicaciones necesarias si no existen.
-        locations = sorted({get_client_location(client) for client in veyon_clients})
+        locations = []
+        seen_locations = set()
+        for client in veyon_clients:
+            for location in get_location_chain(get_client_location(client)):
+                if location not in seen_locations:
+                    seen_locations.add(location)
+                    locations.append(location)
+
         for location in locations:
             print(f"Creando ubicacion '{location}'...")
-            result = subprocess.run([
-                veyon_cli, "networkobjects", "add", "location", location
-            ], capture_output=True, timeout=30)
+            add_location_cmd = [veyon_cli, "networkobjects", "add", "location", location]
+            parent = get_location_parent(location)
+            if parent:
+                add_location_cmd.append(parent)
+
+            result = subprocess.run(add_location_cmd, capture_output=True, timeout=30)
 
             if result.returncode == 0:
                 print("  [OK] Ubicacion creada/verificada")
@@ -622,10 +645,15 @@ def update_veyon_safely(veyon_clients: List[Dict]):
             
             print(f"Agregando {name} ({ip}) en {location}...")
 
-            # Reemplazar por nombre para mantener configuraciones existentes.
-            subprocess.run([
-                veyon_cli, "networkobjects", "remove", name
-            ], capture_output=True, text=True, timeout=30)
+            # Reemplazar por nombre actual y por el nombre CASTEL-XX historico si cambio.
+            names_to_remove = {name}
+            if mac in MAPEO_FISICO_MAC:
+                names_to_remove.add(format_computer_name(MAPEO_FISICO_MAC[mac]))
+
+            for existing_name in names_to_remove:
+                subprocess.run([
+                    veyon_cli, "networkobjects", "remove", existing_name
+                ], capture_output=True, text=True, timeout=30)
             
             # Agregar computadora a la ubicación
             result = subprocess.run([
