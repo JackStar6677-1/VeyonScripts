@@ -53,13 +53,15 @@ function Start-OpenClawGateway {
   $args = @("gateway", "run", "--port", "$gatewayPort", "--tailscale", "off")
 
   if ($openClawPath -like "*.ps1") {
-    Start-Process -WindowStyle Hidden -FilePath "powershell.exe" -ArgumentList @(
+    $gatewayArgs = @(
       "-NoProfile",
       "-ExecutionPolicy",
       "Bypass",
       "-File",
       $openClawPath
-    ) + $args -RedirectStandardOutput $stdoutLog -RedirectStandardError $stderrLog
+    ) + $args
+    Start-Process -WindowStyle Hidden -FilePath "powershell.exe" -ArgumentList $gatewayArgs `
+      -RedirectStandardOutput $stdoutLog -RedirectStandardError $stderrLog
   }
   else {
     Start-Process -WindowStyle Hidden -FilePath $openClawPath -ArgumentList $args `
