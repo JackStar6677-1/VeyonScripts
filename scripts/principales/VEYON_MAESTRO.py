@@ -63,8 +63,12 @@ COMPUTER_NAME_OVERRIDES_BY_MAC = normalize_mac_map(
 LOCATION_OVERRIDES_BY_MAC = normalize_mac_map(
     LOCAL_TOPOLOGY.get("location_overrides_by_mac", {})
 )
-EXCLUDED_MACS = set(normalize_mac_map({mac: True for mac in LOCAL_TOPOLOGY.get("excluded_macs", [])}))
 PROFESOR_MAC = str(LOCAL_TOPOLOGY.get("profesor_mac", "")).strip().upper()
+MASTER_MAC = str(LOCAL_TOPOLOGY.get("master_mac", "")).strip().upper()
+MASTER_MACS = set(normalize_mac_map({mac: True for mac in LOCAL_TOPOLOGY.get("master_macs", [])}))
+MASTER_MACS.update(mac for mac in (MASTER_MAC, PROFESOR_MAC) if mac)
+EXCLUDED_MACS = set(normalize_mac_map({mac: True for mac in LOCAL_TOPOLOGY.get("excluded_macs", [])}))
+EXCLUDED_MACS.update(MASTER_MACS)
 MAPEO_FISICO_MAC = {
     mac: int(number)
     for mac, number in normalize_mac_map(LOCAL_TOPOLOGY.get("physical_mac_map", {})).items()
@@ -720,7 +724,7 @@ def filter_veyon_clients(devices: List[Dict]) -> List[Dict]:
             continue
 
         if mac in EXCLUDED_MACS:
-            print(f"  {ip} - {mac} - OMITIDO (equipo excluido: admin o profesor)")
+            print(f"  {ip} - {mac} - OMITIDO (equipo excluido: admin, master o profesor)")
             continue
 
         if key in skipped_conflicts:
@@ -934,13 +938,13 @@ def main():
     update_veyon_safely(veyon_clients)
     
     # Sincronización con el PC del profesor si fue detectado
-    prof_device = next((d for d in devices if d['mac'].upper() == PROFESOR_MAC), None)
+    prof_device = next((d for d in devices if d['mac'].upper() in MASTER_MACS), None)
     if prof_device:
-        print(f"\n[INFO] Se ha detectado el PC del Profesor en {prof_device['ip']}")
-        if prompt_yes_no("¿Deseas sincronizar los archivos y configuración con el PC del Profesor? (s/N): "):
+        print(f"\n[INFO] Se ha detectado el PC Master/Profesor en {prof_device['ip']}")
+        if prompt_yes_no("¿Deseas sincronizar los archivos y configuración con el PC Master/Profesor? (s/N): "):
             sync_profesor_files(prof_device['ip'])
     else:
-        print("\n[INFO] No se detectó el PC del Profesor en la red para sincronización.")
+        print("\n[INFO] No se detectó el PC Master/Profesor en la red para sincronización.")
 
     
     try:
