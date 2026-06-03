@@ -16,6 +16,7 @@ import socket
 import tempfile
 import csv
 import json
+import ipaddress
 from collections import defaultdict
 from typing import List, Dict, Tuple
 
@@ -68,6 +69,7 @@ MAPEO_FISICO_MAC = {
     mac: int(number)
     for mac, number in normalize_mac_map(LOCAL_TOPOLOGY.get("physical_mac_map", {})).items()
 }
+ACTIVE_LAN_ADAPTERS_CACHE = None
 
 def format_computer_name(number: int) -> str:
     return f"{COMPUTER_PREFIX}-{number:02d}"
@@ -158,24 +160,148 @@ def needs_veyon_update(current: Dict, desired: Dict) -> bool:
 
 def get_scan_ranges() -> List[Tuple[str, str]]:
     """Detecta rangos IPv4 para escaneo."""
-    ranges: List[Tuple[str, str]] = [("192.168.0.1", "192.168.0.254"), ("192.168.100.1", "192.168.100.254")]
+    ranges: List[Tuple[str, str]] = []
 
+    for adapter in get_active_lan_adapters():
+        scan_range = build_scan_range(adapter["ip"], adapter["prefix"])
+        if scan_range and scan_range not in ranges:
+            print(
+                f"[INFO] Red detectada: {adapter['alias']} "
+                f"{adapter['ip']}/{adapter['prefix']} -> {scan_range[0]}-{scan_range[1]}"
+            )
+            ranges.append(scan_range)
+
+    if not ranges:
+        ranges = [("192.168.0.1", "192.168.0.254"), ("192.168.100.1", "192.168.100.254")]
+
+    return ranges
+
+def get_active_lan_adapters() -> List[Dict[str, str]]:
+    """Lee adaptadores IPv4 activos en Windows y prioriza LAN fisica con gateway."""
+    global ACTIVE_LAN_ADAPTERS_CACHE
+    if ACTIVE_LAN_ADAPTERS_CACHE is not None:
+        return ACTIVE_LAN_ADAPTERS_CACHE
+
+    if os.name != "nt":
+        ACTIVE_LAN_ADAPTERS_CACHE = get_socket_lan_adapter()
+        return ACTIVE_LAN_ADAPTERS_CACHE
+
+    command = [
+        "powershell.exe",
+        "-NoProfile",
+        "-Command",
+        (
+            "Get-NetIPConfiguration | "
+            "Where-Object { $_.IPv4Address -and $_.NetAdapter.Status -eq 'Up' } | "
+            "Select-Object InterfaceAlias,InterfaceDescription,"
+            "@{Name='IPv4';Expression={$_.IPv4Address.IPAddress}},"
+            "@{Name='PrefixLength';Expression={$_.IPv4Address.PrefixLength}},"
+            "@{Name='Gateway';Expression={$_.IPv4DefaultGateway.NextHop}} | "
+            "ConvertTo-Json -Depth 3"
+        ),
+    ]
+
+    try:
+        result = subprocess.run(command, capture_output=True, text=True, timeout=10)
+        if result.returncode != 0 or not result.stdout.strip():
+            ACTIVE_LAN_ADAPTERS_CACHE = get_socket_lan_adapter()
+            return ACTIVE_LAN_ADAPTERS_CACHE
+        raw_adapters = json.loads(result.stdout)
+        if isinstance(raw_adapters, dict):
+            raw_adapters = [raw_adapters]
+    except Exception as exc:
+        print(f"[WARN] No se pudieron leer adaptadores Windows: {exc}")
+        ACTIVE_LAN_ADAPTERS_CACHE = get_socket_lan_adapter()
+        return ACTIVE_LAN_ADAPTERS_CACHE
+
+    adapters = []
+    for raw in raw_adapters:
+        adapter = normalize_adapter(raw)
+        if adapter:
+            adapters.append(adapter)
+
+    adapters.sort(key=adapter_priority)
+    ACTIVE_LAN_ADAPTERS_CACHE = adapters
+    return ACTIVE_LAN_ADAPTERS_CACHE
+
+def normalize_adapter(raw: Dict) -> Dict[str, str]:
+    """Valida que un adaptador sea una red LAN privada escaneable."""
+    ip = str(raw.get("IPv4") or "").strip()
+    prefix = raw.get("PrefixLength")
+    alias = str(raw.get("InterfaceAlias") or "").strip()
+    description = str(raw.get("InterfaceDescription") or "").strip()
+    gateway = str(raw.get("Gateway") or "").strip()
+
+    if not ip or prefix is None:
+        return {}
+
+    try:
+        address = ipaddress.ip_address(ip)
+        prefix_int = int(prefix)
+    except ValueError:
+        return {}
+
+    if (
+        address.is_loopback
+        or address.is_link_local
+        or address.is_multicast
+        or not address.is_private
+        or prefix_int < 16
+        or prefix_int > 30
+    ):
+        return {}
+
+    label = f"{alias} {description}".lower()
+    tunnel_words = ("tailscale", "wireguard", "zerotier", "vpn", "tunnel", "loopback")
+    if any(word in label for word in tunnel_words):
+        return {}
+
+    return {
+        "ip": ip,
+        "prefix": str(prefix_int),
+        "alias": alias or description or "Adaptador",
+        "description": description,
+        "gateway": gateway,
+    }
+
+def adapter_priority(adapter: Dict[str, str]) -> Tuple[int, int, str]:
+    """Ordena primero interfaces con gateway y nombres tipicos de LAN."""
+    label = f"{adapter.get('alias', '')} {adapter.get('description', '')}".lower()
+    has_gateway = 0 if adapter.get("gateway") else 1
+    wired_or_wifi = 0 if any(word in label for word in ("ethernet", "wi-fi", "wifi", "realtek", "intel")) else 1
+    return (has_gateway, wired_or_wifi, adapter.get("ip", ""))
+
+def build_scan_range(ip: str, prefix: str) -> Tuple[str, str]:
+    """Construye un rango seguro; limita redes grandes al /24 del equipo local."""
+    try:
+        prefix_int = int(prefix)
+        network = ipaddress.ip_network(f"{ip}/{prefix_int}", strict=False)
+        if network.num_addresses > 256:
+            octets = ip.split(".")
+            return (f"{'.'.join(octets[:3])}.1", f"{'.'.join(octets[:3])}.254")
+
+        hosts = list(network.hosts())
+        if not hosts:
+            return ("", "")
+        return (str(hosts[0]), str(hosts[-1]))
+    except Exception:
+        return ("", "")
+
+def get_socket_lan_adapter() -> List[Dict[str, str]]:
+    """Fallback portable cuando no se puede consultar Get-NetIPConfiguration."""
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
             sock.connect(("8.8.8.8", 80))
             local_ip = sock.getsockname()[0]
+        return [{
+            "ip": local_ip,
+            "prefix": "24",
+            "alias": "SocketFallback",
+            "description": "",
+            "gateway": "",
+        }]
     except Exception:
-        return ranges
-
-    parts = local_ip.split(".")
-    if len(parts) != 4:
-        return ranges
-
-    prefix = ".".join(parts[:3])
-    local_range = (f"{prefix}.1", f"{prefix}.254")
-    if local_range not in ranges:
-        ranges.insert(0, local_range)
-    return ranges
+        return []
 
 def is_admin():
     """Verifica si el script se ejecuta con permisos de administrador"""
@@ -304,12 +430,10 @@ def test_veyon_client(ip: str, port: int = 11100, timeout: float = 0.5) -> bool:
         return False
 
 def get_local_ipv4() -> str:
-    try:
-        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
-            sock.connect(("8.8.8.8", 80))
-            return sock.getsockname()[0]
-    except Exception:
-        return ""
+    adapters = get_active_lan_adapters()
+    if adapters:
+        return adapters[0]["ip"]
+    return ""
 
 def read_console_line_fallback(prompt: str) -> str:
     """Lee desde la consola de Windows cuando stdin no es interactivo."""
