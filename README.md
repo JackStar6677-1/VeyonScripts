@@ -1,108 +1,19 @@
-# Castel LabOps
+# VeyonScripts
 
-<p align="center">
-  <img src="assets/hero.svg" alt="VeyonScripts Hero Banner" width="800">
-</p>
+Batch scripts and automation tools for managing and diagnosing computer lab environments using Veyon.
 
-Suite operativa para administrar laboratorios Windows del Colegio Castel Gandolfo con Veyon, Wake-on-LAN, WinRM y utilidades de soporte en terreno.
+## Features
 
-**Autor:** Pablo Elias Avendano Miranda
-**Plataforma principal:** Windows / PowerShell
-**Enfoque:** automatizacion pragmatica para salas de computacion, PCs de profesor y equipos de curso.
+- 🛠️ **Automated Lab Diagnostics:** Quick check for network connections, Veyon service status, and local IP configurations.
+- 🔄 **Service Management:** Restart, stop, or configure Veyon Master & Service via command line.
+- 📁 **Portable Shortcuts:** Desktop integration for laboratory administrators.
 
----
+## Installation & Usage
 
-## Que Resuelve
+1. Download or clone the scripts to your target machine.
+2. Run `VEYON_MAESTRO.bat` as Administrator.
+3. Configure your lab network settings as prompted.
 
-- Actualiza el directorio de Veyon desde escaneos de red.
-- Mantiene nombres logicos aunque cambien las IPs.
-- Separa equipos fuera de la sala principal en ubicaciones Veyon propias.
-- Enciende equipos por Wake-on-LAN.
-- Ejecuta tareas clave por WinRM.
-- Mantiene datos reales, respaldos y reportes fuera de Git.
+## License
 
-## Estructura
-
-```text
-VeyonScripts/
-|-- apps/                    # GUI y herramientas visuales
-|-- deploy/                  # Material de despliegue y operacion remota
-|   |-- admin_ssh/           # Sincronizacion por SSH para equipos puntuales
-|   |-- admin_winrm/         # Orquestacion remota desde el PC administrador
-|   |-- componentes_cliente/ # Payloads que se instalan en los clientes
-|   `-- kit_pendrive/        # Kit portable/manual para terreno
-|-- docs/                    # Arquitectura, seguridad y operacion
-|-- examples/                # Datos de ejemplo sanitizados
-|-- launchers/               # Launchers reales invocados desde la raiz
-|-- reports/                 # Plantillas o reportes publicables
-|-- scripts/                 # Scripts principales, diagnosticos y legacy
-|-- tools/                   # Herramientas auxiliares
-`-- *.bat                    # Wrappers de compatibilidad para escritorio
-```
-
-Las folders `data/`, `config/`, `memory/`, `tasks/`, `backups/`, `void_env/`, `_reports/` y files `.cfg`/logs operativos son locales. No deben versionarse.
-
-## Usage Rapido
-
-Ejecutar desde PowerShell o con los `.bat` de la raiz:
-
-```powershell
-.\VEYON_MAESTRO.bat
-.\MAPEO_FISICO_ADMIN.bat
-.\WINRM_MAESTRO.bat
-```
-
-Los launchers de la raiz llaman a `launchers/`, y estos ejecutan los scripts reales dentro de `scripts/principales/`.
-
-## Flujo Recomendado
-
-1. Preparar cada PC cliente con `deploy/kit_pendrive/`.
-2. Validar conectividad y credenciales fuera del repo.
-3. Mantener inventarios reales en `data/` local, nunca en Git.
-4. Ejecutar el maestro de Veyon desde el PC administrador.
-5. Usar `deploy/admin_winrm/` para acciones masivas.
-6. Guardar salidas operativas en `_reports/` local.
-
-## Ubicaciones Veyon Especiales
-
-`scripts/principales/VEYON_MAESTRO.py` mantiene reglas explicitas para equipos que no pertenecen a `SalaComputacion`:
-
-| Nombre Veyon | Grupo | Ubicacion Veyon |
-| --- | --- | --- |
-| `6B` | `SalasBasica` | `6B` |
-| `4MB` | `SalasMedia` | `4MB` |
-
-Estas reglas usan MAC como identificador permanente porque la IP cambia por DHCP, pero las MAC reales viven en `config/veyon_topology.local.json`, archivo local ignorado por Git. El maestro crea los grupos `SalasBasica` y `SalasMedia`, ubica cada sala bajo su grupo y evita que los PCs de curso vuelvan a mezclarse dentro de la sala principal.
-
-## Documentacion
-
-- [Arquitectura](docs/ARCHITECTURE.md)
-- [Operacion diaria](docs/OPERATIONS.md)
-- [Seguridad y datos locales](docs/SECURITY.md)
-- [Ejemplo de inventario sanitizado](examples/reservas_dhcp_castel.example.csv)
-- [Ejemplo de topologia Veyon sanitizado](examples/veyon_topology.example.json)
-- [GUI de mapeo fisico](apps/veyongui/README_GUI.md)
-
-## Politica De Datos
-
-Este repo puede ser publico o privado, pero debe tratarse como codigo fuente. No se suben:
-
-- Inventarios reales de IP/MAC.
-- Configuraciones de WakeMeOnLAN.
-- Logs o reportes con users/equipos reales.
-- Respaldos de drivers, exports o binarios generados.
-- Entornos virtuales Python.
-- Bases SQLite locales.
-
-Usa `examples/` para ejemplos artificiales y `docs/` para explicar formatos.
-
-## Validacion Basica
-
-```powershell
-python -m py_compile .\scripts\principales\VEYON_MAESTRO.py
-git status --short
-```
-
-Para pruebas reales de Veyon se requiere Windows con Veyon instalado y permissions de administrador.
-
-<!-- Updated for 2026 active baseline maintenance -->
+MIT
