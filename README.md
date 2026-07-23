@@ -8,7 +8,7 @@ Suite operativa para administrar laboratorios Windows del Colegio Castel Gandolf
 
 **Autor:** Pablo Elias Avendano Miranda
 **Plataforma principal:** Windows / PowerShell
-**Focus:** automatizacion pragmatica para salas de computacion, PCs de profesor y equipos de curso.
+**Enfoque:** automatizacion pragmatica para salas de computacion, PCs de profesor y equipos de curso.
 
 ---
 
@@ -40,7 +40,7 @@ VeyonScripts/
 `-- *.bat                    # Wrappers de compatibilidad para escritorio
 ```
 
-Las carpetas `data/`, `config/`, `memory/`, `tasks/`, `backups/`, `void_env/`, `_reports/` y archivos `.cfg`/logs operativos son locales. No deben versionarse.
+Las folders `data/`, `config/`, `memory/`, `tasks/`, `backups/`, `void_env/`, `_reports/` y files `.cfg`/logs operativos son locales. No deben versionarse.
 
 ## Usage Rapido
 
@@ -89,7 +89,7 @@ Este repo puede ser publico o privado, pero debe tratarse como codigo fuente. No
 
 - Inventarios reales de IP/MAC.
 - Configuraciones de WakeMeOnLAN.
-- Logs o reportes con usuarios/equipos reales.
+- Logs o reportes con users/equipos reales.
 - Respaldos de drivers, exports o binarios generados.
 - Entornos virtuales Python.
 - Bases SQLite locales.
@@ -103,6 +103,6 @@ python -m py_compile .\scripts\principales\VEYON_MAESTRO.py
 git status --short
 ```
 
-Para pruebas reales de Veyon se requiere Windows con Veyon instalado y permisos de administrador.
+Para pruebas reales de Veyon se requiere Windows con Veyon instalado y permissions de administrador.
 
 <!-- Updated for 2026 active baseline maintenance -->
