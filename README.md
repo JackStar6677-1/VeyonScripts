@@ -104,3 +104,5 @@ git status --short
 ```
 
 Para pruebas reales de Veyon se requiere Windows con Veyon instalado y permisos de administrador.
+
+<!-- Updated for 2026 active baseline maintenance -->
