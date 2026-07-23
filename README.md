@@ -8,7 +8,7 @@ Suite operativa para administrar laboratorios Windows del Colegio Castel Gandolf
 
 **Autor:** Pablo Elias Avendano Miranda
 **Plataforma principal:** Windows / PowerShell
-**Enfoque:** automatizacion pragmatica para salas de computacion, PCs de profesor y equipos de curso.
+**Focus:** automatizacion pragmatica para salas de computacion, PCs de profesor y equipos de curso.
 
 ---
 
@@ -42,7 +42,7 @@ VeyonScripts/
 
 Las carpetas `data/`, `config/`, `memory/`, `tasks/`, `backups/`, `void_env/`, `_reports/` y archivos `.cfg`/logs operativos son locales. No deben versionarse.
 
-## Uso Rapido
+## Usage Rapido
 
 Ejecutar desde PowerShell o con los `.bat` de la raiz:
 
